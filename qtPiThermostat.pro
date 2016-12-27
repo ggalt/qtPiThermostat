@@ -2,7 +2,12 @@
 QML_IMPORT_PATH =
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    forecastlistmodel.cpp \
+    qeventlistwindow.cpp \
+    qthermoappviewer.cpp \
+    weatherdata.cpp \
+    weathernetworkconnection.cpp
 
 RESOURCES += qml.qrc
 
@@ -14,3 +19,10 @@ include(qtquick1applicationviewer/qtquick1applicationviewer.pri)
 
 # Default rules for deployment.
 include(deployment.pri)
+
+HEADERS += \
+    forecastlistmodel.h \
+    qeventlistwindow.h \
+    qthermoappviewer.h \
+    weatherdata.h \
+    weathernetworkconnection.h

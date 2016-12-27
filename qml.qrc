@@ -1,5 +1,29 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>EventListWin.qml</file>
+        <file>MainWindow.qml</file>
+        <file>SplashScreen.qml</file>
+        <file>WeatherWindow.qml</file>
+        <file>icons/backArrow.png</file>
+        <file>icons/cooling.png</file>
+        <file>icons/downarrow.png</file>
+        <file>icons/heating.png</file>
+        <file>icons/uparrow.png</file>
+        <file>icons/weather-few-clouds.png</file>
+        <file>icons/weather-fog.png</file>
+        <file>icons/weather-haze.png</file>
+        <file>icons/weather-icy.png</file>
+        <file>icons/weather-overcast.png</file>
+        <file>icons/weather-showers.png</file>
+        <file>icons/weather-sleet.png</file>
+        <file>icons/weather-snow.png</file>
+        <file>icons/weather-storm.png</file>
+        <file>icons/weather-sunny-very-few-clouds.png</file>
+        <file>icons/weather-sunny.png</file>
+        <file>icons/weather-thundershower.png</file>
+        <file>thermoEventPage.qml</file>
+        <file>tumbler.qml</file>
+        <file>components/ColorCheckedButton.qml</file>
     </qresource>
 </RCC>
