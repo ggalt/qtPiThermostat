@@ -47,7 +47,7 @@ Rectangle {
         anchors.verticalCenter: parent.verticalCenter
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 90
+        font.pointSize: 65
 
         MouseArea {
             id: maCurrentTemp
@@ -65,7 +65,7 @@ Rectangle {
         horizontalAlignment: Text.AlignRight
         anchors.right: parent.right
         anchors.rightMargin: 2
-        font.pixelSize: 40
+        font.pointSize: 28
 
         MouseArea {
             id: maTargetTemp
@@ -126,7 +126,7 @@ Rectangle {
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignRight
         anchors.right: txtTargetTemp.left
-        font.pixelSize: 12
+        font.pointSize: 10
     }
 
     Text {
@@ -137,7 +137,7 @@ Rectangle {
         anchors.leftMargin: 8
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 8
-        font.pixelSize: 24
+        font.pointSize: 18
     }
 
     Text {
@@ -149,7 +149,7 @@ Rectangle {
         anchors.bottomMargin: 8
         anchors.right: parent.right
         anchors.rightMargin: 8
-        font.pixelSize: 24
+        font.pointSize: 18
     }
 
     Image {
@@ -177,7 +177,7 @@ Rectangle {
             text: outsideCurrentTemp
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            font.pixelSize: 22
+            font.pointSize: 18
         }
     }
 
@@ -191,7 +191,7 @@ Rectangle {
         verticalAlignment: Text.AlignVCenter
         anchors.right: parent.right
         anchors.rightMargin: 2
-        font.pixelSize: 20
+        font.pointSize: 18
     }
 
     Image {
@@ -217,6 +217,6 @@ Rectangle {
         anchors.verticalCenter: txtRelHum.verticalCenter
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 18
+        font.pointSize: 16
     }
 }

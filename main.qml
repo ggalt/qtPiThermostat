@@ -44,6 +44,11 @@ Item {
     property string tomorrowIcon: ""
     property string nextDayIcon: ""
 
+    property string eventDayOfWeek: ""
+    property string eventTime: ""
+    property int eventTemp: 0
+    property bool eventIsHeat: true
+
     function showMainWindow() {
         mainRectangle.state = "MainWindowState";
     }
@@ -58,6 +63,14 @@ Item {
 
     function showThermoEventWindow() {
         mainRectangle.state = "AddEventState"
+    }
+
+    function captureThermostatEventInfo(dayOfWeek, targetTime, mytargetTemp, isHeat) {
+        eventDayOfWeek = dayOfWeek
+        eventTime = targetTime
+        eventTemp = mytargetTemp
+        eventIsHeat = isHeat
+        console.log("captureThermostatEventInfo:", eventDayOfWeek, eventTime, eventTemp, "Heat =", eventIsHeat)
     }
 
 //    Timer {

@@ -12,7 +12,7 @@ Rectangle {
     property int day3High: 70
     property int day3Low: 50
 
-    opacity: 0
+    opacity: 1
 
     gradient: Gradient {
         GradientStop {
@@ -52,7 +52,7 @@ Rectangle {
         anchors.leftMargin: 4
         anchors.top: parent.top
         anchors.topMargin: 4
-        source: "Sun-120.png"
+        source: "icons/no-weather-info.png"
     }
 
     Image {
@@ -63,7 +63,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 4
-        source: "Sun-120.png"
+        source: "icons/no-weather-info.png"
     }
 
     Image {
@@ -75,7 +75,7 @@ Rectangle {
         anchors.rightMargin: 4
         anchors.top: parent.top
         anchors.topMargin: 4
-        source: "Sun-120.png"
+        source: "icons/no-weather-info.png"
     }
 
 
@@ -84,7 +84,7 @@ Rectangle {
         x: 42
         y: 165
         text: mainRectangle.todayName
-        font.pixelSize: 12
+        font.pointSize: 10
     }
 
     Text {
@@ -92,7 +92,7 @@ Rectangle {
         x: 148
         y: 165
         text: mainRectangle.tomorrowName
-        font.pixelSize: 12
+        font.pointSize: 10
     }
 
     Text {
@@ -100,7 +100,7 @@ Rectangle {
         x: 254
         y: 165
         text: mainRectangle.nextDayName
-        font.pixelSize: 12
+        font.pointSize: 10
     }
 
     Rectangle {
@@ -134,7 +134,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: 12
+            font.pointSize: 10
         }
 
         MouseArea {
@@ -160,7 +160,7 @@ Rectangle {
             anchors.right: parent.right
             anchors.rightMargin: 0
             anchors.top: parent.top
-            font.pixelSize: 12
+            font.pointSize: 10
         }
 
         Text {
@@ -171,7 +171,7 @@ Rectangle {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.rightMargin: 0
-            font.pixelSize: 12
+            font.pointSize: 10
         }
 
         Text {
@@ -182,7 +182,7 @@ Rectangle {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.leftMargin: 0
-            font.pixelSize: 12
+            font.pointSize: 10
         }
 
         Text {
@@ -194,7 +194,7 @@ Rectangle {
             anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
-            font.pixelSize: 12
+            font.pointSize: 10
         }
     }
 
@@ -214,7 +214,7 @@ Rectangle {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.rightMargin: 0
-            font.pixelSize: 12
+            font.pointSize: 10
         }
 
         Text {
@@ -225,7 +225,7 @@ Rectangle {
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.leftMargin: 0
-                font.pixelSize: 12
+                font.pointSize: 10
         }
 
         Text {
@@ -237,7 +237,7 @@ Rectangle {
             anchors.rightMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
-            font.pixelSize: 12
+            font.pointSize: 10
         }
 
         Text {
@@ -245,7 +245,7 @@ Rectangle {
             text: "HIGH:"
             anchors.left: parent.left
             anchors.top: parent.top
-            font.pixelSize: 12
+            font.pointSize: 10
         }
 
     }
@@ -266,7 +266,7 @@ Rectangle {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.rightMargin: 0
-            font.pixelSize: 12
+            font.pointSize: 10
         }
 
         Text {
@@ -277,7 +277,7 @@ Rectangle {
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.leftMargin: 0
-                font.pixelSize: 12
+                font.pointSize: 10
         }
 
         Text {
@@ -289,7 +289,7 @@ Rectangle {
             anchors.rightMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
-            font.pixelSize: 12
+            font.pointSize: 10
         }
 
         Text {
@@ -301,7 +301,7 @@ Rectangle {
                 anchors.leftMargin: 0
                 anchors.top: parent.top
                 anchors.topMargin: 0
-                font.pixelSize: 12
+                font.pointSize: 10
         }
 
     }

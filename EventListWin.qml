@@ -64,7 +64,7 @@ Rectangle {
             anchors.topMargin: 0
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: 12
+            font.pointSize: 12
 
             MouseArea {
                 id: maBtnSunday
@@ -87,7 +87,7 @@ Rectangle {
             }
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: 12
+            font.pointSize: 12
         }
 
         Text {
@@ -105,7 +105,7 @@ Rectangle {
             }
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: 12
+            font.pointSize: 12
         }
 
         Text {
@@ -123,7 +123,7 @@ Rectangle {
             }
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: 12
+            font.pointSize: 12
         }
 
         Text {
@@ -141,7 +141,7 @@ Rectangle {
             }
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: 12
+            font.pointSize: 12
         }
 
         Text {
@@ -159,7 +159,7 @@ Rectangle {
             }
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: 12
+            font.pointSize: 12
         }
 
         Text {
@@ -177,7 +177,7 @@ Rectangle {
             }
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            font.pixelSize: 12
+            font.pointSize: 12
         }
 
         Image {

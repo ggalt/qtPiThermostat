@@ -19,6 +19,7 @@ WeatherNetworkConnection::WeatherNetworkConnection(QObject *parent) :
     m_forecastURL = QUrl("http://api.openweathermap.org/data/2.5/forecast");
     m_weatherURL = QUrl("http://api.openweathermap.org/data/2.5/weather");
     m_apiKey = "f3f0986ce37ed779a9eab754fa0e1d86";
+    m_weatherReady = false;
 
     m_forecast = new forecastListModel(this);
 
@@ -98,8 +99,10 @@ void WeatherNetworkConnection::refreshWeather(void)
 
 void WeatherNetworkConnection::processWeather(QNetworkReply *networkReply)
 {
+    m_weatherReady = false;
 
     if (!networkReply->error()) {
+        m_weatherReady = true;
         QJsonDocument document = QJsonDocument::fromJson(networkReply->readAll());
 
         if (document.isObject()) {
@@ -136,24 +139,24 @@ void WeatherNetworkConnection::processWeather(QNetworkReply *networkReply)
             }   // end state forecast
         }   // end if document
         ProcessHiLowTemps();
+        qDebug() << m_now.temperature();
+        qDebug() << m_forecast->at(0)->temperature();
+        qDebug() << m_now.weatherIcon() << m_now.weatherDescription() << m_now.sunRise() << m_now.sunSet()
+                 << m_now.tempMax() << m_now.tempMin();
+
+        for( int c = 0; c < m_forecast->rowCount(QModelIndex()); c++ ){
+            WeatherData *d = m_forecast->at(c);
+            qDebug() << "day of the week is:" << d->dayOfWeek();
+            QDateTime dt = QDateTime::fromString(d->dayOfWeek(),"yyyy-MM-dd hh:mm:ss");
+            qDebug() << "day of week is:" << dt.toString("ddd") << dt.toString("MMMM")
+                     << dt.toString("d") << "at" << dt.toString("h:mm");
+            qDebug() << "this day is" << dt.daysTo(QDateTime::currentDateTime()) << "from today";
+            qDebug() << "Min:" << d->tempMin() << "Max:" << d->tempMax();
+
+            qDebug() << getWeatherForDay(2)->dayOfWeek() << getWeatherForDay(2)->tempMax() << getWeatherForDay(2)->tempMin();
+        }
+
     }   // end if network
-    qDebug() << m_now.temperature();
-//    qDebug() << m_forecast.at(0)->temperature();
-    qDebug() << m_forecast->at(0)->temperature();
-    qDebug() << m_now.weatherIcon() << m_now.weatherDescription() << m_now.sunRise() << m_now.sunSet()
-             << m_now.tempMax() << m_now.tempMin();
-
-    for( int c = 0; c < m_forecast->rowCount(QModelIndex()); c++ ){
-        WeatherData *d = m_forecast->at(c);
-        qDebug() << "day of the week is:" << d->dayOfWeek();
-        QDateTime dt = QDateTime::fromString(d->dayOfWeek(),"yyyy-MM-dd hh:mm:ss");
-        qDebug() << "day of week is:" << dt.toString("ddd") << dt.toString("MMMM")
-                 << dt.toString("d") << "at" << dt.toString("h:mm");
-        qDebug() << "this day is" << dt.daysTo(QDateTime::currentDateTime()) << "from today";
-        qDebug() << "Min:" << d->tempMin() << "Max:" << d->tempMax();
-
-        qDebug() << getWeatherForDay(2)->dayOfWeek() << getWeatherForDay(2)->tempMax() << getWeatherForDay(2)->tempMin();
-    }
 }
 
 void WeatherNetworkConnection::JsonProcessWeatherObject( WeatherData &data, QJsonObject &obj )
@@ -203,6 +206,9 @@ void WeatherNetworkConnection::JsonProcessDateTextObject(WeatherData &data, QJso
 
 void WeatherNetworkConnection::ProcessHiLowTemps(void)
 {
+    if(!weatherReady())
+        return;
+
     QHash<QString, qreal> lowTemps;
     QHash<QString, qreal> hiTemps;
 
@@ -249,15 +255,17 @@ void WeatherNetworkConnection::setTempScalePreference(QString scale)
 
 WeatherData *WeatherNetworkConnection::getWeatherForDay(int daysFromToday )
 {
-    // return weather at noon "daysFromToday" in the future
-    quint64 targetDay = 0 - daysFromToday;
-    for( int c = 0; c < m_forecast->rowCount(QModelIndex()); c++ ) {
-        WeatherData *d = m_forecast->at(c);
-        QDateTime dt = QDateTime::fromString(d->dayOfWeek(),"yyyy-MM-dd hh:mm:ss");
-        if( dt.daysTo(QDateTime::currentDateTime()) == targetDay && dt.time().hour() == 12 )
-            return d;
-    }
-    return NULL;
+    if(weatherReady()) {
+        // return weather at noon "daysFromToday" in the future
+        quint64 targetDay = 0 - daysFromToday;
+        for( int c = 0; c < m_forecast->rowCount(QModelIndex()); c++ ) {
+            WeatherData *d = m_forecast->at(c);
+            QDateTime dt = QDateTime::fromString(d->dayOfWeek(),"yyyy-MM-dd hh:mm:ss");
+            if( dt.daysTo(QDateTime::currentDateTime()) == targetDay && dt.time().hour() == 12 )
+                return d;
+        }
+    } else
+        return NULL;
 }
 
 QString WeatherNetworkConnection::niceTemperatureString(double t, bool displayDegree)

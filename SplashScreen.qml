@@ -45,6 +45,5 @@ Rectangle {
         font.italic: true
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        font.pixelSize: 34
     }
 }

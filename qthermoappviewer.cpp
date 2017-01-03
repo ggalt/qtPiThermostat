@@ -61,19 +61,26 @@ void qThermoAppViewer::CheckTemp(void)
     WeatherData *tomorrow = m_weather->getWeatherForDay(1);
     WeatherData *nextDay = m_weather->getWeatherForDay(2);
 
-    mainRec->setProperty("todayHiTemp", m_weather->niceTemperatureString( today->tempMax() ));
-    mainRec->setProperty("todayLoTemp", m_weather->niceTemperatureString(today->tempMin()) );
-    mainRec->setProperty("tomorrowHiTemp", m_weather->niceTemperatureString(tomorrow->tempMax()) );
-    mainRec->setProperty("tomorrowLoTemp", m_weather->niceTemperatureString(tomorrow->tempMin()) );
-    mainRec->setProperty("nextDayHiTemp", m_weather->niceTemperatureString(nextDay->tempMax()) );
-    mainRec->setProperty("nextDayLoTemp", m_weather->niceTemperatureString(nextDay->tempMin()) );
-    mainRec->setProperty("todayName", QDateTime::fromString(today->dayOfWeek(),"yyyy-MM-dd hh:mm:ss").toString("ddd"));
-    mainRec->setProperty("tomorrowName", QDateTime::fromString(tomorrow->dayOfWeek(),"yyyy-MM-dd hh:mm:ss").toString("ddd"));
-    mainRec->setProperty("nextDayName", QDateTime::fromString(nextDay->dayOfWeek(),"yyyy-MM-dd hh:mm:ss").toString("ddd"));
-    mainRec->setProperty("todayIcon", today->weatherIcon());
-    mainRec->setProperty("tomorrowIcon", tomorrow->weatherIcon() );
-    mainRec->setProperty("nextDayIcon", nextDay->weatherIcon() );
+    if(today != NULL) {
+        mainRec->setProperty("todayHiTemp", m_weather->niceTemperatureString( today->tempMax() ));
+        mainRec->setProperty("todayLoTemp", m_weather->niceTemperatureString(today->tempMin()) );
+        mainRec->setProperty("todayName", QDateTime::fromString(today->dayOfWeek(),"yyyy-MM-dd hh:mm:ss").toString("ddd"));
+        mainRec->setProperty("todayIcon", today->weatherIcon());
+    }
 
+    if(tomorrow != NULL) {
+        mainRec->setProperty("tomorrowHiTemp", m_weather->niceTemperatureString(tomorrow->tempMax()) );
+        mainRec->setProperty("tomorrowLoTemp", m_weather->niceTemperatureString(tomorrow->tempMin()) );
+        mainRec->setProperty("tomorrowIcon", tomorrow->weatherIcon() );
+        mainRec->setProperty("tomorrowName", QDateTime::fromString(tomorrow->dayOfWeek(),"yyyy-MM-dd hh:mm:ss").toString("ddd"));
+    }
+
+    if(nextDay != NULL) {
+        mainRec->setProperty("nextDayHiTemp", m_weather->niceTemperatureString(nextDay->tempMax()) );
+        mainRec->setProperty("nextDayLoTemp", m_weather->niceTemperatureString(nextDay->tempMin()) );
+        mainRec->setProperty("nextDayName", QDateTime::fromString(nextDay->dayOfWeek(),"yyyy-MM-dd hh:mm:ss").toString("ddd"));
+        mainRec->setProperty("nextDayIcon", nextDay->weatherIcon() );
+    }
 
     if(initializingApp) {
         mainRec->setProperty("state", "MainWindowState");

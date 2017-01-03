@@ -6,12 +6,23 @@ Rectangle {
     width: 320
     height: 240
 
-    opacity: 1
+    opacity: 0
 
-    property int elementPixelSize: 36
-    property int targetTemp: 30
+    property int elementpointSize: 20
+
+//    property alias dayOfWeek: mainRectangle.eventDayOfWeek
+//    property alias targetTime: mainRectangle.eventTime
+//    property alias targetTemp: mainRectangle.eventTemp
+//    property alias isHeat: mainRectangle.eventIsHeat
+
+    property string dayOfWeek: ""
+    property string targetTime: ""
+    property int targetTemp: 0
     property bool isHeat: true
-    property int dayOfWeek: 0
+
+    property string txthour: ""
+    property string txtminute: ""
+    property string txtmeridiem: ""
 
 
     gradient: Gradient {
@@ -37,6 +48,18 @@ Rectangle {
         fadeInAnimation.start()
     }
 
+    function collectData() {
+        dayOfWeek = dowModel.get(lstDayOfTheWeek.currentIndex).dayListElement
+        // no need to get targetTemp because slider sets it directly
+        // targetTemp = targetTemp
+        txthour = hourModel.get(listviewHour.currentIndex).hourListElement
+        txtminute = minuteModel.get(listViewMinute.currentIndex).minuteListElement
+        txtmeridiem = apModel.get(listviewAP.currentIndex).lstElement
+        targetTime = txthour + ":" + txtminute + " " + txtmeridiem
+        isHeat = btnHeat.checked
+        console.log("collectData() :", dayOfWeek, targetTime, targetTemp, "Heat =", isHeat)
+    }
+
     Rectangle {
         id: dayOfWeekRect
         x: 8
@@ -56,6 +79,7 @@ Rectangle {
             highlightRangeMode: ListView.StrictlyEnforceRange
             flickableDirection: Flickable.HorizontalFlick
             model: ListModel {
+                id: dowModel
                 ListElement {
                     dayListElement: "ALL"
                 }
@@ -95,7 +119,7 @@ Rectangle {
                         text: dayListElement
 //                        font.bold: true
                         font.family: "DejaVu Sans"
-                        font.pixelSize: elementPixelSize - 10
+                        font.pointSize: elementpointSize - 6
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
@@ -107,6 +131,7 @@ Rectangle {
                         }
                     }
             }
+
             preferredHighlightBegin: lstDayOfTheWeek.width/2 - 50
             highlight: Rectangle {
                 color: "#fffd78"
@@ -148,31 +173,31 @@ Rectangle {
                 model:         ListModel {
                     id: hourModel
                     ListElement {
-                        hourListElement: " 1"
+                        hourListElement: "01"
                     }
                     ListElement {
-                        hourListElement: " 2"
+                        hourListElement: "02"
                     }
                     ListElement {
-                        hourListElement: " 3"
+                        hourListElement: "03"
                     }
                     ListElement {
-                        hourListElement: " 4"
+                        hourListElement: "04"
                     }
                     ListElement {
-                        hourListElement: " 5"
+                        hourListElement: "05"
                     }
                     ListElement {
-                        hourListElement: " 6"
+                        hourListElement: "06"
                     }
                     ListElement {
-                        hourListElement: " 7"
+                        hourListElement: "07"
                     }
                     ListElement {
-                        hourListElement: " 8"
+                        hourListElement: "08"
                     }
                     ListElement {
-                        hourListElement: " 9"
+                        hourListElement: "09"
                     }
                     ListElement {
                         hourListElement: "10"
@@ -192,7 +217,7 @@ Rectangle {
                     Text {
                             text: hourListElement
                             font.family: "DejaVu Sans"
-                            font.pixelSize: elementPixelSize
+                            font.pointSize: elementpointSize
                             anchors.verticalCenter: parent.verticalCenter
                         }
                     }
@@ -222,7 +247,7 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             font.family: "DejaVu Sans"
-            font.pixelSize: elementPixelSize
+            font.pointSize: elementpointSize
         }
 
         Rectangle {
@@ -290,7 +315,7 @@ Rectangle {
                     Text {
                             text: minuteListElement
                             font.family: "DejaVu Sans"
-                            font.pixelSize: elementPixelSize
+                            font.pointSize: elementpointSize
                             anchors.verticalCenter: parent.verticalCenter
                         }
                     }
@@ -346,7 +371,7 @@ Rectangle {
                     Text {
                             text: lstElement
                             font.family: "DejaVu Sans"
-                            font.pixelSize: elementPixelSize
+                            font.pointSize: elementpointSize
                             anchors.verticalCenter: parent.verticalCenter
                         }
                     }
@@ -452,7 +477,8 @@ Rectangle {
         x: 230
         y: 111
         text: strTargetTemp
-        font.pixelSize: 50
+        anchors.bottom: tempSlider.top
+        font.pointSize: 44
     }
 
     Rectangle {
@@ -481,13 +507,13 @@ Rectangle {
             style: Text.Sunken
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: 20
+            font.pointSize: 16
         }
 
         MouseArea {
             id: cancelMouseArea
             anchors.fill: parent
-
+            onClicked: mainRectangle.showEventListWindow()
         }
     }
 
@@ -517,12 +543,17 @@ Rectangle {
             style: Text.Sunken
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: 20
+            font.pointSize: 16
         }
 
         MouseArea {
             id: acceptMouseArea
             anchors.fill: parent
+            onClicked: {
+                collectData()
+                captureThermostatEventInfo(dayOfWeek, targetTime, targetTemp, isHeat)
+                mainRectangle.showEventListWindow()
+            }
         }
     }
 
@@ -533,7 +564,7 @@ Rectangle {
         text: degreeMarkString
         anchors.left: targetTempText.right
         anchors.leftMargin: 0
-        font.pixelSize: 50
+        font.pointSize: 30
     }
 
     Rectangle {
@@ -605,7 +636,7 @@ Rectangle {
             style: Text.Sunken
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: 18
+            font.pointSize: 16
         }
         state: "unChecked"
     }
@@ -678,7 +709,7 @@ Rectangle {
             horizontalAlignment: Text.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
-            font.pixelSize: 18
+            font.pointSize: 14
         }
         state: "Checked"
     }

@@ -25,5 +25,7 @@
         <file>thermoEventPage.qml</file>
         <file>tumbler.qml</file>
         <file>ColorCheckedButton.qml</file>
+        <file>fonts/OpenSans-Regular.ttf</file>
+        <file>fonts/LICENSE.txt</file>
     </qresource>
 </RCC>

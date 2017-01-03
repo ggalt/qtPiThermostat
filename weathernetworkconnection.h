@@ -24,8 +24,8 @@
 class WeatherNetworkConnection : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool ready
-               READ ready
+    Q_PROPERTY(bool weatherReady
+               READ weatherReady
                NOTIFY readyChanged)
     Q_PROPERTY(QString city
                READ city WRITE setCity
@@ -44,7 +44,7 @@ public:
     explicit WeatherNetworkConnection(QObject *parent = 0);
     ~WeatherNetworkConnection();
 
-    bool ready() const { return m_ready; }
+    bool weatherReady() const { return m_weatherReady; }
     QString city() const { return m_city; }
     forecastListModel *forecast() const { return m_forecast; }
 
@@ -90,7 +90,7 @@ private:
 
 private:
     QString m_city;
-    bool m_ready;
+    bool m_weatherReady;
     WeatherData m_now;
 //    QList<WeatherData*> m_forecast;
     forecastListModel *m_forecast;
