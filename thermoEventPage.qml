@@ -1,15 +1,17 @@
 import QtQuick 1.1
-import "qrc:components"
 
 
 Rectangle {
-    id: rectangle1
+    id: thermoEventRect
     width: 320
     height: 240
 
     opacity: 1
 
     property int elementPixelSize: 36
+    property int targetTemp: 30
+    property bool isHeat: true
+    property int dayOfWeek: 0
 
 
     gradient: Gradient {
@@ -36,197 +38,348 @@ Rectangle {
     }
 
     Rectangle {
-        id: tmbHour
-        x: 40
-        y: 31
-        width: 40
-        height: 127
-        clip: false
-        ListModel {
-            id: hourModel
-            ListElement {
-                hourListElement: " 1"
-            }
-            ListElement {
-                hourListElement: " 2"
-            }
-            ListElement {
-                hourListElement: " 3"
-            }
-            ListElement {
-                hourListElement: " 4"
-            }
-            ListElement {
-                hourListElement: " 5"
-            }
-            ListElement {
-                hourListElement: " 6"
-            }
-            ListElement {
-                hourListElement: " 7"
-            }
-            ListElement {
-                hourListElement: " 8"
-            }
-            ListElement {
-                hourListElement: " 9"
-            }
-            ListElement {
-                hourListElement: "10"
-            }
-            ListElement {
-                hourListElement: "11"
-            }
-            ListElement {
-                hourListElement: "12"
-            }
-        }
+        id: dayOfWeekRect
+        x: 8
+        y: 9
+        width: 302
+        height: 27
+        color: "#ffffff"
+        clip: true
 
         ListView {
-            id: listviewHour
-            snapMode: ListView.SnapToItem
-            highlightRangeMode: ListView.StrictlyEnforceRange
-            clip: true
+            id: lstDayOfTheWeek
             highlightFollowsCurrentItem: true
+            preferredHighlightEnd: lstDayOfTheWeek.width/2 + 50
+            orientation: ListView.Horizontal
             keyNavigationWraps: false
             anchors.fill: parent
-            orientation: ListView.Vertical
-            flickableDirection: Flickable.VerticalFlick
-            model: hourModel
-            delegate: Text {
-                    text: hourListElement
-                    font.family: "DejaVu Sans"
-                    font.pixelSize: elementPixelSize
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            listviewHour.currentIndex=index
-                        }
-                    }
-            }
-            highlight: Rectangle { color: "lightsteelblue"; radius: 5; focus: true }
-        }
-    }
-
-    Rectangle {
-        id: tmbMinutes
-        x: 80
-        y: 31
-        width: 52
-        height: 127
-        ListModel {
-            id: minuteModel
-            ListElement {
-                minuteListElement: "00"
-            }
-            ListElement {
-                minuteListElement: "05"
-            }
-            ListElement {
-                minuteListElement: "10"
-            }
-            ListElement {
-                minuteListElement: "15"
-            }
-            ListElement {
-                minuteListElement: "20"
-            }
-            ListElement {
-                minuteListElement: "25"
-            }
-            ListElement {
-                minuteListElement: "30"
-            }
-            ListElement {
-                minuteListElement: "35"
-            }
-            ListElement {
-                minuteListElement: "40"
-            }
-            ListElement {
-                minuteListElement: "45"
-            }
-            ListElement {
-                minuteListElement: "50"
-            }
-            ListElement {
-                minuteListElement: "55"
-            }
-        }
-
-        ListView {
-            id: listviewMinute
-            snapMode: ListView.SnapToItem
             highlightRangeMode: ListView.StrictlyEnforceRange
-            clip: true
-            anchors.fill: parent
-            orientation: ListView.Vertical
-            flickableDirection: Flickable.VerticalFlick
-            model: minuteModel
-            delegate: Text {
-                    text: minuteListElement
-                    font.family: "DejaVu Sans"
-                    font.pixelSize: elementPixelSize
+            flickableDirection: Flickable.HorizontalFlick
+            model: ListModel {
+                ListElement {
+                    dayListElement: "ALL"
+                }
+                ListElement {
+                    dayListElement: "WKDY"
+                }
+                ListElement {
+                    dayListElement: "WKND"
+                }
+                ListElement {
+                    dayListElement: "SUN"
+                }
+                ListElement {
+                    dayListElement: "MON"
+                }
+                ListElement {
+                    dayListElement: "TUE"
+                }
+                ListElement {
+                    dayListElement: "WED"
+                }
+                ListElement {
+                    dayListElement: "THR"
+                }
+                ListElement {
+                    dayListElement: "FRI"
+                }
+                ListElement {
+                    dayListElement: "SAT"
+                }
+            }
+            delegate: Item {
+                x: 5
+                width: 100
+                height: dayOfWeekRect.height
+                    Text {
+                        text: dayListElement
+//                        font.bold: true
+                        font.family: "DejaVu Sans"
+                        font.pixelSize: elementPixelSize - 10
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            listviewMinute.currentIndex=index
+                            lstDayOfTheWeek.currentIndex=index
+//                            dayOfWeek = lstDayOfTheWeek.currentIndex
                         }
                     }
             }
-            highlight: Rectangle { color: "lightsteelblue"; radius: 5; focus: true }
+            preferredHighlightBegin: lstDayOfTheWeek.width/2 - 50
+            highlight: Rectangle {
+                color: "#fffd78"
+                gradient: Gradient {
+                    GradientStop {
+                        position: 0.00;
+                        color: "#9797f8";
+                    }
+                    GradientStop {
+                        position: 1.00;
+                        color: "#9cfaf8";
+                    }
+                }
+                border.color: "#ffbe31"
+            }
         }
     }
 
-    Rectangle {
-        id: tmbAP
-        x: 138
-        y: 31
-        width: 56
-        height: 86
-        ListModel {
-            id: myModel
-            ListElement {
-                lstElement: "AM"
-            }
-            ListElement {
-                lstElement: "PM"
-            }
-        }
+    /// End of dayOfWeekRect
 
-        ListView {
-            id: listviewAP
-            snapMode: ListView.SnapToItem
-            highlightRangeMode: ListView.StrictlyEnforceRange
+        Rectangle {
+            id: tmbHour
+            x: 34
+            y: 42
+            width: 42
+            height: 127
+            color: "#19000000"
             clip: true
-            anchors.fill: parent
-            orientation: ListView.Vertical
-            flickableDirection: Flickable.VerticalFlick
-            model: myModel
-            delegate: Text {
-                    text: lstElement
-                    font.pixelSize: elementPixelSize
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            listviewAP.currentIndex=index
+
+            ListView {
+                id: listviewHour
+                highlightRangeMode: ListView.StrictlyEnforceRange
+                snapMode: ListView.SnapToItem
+                orientation: ListView.Vertical
+                flickableDirection: Flickable.VerticalFlick
+                preferredHighlightBegin: listviewHour.height/2 - 20
+                preferredHighlightEnd: listviewHour.height/2 + 20
+                anchors.fill: parent
+                model:         ListModel {
+                    id: hourModel
+                    ListElement {
+                        hourListElement: " 1"
+                    }
+                    ListElement {
+                        hourListElement: " 2"
+                    }
+                    ListElement {
+                        hourListElement: " 3"
+                    }
+                    ListElement {
+                        hourListElement: " 4"
+                    }
+                    ListElement {
+                        hourListElement: " 5"
+                    }
+                    ListElement {
+                        hourListElement: " 6"
+                    }
+                    ListElement {
+                        hourListElement: " 7"
+                    }
+                    ListElement {
+                        hourListElement: " 8"
+                    }
+                    ListElement {
+                        hourListElement: " 9"
+                    }
+                    ListElement {
+                        hourListElement: "10"
+                    }
+                    ListElement {
+                        hourListElement: "11"
+                    }
+                    ListElement {
+                        hourListElement: "12"
+                    }
+                }
+
+                delegate: Item {
+                    x: 5
+                    width: parent.width
+                    height: 40
+                    Text {
+                            text: hourListElement
+                            font.family: "DejaVu Sans"
+                            font.pixelSize: elementPixelSize
+                            anchors.verticalCenter: parent.verticalCenter
                         }
                     }
+                highlight: Rectangle {
+                    color: "#fffd78"
+                    gradient: Gradient {
+                        GradientStop {
+                            position: 0.00;
+                            color: "#9797f8";
+                        }
+                        GradientStop {
+                            position: 1.00;
+                            color: "#9cfaf8";
+                        }
+                    }
+                    border.color: "#ffbe31"
+                }
             }
-            highlight: Rectangle { color: "lightsteelblue"; radius: 5; focus: false }        }
-    }
+        }
+    /// End of tmbHour
+
+        Text {
+            id: txtColon
+            anchors.verticalCenter: tmbHour.verticalCenter
+            anchors.left: tmbHour.right
+            text: qsTr(":")
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.family: "DejaVu Sans"
+            font.pixelSize: elementPixelSize
+        }
+
+        Rectangle {
+            id: tmbMinute
+            y: tmbHour.y
+            anchors.left: txtColon.right
+            width: 48
+            height: tmbHour.height
+            color: "#19000000"
+            clip: true
+
+            ListView {
+                id: listViewMinute
+                highlightRangeMode: ListView.StrictlyEnforceRange
+                snapMode: ListView.SnapToItem
+                orientation: ListView.Vertical
+                flickableDirection: Flickable.VerticalFlick
+                preferredHighlightBegin: listViewMinute.height/2 - 20
+                preferredHighlightEnd: listViewMinute.height/2 + 20
+                anchors.fill: parent
+                model:         ListModel {
+                    id: minuteModel
+                    ListElement {
+                        minuteListElement: "00"
+                    }
+                    ListElement {
+                        minuteListElement: "05"
+                    }
+                    ListElement {
+                        minuteListElement: "10"
+                    }
+                    ListElement {
+                        minuteListElement: "15"
+                    }
+                    ListElement {
+                        minuteListElement: "20"
+                    }
+                    ListElement {
+                        minuteListElement: "25"
+                    }
+                    ListElement {
+                        minuteListElement: "30"
+                    }
+                    ListElement {
+                        minuteListElement: "35"
+                    }
+                    ListElement {
+                        minuteListElement: "40"
+                    }
+                    ListElement {
+                        minuteListElement: "45"
+                    }
+                    ListElement {
+                        minuteListElement: "50"
+                    }
+                    ListElement {
+                        minuteListElement: "55"
+                    }
+                }
+
+                delegate: Item {
+                    x: 5
+                    width: parent.width
+                    height: 40
+                    Text {
+                            text: minuteListElement
+                            font.family: "DejaVu Sans"
+                            font.pixelSize: elementPixelSize
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+                highlight: Rectangle {
+                    color: "#fffd78"
+                    gradient: Gradient {
+                        GradientStop {
+                            position: 0.00;
+                            color: "#9797f8";
+                        }
+                        GradientStop {
+                            position: 1.00;
+                            color: "#9cfaf8";
+                        }
+                    }
+                    border.color: "#ffbe31"
+                }
+            }
+        }
+    /// End of tmbMinute
+
+        Rectangle {
+            id: tmbAP
+            y: tmbHour.y
+            anchors.left: tmbMinute.right
+            width: 50
+            height: tmbHour.height
+            color: "#19ffffff"
+            clip: true
+            ListView {
+                id: listviewAP
+                highlightRangeMode: ListView.StrictlyEnforceRange
+                snapMode: ListView.SnapToItem
+                orientation: ListView.Vertical
+                flickableDirection: Flickable.VerticalFlick
+                preferredHighlightBegin: listviewAP.height/2 - 20
+                preferredHighlightEnd: listviewAP.height/2 + 20
+                anchors.fill: parent
+                model:         ListModel {
+                    id: apModel
+                    ListElement {
+                        lstElement: "AM"
+                    }
+                    ListElement {
+                        lstElement: "PM"
+                    }
+                }
+
+                delegate: Item {
+                    x: 5
+                    width: parent.width
+                    height: 40
+                    Text {
+                            text: lstElement
+                            font.family: "DejaVu Sans"
+                            font.pixelSize: elementPixelSize
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+                highlight: Rectangle {
+                    color: "#fffd78"
+                    gradient: Gradient {
+                        GradientStop {
+                            position: 0.00;
+                            color: "#9797f8";
+                        }
+                        GradientStop {
+                            position: 1.00;
+                            color: "#9cfaf8";
+                        }
+                    }
+                    border.color: "#ffbe31"
+                }
+            }
+        }
+    /// end tmbAP
 
     Rectangle {
         id: tempSlider
         x: 45
-        y: 164
+        y: 175
         width: 256
         height: 19
+        anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
         gradient: Gradient {
             GradientStop {
                 position: 0
-                color: "#000000"
+                color: "#ffffff"
             }
 
             GradientStop {
@@ -235,7 +388,7 @@ Rectangle {
             }
         }
 
-        property int value: 30
+        property alias value: thermoEventRect.targetTemp
         property int maxValue: 99
         property int minValue: 40
 
@@ -295,10 +448,10 @@ Rectangle {
 
     Text {
         id: targetTempText
-        property string targetTemp: tempSlider.value.toLocaleString()
-        x: 238
-        y: 100
-        text: targetTemp
+        property string strTargetTemp: tempSlider.value.toLocaleString()
+        x: 230
+        y: 111
+        text: strTargetTemp
         font.pixelSize: 50
     }
 
@@ -388,8 +541,8 @@ Rectangle {
 
         property bool checked: false
         property color onCoolColor: "blue"
-        x: 207
-        y: 32
+        x: 206
+        y: 42
         width: 45
         height: 45
         color: "#ffffff"
@@ -462,8 +615,8 @@ Rectangle {
 
         property bool checked: true
         property color onHeatColor: "red"
-        x: 258
-        y: 32
+        x: 257
+        y: 42
         width: 45
         height: 45
         color: "#ffffff"
@@ -529,4 +682,5 @@ Rectangle {
         }
         state: "Checked"
     }
+
 }

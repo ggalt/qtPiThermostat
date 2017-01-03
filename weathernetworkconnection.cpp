@@ -135,6 +135,7 @@ void WeatherNetworkConnection::processWeather(QNetworkReply *networkReply)
                 qState = WeatherNetworkConnection::Weather;
             }   // end state forecast
         }   // end if document
+        ProcessHiLowTemps();
     }   // end if network
     qDebug() << m_now.temperature();
 //    qDebug() << m_forecast.at(0)->temperature();
@@ -153,7 +154,6 @@ void WeatherNetworkConnection::processWeather(QNetworkReply *networkReply)
 
         qDebug() << getWeatherForDay(2)->dayOfWeek() << getWeatherForDay(2)->tempMax() << getWeatherForDay(2)->tempMin();
     }
-    ProcessHiLowTemps();
 }
 
 void WeatherNetworkConnection::JsonProcessWeatherObject( WeatherData &data, QJsonObject &obj )

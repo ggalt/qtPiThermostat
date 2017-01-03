@@ -24,6 +24,6 @@
         <file>icons/weather-thundershower.png</file>
         <file>thermoEventPage.qml</file>
         <file>tumbler.qml</file>
-        <file>components/ColorCheckedButton.qml</file>
+        <file>ColorCheckedButton.qml</file>
     </qresource>
 </RCC>
