@@ -598,12 +598,6 @@ Rectangle {
                     btnCool.checked = true
                     btnHeat.checked = false
                     btnHeat.state = "unChecked"
-                } else {
-                    tempPosition.state = "HeatingState"
-                    btnCool.state = "unChecked"
-                    btnCool.checked = false
-                    btnHeat.checked = true
-                    btnHeat.state = "Checked"
                 }
 
             }
@@ -672,12 +666,6 @@ Rectangle {
                     btnHeat.checked = true
                     btnCool.checked = false
                     btnCool.state = "unChecked"
-                } else {
-                    tempPosition.state = "CoolingState"
-                    btnHeat.state = "unChecked"
-                    btnHeat.checked = false
-                    btnCool.checked = true
-                    btnCool.state = "Checked"
                 }
             }
         }

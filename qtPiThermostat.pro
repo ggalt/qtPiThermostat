@@ -9,7 +9,9 @@ SOURCES += main.cpp \
     qeventlistwindow.cpp \
     qthermoappviewer.cpp \
     weatherdata.cpp \
-    weathernetworkconnection.cpp
+    weathernetworkconnection.cpp \
+    thermostateventmodel.cpp \
+    thermoeventmonitor.cpp
 
 RESOURCES += qml.qrc
 
@@ -27,4 +29,6 @@ HEADERS += \
     qeventlistwindow.h \
     qthermoappviewer.h \
     weatherdata.h \
-    weathernetworkconnection.h
+    weathernetworkconnection.h \
+    thermostateventmodel.h \
+    thermoeventmonitor.h

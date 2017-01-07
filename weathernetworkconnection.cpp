@@ -120,7 +120,6 @@ void WeatherNetworkConnection::processWeather(QNetworkReply *networkReply)
 
             if( qState == WeatherNetworkConnection::Forecast ) {
                 m_forecast->clearList();
-//                m_forecast->clear();
 
                 if (obj.contains(QStringLiteral("list"))) {
                     QJsonValue val = obj.value(QStringLiteral("list"));
@@ -132,7 +131,6 @@ void WeatherNetworkConnection::processWeather(QNetworkReply *networkReply)
                         JsonProcessMainInfoObject(*data,tempObj);
                         JsonProcessDateTextObject(*data,tempObj);
                         m_forecast->addForecastData(data);
-//                        m_forecast.append(data);
                     }   // end for loop
                 }   // end list
                 qState = WeatherNetworkConnection::Weather;

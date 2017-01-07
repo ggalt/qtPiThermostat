@@ -1,5 +1,5 @@
 #include "qthermoappviewer.h"
-#include "qeventlistwindow.h"
+//#include "qeventlistwindow.h"
 #include <QDebug>
 #include <QVariant>
 #include <QMetaObject>
@@ -39,9 +39,9 @@ void qThermoAppViewer::Init(void)
 
 void qThermoAppViewer::LaunchEventListWin(void)
 {
-    qDebug() << "We're here!";
-    qEventListWindow *evWin = new qEventListWindow();
-    evWin->Init();
+//    qDebug() << "We're here!";
+//    qEventListWindow *evWin = new qEventListWindow();
+//    evWin->Init();
 }
 
 void qThermoAppViewer::LaunchWeatherWin(void)

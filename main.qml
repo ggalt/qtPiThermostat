@@ -7,19 +7,7 @@ Item {
     height: 240
     objectName: "mainRectangle"
 
-//    gradient: Gradient {
-//        id: mainGradient
-//        GradientStop {
-//            position: 0
-//            color: "#ffffff"
-//        }
-
-//        GradientStop {
-//            position: 1
-//            color: "#62c288"
-//        }
-//    }
-
+    // properties for main screen
     property string curTemp: ""
     property int targetTemp: 69
     property string curHumidity: ""
@@ -31,6 +19,7 @@ Item {
     property int fanState: 0
     property int coolingState: 0
 
+    // properties for weather screen
     property string todayHiTemp: ""
     property string todayLoTemp: ""
     property string tomorrowHiTemp: ""
@@ -44,6 +33,7 @@ Item {
     property string tomorrowIcon: ""
     property string nextDayIcon: ""
 
+    // properties for thermostat event
     property string eventDayOfWeek: ""
     property string eventTime: ""
     property int eventTemp: 0
