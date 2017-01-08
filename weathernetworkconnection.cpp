@@ -142,17 +142,17 @@ void WeatherNetworkConnection::processWeather(QNetworkReply *networkReply)
         qDebug() << m_now.weatherIcon() << m_now.weatherDescription() << m_now.sunRise() << m_now.sunSet()
                  << m_now.tempMax() << m_now.tempMin();
 
-        for( int c = 0; c < m_forecast->rowCount(QModelIndex()); c++ ){
-            WeatherData *d = m_forecast->at(c);
-            qDebug() << "day of the week is:" << d->dayOfWeek();
-            QDateTime dt = QDateTime::fromString(d->dayOfWeek(),"yyyy-MM-dd hh:mm:ss");
-            qDebug() << "day of week is:" << dt.toString("ddd") << dt.toString("MMMM")
-                     << dt.toString("d") << "at" << dt.toString("h:mm");
-            qDebug() << "this day is" << dt.daysTo(QDateTime::currentDateTime()) << "from today";
-            qDebug() << "Min:" << d->tempMin() << "Max:" << d->tempMax();
+//        for( int c = 0; c < m_forecast->rowCount(QModelIndex()); c++ ){
+//            WeatherData *d = m_forecast->at(c);
+//            qDebug() << "day of the week is:" << d->dayOfWeek();
+//            QDateTime dt = QDateTime::fromString(d->dayOfWeek(),"yyyy-MM-dd hh:mm:ss");
+//            qDebug() << "day of week is:" << dt.toString("ddd") << dt.toString("MMMM")
+//                     << dt.toString("d") << "at" << dt.toString("h:mm");
+//            qDebug() << "this day is" << dt.daysTo(QDateTime::currentDateTime()) << "from today";
+//            qDebug() << "Min:" << d->tempMin() << "Max:" << d->tempMax();
 
-            qDebug() << getWeatherForDay(2)->dayOfWeek() << getWeatherForDay(2)->tempMax() << getWeatherForDay(2)->tempMin();
-        }
+//            qDebug() << getWeatherForDay(2)->dayOfWeek() << getWeatherForDay(2)->tempMax() << getWeatherForDay(2)->tempMin();
+//        }
 
     }   // end if network
 }

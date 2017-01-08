@@ -5,7 +5,7 @@ thermostatEvent::thermostatEvent(QObject *parent) : QObject(parent)
 
 }
 
-thermostatEvent::thermostatEvent(const thermostatEvent &ev) : QObject(ev.parent())
+thermostatEvent::thermostatEvent(const thermostatEvent& ev) : QObject(ev.parent())
 {
     m_eventTime = ev.eventTime();
     m_eventTemp = ev.eventTemp();
@@ -49,9 +49,20 @@ QDataStream& operator << (QDataStream& out, const thermostatEvent& ev)
     return out;
 }
 
-QDataStream& operator >> (QDataStream& in, const thermostatEvent& ev)
+QDataStream& operator >> (QDataStream& in, thermostatEvent& ev)
 {
-    in >> ev.eventDayOfWeek() >> ev.eventTime() >> ev.eventTemp() >> ev.eventIsHeat();
+    QTime mv_eventTime;
+    qreal mv_eventTemp;
+    QString mv_eventDayOfWeek;
+    bool mv_eventIsHeat;
+
+    in >> mv_eventDayOfWeek >> mv_eventTime >> mv_eventTemp >> mv_eventIsHeat;
+
+    ev.setEventDayOfWeek(mv_eventDayOfWeek);
+    ev.setEventTime(mv_eventTime);
+    ev.setEventTemp(mv_eventTemp);
+    ev.setEventIsHeat(mv_eventIsHeat);
+
     return in;
 
 }
@@ -81,7 +92,7 @@ QVariant thermostatEventModel::data(const QModelIndex &index, int role) const
         return QVariant();
 }
 
-bool thermostatEventModel::setData(const QModelIndex &index, const thermostatEvent &value, int role)
+bool thermostatEventModel::setData(const QModelIndex &index, thermostatEvent *value, int role)
 {
     if (index.isValid() && role == Qt::EditRole) {
         int row = index.row();

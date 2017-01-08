@@ -7,6 +7,7 @@
 #include <QList>
 #include <QString>
 #include <QVariant>
+#include <QDataStream>
 
 ///
 /// \brief The thermostatEvent class
@@ -29,10 +30,10 @@ public:
     void setEventDayOfWeek(QString t);
     void setEventIsHeat(bool t);
 
-    QTime eventTime(void) {return m_eventTime;}
-    qreal eventTemp(void) {return m_eventTemp;}
-    QString eventDayOfWeek(void) {return m_eventDayOfWeek;}
-    bool eventIsHeat(void) {return m_eventIsHeat;}
+    QTime eventTime(void) const {return m_eventTime;}
+    qreal eventTemp(void) const {return m_eventTemp;}
+    QString eventDayOfWeek(void) const {return m_eventDayOfWeek;}
+    bool eventIsHeat(void) const {return m_eventIsHeat;}
 
 signals:
     void eventTimeChanged(void);
@@ -42,7 +43,7 @@ signals:
 
 private:
     friend QDataStream& operator << (QDataStream& out, const thermostatEvent& ev);
-    friend QDataStream& operator >> (QDataStream& in, const thermostatEvent& ev);
+    friend QDataStream& operator >> (QDataStream& in, thermostatEvent& ev);
 
 private:
     QTime m_eventTime;
@@ -65,7 +66,7 @@ public:
     virtual int rowCount(const QModelIndex &parent) const;
     virtual QVariant data(const QModelIndex &index, int role) const;
 
-    bool setData(const QModelIndex &index, const thermostatEvent &value, int role = Qt::EditRole);
+    bool setData(const QModelIndex &index, thermostatEvent *value, int role = Qt::EditRole);
     bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
     bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
 

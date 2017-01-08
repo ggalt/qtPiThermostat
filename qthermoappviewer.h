@@ -3,6 +3,7 @@
 
 #include "qtquick1applicationviewer.h"
 #include "weathernetworkconnection.h"
+#include "thermoeventmonitor.h"
 
 #include <QDeclarativeItem>
 #include <QList>
@@ -35,6 +36,7 @@ private:
     bool initializingApp;
 
     WeatherNetworkConnection *m_weather;
+    thermoEventMonitor *m_eventMonitor;
     static QDeclarativeItem* FindItemByName(QList<QObject*> nodes, const QString& name);
 
 };

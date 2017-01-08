@@ -4,6 +4,7 @@ Rectangle {
     id: eventListWin
 
     signal goBack
+    signal getListModel
 
     opacity: 0
 
@@ -203,27 +204,29 @@ Rectangle {
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.top: dayToolBar.bottom
-        model: ListModel {
-            ListElement {
-                name: "Grey"
-                colorCode: "grey"
-            }
+        model: eventListModel
 
-            ListElement {
-                name: "Red"
-                colorCode: "red"
-            }
+//        model: ListModel {
+//            ListElement {
+//                name: "Grey"
+//                colorCode: "grey"
+//            }
 
-            ListElement {
-                name: "Blue"
-                colorCode: "blue"
-            }
+//            ListElement {
+//                name: "Red"
+//                colorCode: "red"
+//            }
 
-            ListElement {
-                name: "Green"
-                colorCode: "green"
-            }
-        }
+//            ListElement {
+//                name: "Blue"
+//                colorCode: "blue"
+//            }
+
+//            ListElement {
+//                name: "Green"
+//                colorCode: "green"
+//            }
+//        }
         delegate: Item {
             x: 5
             width: 80

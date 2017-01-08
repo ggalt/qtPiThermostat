@@ -7,6 +7,11 @@ Rectangle {
 
     opacity: 0
 
+    FontLoader {
+        id: openSans
+        source: "qrc:/fonts/OpenSans-Regular.ttf"
+     }
+
     gradient: Gradient {
         GradientStop {
             position: 0

@@ -6,6 +6,7 @@
 #include <QString>
 #include <QDateTime>
 #include <QSettings>
+#include <QModelIndex>
 
 #include "thermostateventmodel.h"
 
@@ -13,16 +14,13 @@ class thermoEventMonitor : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(thermostatEventModel* eventModel READ eventModel WRITE setEventModel NOTIFY eventModelChanged)
-//    Q_PROPERTY(thermostatEvent thermoEvent READ thermoEvent WRITE setThermoEvent NOTIFY thermoEventChanged)
 
 public:
     explicit thermoEventMonitor(QObject *parent = 0);
 
     void setEventModel(thermostatEventModel *t);
-    void setThermoEvent( thermostatEvent t);
 
     thermostatEventModel *eventModel(void) { return m_eventModel; }
-//    thermostatEvent thermoEvent(int row);
 
     void ReadThermoEvents(void);
     void SaveThermoEvents(void);

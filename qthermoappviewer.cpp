@@ -30,10 +30,11 @@ void qThermoAppViewer::Init(void)
     connect(&tick, SIGNAL(timeout()),
             this, SLOT(CheckTemp()));
 
+    m_weather = new WeatherNetworkConnection(this);
+    m_eventMonitor = new thermoEventMonitor(this);
+
     tick.setInterval(5000);
     tick.start();
-
-    m_weather = new WeatherNetworkConnection(this);
 }
 
 

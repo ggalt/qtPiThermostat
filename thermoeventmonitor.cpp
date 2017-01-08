@@ -5,7 +5,7 @@
 thermoEventMonitor::thermoEventMonitor(QObject *parent) :
     QObject(parent)
 {
-    m_eventModel = NULL;
+    m_eventModel = new thermostatEventModel(this);
 }
 
 void thermoEventMonitor::setEventModel(thermostatEventModel *t)
@@ -16,11 +16,6 @@ void thermoEventMonitor::setEventModel(thermostatEventModel *t)
     m_eventModel = t;
 }
 
-void thermoEventMonitor::setThermoEvent( thermostatEvent t)
-{
-
-}
-
 //thermostatEvent thermoEventMonitor::thermoEvent(int row)
 //{
 //    thermostatEvent ev;
@@ -29,7 +24,10 @@ void thermoEventMonitor::setThermoEvent( thermostatEvent t)
 
 void thermoEventMonitor::AddThermoEvent( thermostatEvent ev )
 {
+    m_eventModel->insertRows(0, 1, QModelIndex());
 
+    QModelIndex index = m_eventModel->index(0,0,QModelIndex());
+    m_eventModel->setData(index, &ev );
 }
 
 void thermoEventMonitor::ReadThermoEvents(void)

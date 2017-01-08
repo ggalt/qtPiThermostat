@@ -39,6 +39,7 @@ Item {
     property int eventTemp: 0
     property bool eventIsHeat: true
 
+
     function showMainWindow() {
         mainRectangle.state = "MainWindowState";
     }
@@ -61,6 +62,30 @@ Item {
         eventTemp = mytargetTemp
         eventIsHeat = isHeat
         console.log("captureThermostatEventInfo:", eventDayOfWeek, eventTime, eventTemp, "Heat =", eventIsHeat)
+    }
+
+    ListModel {
+        ListElement {
+            name: "Grey"
+            colorCode: "grey"
+        }
+
+        ListElement {
+            name: "Red"
+            colorCode: "red"
+        }
+
+        ListElement {
+            name: "Blue"
+            colorCode: "blue"
+        }
+
+        ListElement {
+            name: "Green"
+            colorCode: "green"
+        }
+        id: thermoEventList
+        objectName: "thermoEventList"
     }
 
 //    Timer {
@@ -201,7 +226,9 @@ Item {
 
     Loader {
         id: eventListWindowLoader
-        onLoaded: item.fadeIn()
+        onLoaded: {
+            item.fadeIn()
+        }
     }
 
     Loader {
