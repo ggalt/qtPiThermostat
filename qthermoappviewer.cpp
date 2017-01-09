@@ -27,11 +27,20 @@ void qThermoAppViewer::Init(void)
 {
     mainRec = this->rootObject();
 
+    m_weather = new WeatherNetworkConnection(this);
+    m_eventMonitor = new thermoEventMonitor(this);
+
     connect(&tick, SIGNAL(timeout()),
             this, SLOT(CheckTemp()));
 
-    m_weather = new WeatherNetworkConnection(this);
-    m_eventMonitor = new thermoEventMonitor(this);
+    connect(mainRec, SIGNAL(mainAppState(QString)),
+            this, SLOT(appStateSignal(QString)));
+
+    connect(mainRec, SIGNAL(captureThermostatEventInfo(QString, QString , int , bool )),
+            m_eventMonitor, SLOT(captureThermostatEventInfo(QString,QString,int,bool)));
+
+
+    m_eventMonitor->ReadThermoEvents();
 
     tick.setInterval(5000);
     tick.start();
@@ -43,6 +52,19 @@ void qThermoAppViewer::LaunchEventListWin(void)
 //    qDebug() << "We're here!";
 //    qEventListWindow *evWin = new qEventListWindow();
 //    evWin->Init();
+}
+
+void qThermoAppViewer::appStateSignal(const QString& state)
+{
+    qDebug() << "Current App State:" << state;
+    if(state == "MainWindowState") {
+        qDebug() << "Correctly got to MainWindowState";
+
+    } else if(state == "EventWindowState") {
+        qDebug() << "Correctly got to EventWindowState";
+    } else if(state == "WeatherWindowState") {
+        qDebug() << "Correctly got to WeatherWindowState";
+    }
 }
 
 void qThermoAppViewer::LaunchWeatherWin(void)

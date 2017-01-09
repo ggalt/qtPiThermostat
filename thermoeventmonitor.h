@@ -25,11 +25,14 @@ public:
     void ReadThermoEvents(void);
     void SaveThermoEvents(void);
     void AddThermoEvent( thermostatEvent ev );
+    void AddThermoEvent(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat);
 
 signals:
     void eventModelChanged(void);
 
 public slots:
+    void captureThermostatEventInfo(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat);
+
 
 private:
     thermostatEventModel *m_eventModel;

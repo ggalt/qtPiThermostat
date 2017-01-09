@@ -1,5 +1,6 @@
 import QtQuick 1.1
-import Qt.labs.gestures 1.0
+import com.georgegalt 1.0
+//import Qt.labs.gestures 1.0
 
 Item {
     id: mainRectangle
@@ -39,53 +40,63 @@ Item {
     property int eventTemp: 0
     property bool eventIsHeat: true
 
+    signal mainAppState(string appState)
+    signal captureThermostatEventInfo(string dayOfWeek, string targetTime, int mytargetTemp, bool isHeat)
+
 
     function showMainWindow() {
         mainRectangle.state = "MainWindowState";
+        mainAppState(mainRectangle.state)
     }
 
     function showEventListWindow() {
         mainRectangle.state ="EventWindowState";
+        mainAppState(mainRectangle.state)
     }
 
     function showWeatherWindow() {
         mainRectangle.state = "WeatherWindowState"
+        mainAppState(mainRectangle.state)
     }
 
     function showThermoEventWindow() {
         mainRectangle.state = "AddEventState"
+        mainAppState(mainRectangle.state)
     }
 
-    function captureThermostatEventInfo(dayOfWeek, targetTime, mytargetTemp, isHeat) {
-        eventDayOfWeek = dayOfWeek
-        eventTime = targetTime
-        eventTemp = mytargetTemp
-        eventIsHeat = isHeat
-        console.log("captureThermostatEventInfo:", eventDayOfWeek, eventTime, eventTemp, "Heat =", eventIsHeat)
+//    function captureThermostatEventInfo(dayOfWeek, targetTime, mytargetTemp, isHeat) {
+//        eventDayOfWeek = dayOfWeek
+//        eventTime = targetTime
+//        eventTemp = mytargetTemp
+//        eventIsHeat = isHeat
+//        console.log("captureThermostatEventInfo:", eventDayOfWeek, eventTime, eventTemp, "Heat =", eventIsHeat)
+//    }
+
+    ThermostatEventModel {
+        id: eventListModel
+//        ListElement {
+//            name: "Grey"
+//            colorCode: "grey"
+//        }
+
+//        ListElement {
+//            name: "Red"
+//            colorCode: "red"
+//        }
+
+//        ListElement {
+//            name: "Blue"
+//            colorCode: "blue"
+//        }
+
+//        ListElement {
+//            name: "Green"
+//            colorCode: "green"
+//        }
     }
 
-    ListModel {
-        ListElement {
-            name: "Grey"
-            colorCode: "grey"
-        }
-
-        ListElement {
-            name: "Red"
-            colorCode: "red"
-        }
-
-        ListElement {
-            name: "Blue"
-            colorCode: "blue"
-        }
-
-        ListElement {
-            name: "Green"
-            colorCode: "green"
-        }
-        id: thermoEventList
-        objectName: "thermoEventList"
+    ForecastListModel {
+        id: forecastListModel
     }
 
 //    Timer {

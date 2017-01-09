@@ -1,4 +1,5 @@
 #include "thermoeventmonitor.h"
+#include <QDebug>
 
 #define THERMO_GROUPNAME "ThermostatEvents"
 
@@ -21,6 +22,24 @@ void thermoEventMonitor::setEventModel(thermostatEventModel *t)
 //    thermostatEvent ev;
 //    return ev;
 //}
+
+void thermoEventMonitor::captureThermostatEventInfo(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat)
+{
+    qDebug() << "Correctly captured:" << dayOfWeek << targetTime << mytargetTemp << isHeat;
+}
+
+void thermoEventMonitor::AddThermoEvent(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat)
+{
+    if(dayOfWeek == "ALL") {
+
+    } else if(dayOfWeek == "WKDY") {
+
+    } else if(dayOfWeek == "WKND") {
+
+    } else {
+
+    }
+}
 
 void thermoEventMonitor::AddThermoEvent( thermostatEvent ev )
 {

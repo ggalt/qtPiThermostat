@@ -2,9 +2,7 @@ import QtQuick 1.1
 
 Rectangle {
     id: eventListWin
-
-    signal goBack
-    signal getListModel
+    objectName: "eventListWin"
 
     opacity: 0
 
@@ -35,7 +33,7 @@ Rectangle {
 
     Rectangle {
         id: dayToolBar
-        height: 50
+        height: 30
         anchors.right: parent.right
         anchors.left: parent.left
         anchors.leftMargin: 0
@@ -58,9 +56,10 @@ Rectangle {
         Text {
             id: btnSunday
             width: 40
-            height: 50
+            height: dayToolBar.height
             text: qsTr("SU")
-            anchors.left: backButton.right
+            anchors.left: parent.left
+            anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
             verticalAlignment: Text.AlignVCenter
@@ -76,7 +75,7 @@ Rectangle {
         Text {
             id: btnMonday
             width: 40
-            height: 50
+            height: dayToolBar.height
             text: qsTr("MO")
             anchors.left: btnSunday.right
             anchors.leftMargin: 0
@@ -94,7 +93,7 @@ Rectangle {
         Text {
             id: btnTuesday
             width: 40
-            height: 50
+            height: dayToolBar.height
             text: qsTr("TU")
             anchors.left: btnMonday.right
             anchors.leftMargin: 0
@@ -112,7 +111,7 @@ Rectangle {
         Text {
             id: btnWednesday
             width: 40
-            height: 50
+            height: dayToolBar.height
             text: qsTr("WE")
             anchors.left: btnTuesday.right
             anchors.leftMargin: 0
@@ -130,7 +129,7 @@ Rectangle {
         Text {
             id: btnThursday
             width: 40
-            height: 50
+            height: dayToolBar.height
             text: qsTr("TH")
             anchors.left: btnWednesday.right
             anchors.leftMargin: 0
@@ -148,7 +147,7 @@ Rectangle {
         Text {
             id: btnFriday
             width: 40
-            height: 50
+            height: dayToolBar.height
             text: qsTr("FR")
             anchors.left: btnThursday.right
             anchors.leftMargin: 0
@@ -166,7 +165,7 @@ Rectangle {
         Text {
             id: btnSaturday
             width: 40
-            height: 50
+            height: dayToolBar.height
             text: qsTr("SA")
             anchors.left: btnFriday.right
             anchors.leftMargin: 0
@@ -181,22 +180,45 @@ Rectangle {
             font.pointSize: 12
         }
 
-        Image {
-            id: backButton
-            width: 40
-            height: 50
-            source: "../icons/backArrow.png"
-            fillMode: Image.Stretch
-            anchors.left: parent.left
-            anchors.top: parent.top
+//        Image {
+//            id: backButton
+//            width: 40
+//            height: dayToolBar.height
+//            source: "../icons/backArrow.png"
+//            fillMode: Image.Stretch
+//            anchors.left: parent.left
+//            anchors.top: parent.top
 
-            MouseArea {
-                id: maBackButton
-                anchors.fill: parent
-                onClicked: mainRectangle.showMainWindow()
-            }
-        }
+//            MouseArea {
+//                id: maBackButton
+//                anchors.fill: parent
+//                onClicked: mainRectangle.showMainWindow()
+//            }
+//        }
     }
+
+//    ListModel {
+//        id: eventListModel
+//        ListElement {
+//            name: "Grey"
+//            colorCode: "grey"
+//        }
+
+//        ListElement {
+//            name: "Red"
+//            colorCode: "red"
+//        }
+
+//        ListElement {
+//            name: "Blue"
+//            colorCode: "blue"
+//        }
+
+//        ListElement {
+//            name: "Green"
+//            colorCode: "green"
+//        }
+//    }
 
     ListView {
         id: eventListView
@@ -206,27 +228,6 @@ Rectangle {
         anchors.top: dayToolBar.bottom
         model: eventListModel
 
-//        model: ListModel {
-//            ListElement {
-//                name: "Grey"
-//                colorCode: "grey"
-//            }
-
-//            ListElement {
-//                name: "Red"
-//                colorCode: "red"
-//            }
-
-//            ListElement {
-//                name: "Blue"
-//                colorCode: "blue"
-//            }
-
-//            ListElement {
-//                name: "Green"
-//                colorCode: "green"
-//            }
-//        }
         delegate: Item {
             x: 5
             width: 80
@@ -249,6 +250,84 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: mainRectangle.showThermoEventWindow()
+            }
+        }
+    }
+
+    Rectangle {
+        id: buttonBar
+        height: 30
+        color: "#ffffff"
+        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.bottom: parent.bottom
+        gradient: Gradient {
+            id: buttonBarGradient
+            GradientStop {
+                position: 0
+                color: "#0dff6e"
+            }
+
+            GradientStop {
+                position: 1
+                color: "#62c288"
+            }
+        }
+
+        Text {
+            id: btnBack
+            width: 100
+            color: "#000000"
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.pointSize: 12
+            text: qsTr("BACK")
+
+            MouseArea {
+                id: btnBackMouseArea
+                anchors.fill: parent
+                onClicked: mainRectangle.showMainWindow()
+            }
+        }
+
+        Text {
+            id: btnAddEntry
+            width: 100
+            color: "#000000"
+            anchors.left: btnBack.right
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.pointSize: 12
+            text: qsTr("ADD")
+
+            MouseArea {
+                id: btnAddEntryMouseArea
+                anchors.fill: parent
+                onClicked: mainRectangle.showThermoEventWindow()
+            }
+        }
+
+        Text {
+            id: btnDeleteEntry
+            color: "#000000"
+            anchors.right: parent.right
+            anchors.left: btnAddEntry.right
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.pointSize: 12
+            text: qsTr("DELETE")
+
+            MouseArea {
+                id: btnDeleteEntryMouseArea
+                anchors.fill: parent
             }
         }
     }

@@ -29,6 +29,7 @@ public slots:
     void LaunchEventListWin(void);
     void LaunchWeatherWin(void);
     void CheckTemp(void);
+    void appStateSignal(const QString& state);
 
 private:
     QObject *mainRec;
