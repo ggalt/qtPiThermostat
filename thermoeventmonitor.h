@@ -24,7 +24,7 @@ public:
 
     void ReadThermoEvents(void);
     void SaveThermoEvents(void);
-    void AddThermoEvent( thermostatEvent ev );
+    void AddThermoEvent(thermostatEvent &ev );
     void AddThermoEvent(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat);
 
 signals:
@@ -33,8 +33,9 @@ signals:
 public slots:
     void captureThermostatEventInfo(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat);
 
-
 private:
+    qreal convertToKelvin(int temp, QString scale);
+
     thermostatEventModel *m_eventModel;
     QTimer tick;
     QString thisDayOfWeek;

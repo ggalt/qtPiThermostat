@@ -4,7 +4,7 @@ Rectangle {
     id: eventListWin
     objectName: "eventListWin"
 
-    opacity: 0
+    opacity: 1
 
     NumberAnimation on opacity {
         id: fadeInAnimation
@@ -54,11 +54,30 @@ Rectangle {
         }
 
         Text {
+            id: btnAllDays
+            width: 40
+            height: dayToolBar.height
+            text: qsTr("All")
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            anchors.top: parent.top
+            anchors.topMargin: 0
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 12
+
+            MouseArea {
+                id: maBtnAllDays
+                anchors.fill: parent
+            }
+        }
+
+        Text {
             id: btnSunday
             width: 40
             height: dayToolBar.height
             text: qsTr("SU")
-            anchors.left: parent.left
+            anchors.left: btnAllDays.right
             anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0

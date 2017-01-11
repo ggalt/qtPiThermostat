@@ -13,6 +13,14 @@ thermostatEvent::thermostatEvent(const thermostatEvent& ev) : QObject(ev.parent(
     m_eventIsHeat = ev.eventIsHeat();
 }
 
+thermostatEvent &thermostatEvent::operator=(const thermostatEvent &ev)
+{
+    m_eventTime = ev.eventTime();
+    m_eventTemp = ev.eventTemp();
+    m_eventDayOfWeek = ev.eventDayOfWeek();
+    m_eventIsHeat = ev.eventIsHeat();
+}
+
 void thermostatEvent::setEventTime(QString t)
 {
     QTime ev = QTime::fromString(t, "mm:ss AP");
@@ -86,13 +94,18 @@ QVariant thermostatEventModel::data(const QModelIndex &index, int role) const
     if( index.row() >= m_events.count() || index.row() < 0 )
         return QVariant();
 
-    if( role == Qt::DisplayRole ) {
-        return QVariant::fromValue(m_events.at(index.row()));
-    } else
+//    if( role == Qt::DisplayRole ) {
+//        return QVariant::fromValue(m_events.at(index.row()));
+//    } else
         return QVariant();
 }
 
-bool thermostatEventModel::setData(const QModelIndex &index, thermostatEvent *value, int role)
+thermostatEvent thermostatEventModel::getData(int row)
+{
+    return m_events.at(row);
+}
+
+bool thermostatEventModel::setData(const QModelIndex &index, thermostatEvent &value, int role)
 {
     if (index.isValid() && role == Qt::EditRole) {
         int row = index.row();
@@ -112,8 +125,8 @@ bool thermostatEventModel::insertRows(int position, int rows, const QModelIndex 
     beginInsertRows(QModelIndex(), position, position + rows - 1);
 
     for (int row = 0; row < rows; ++row) {
-        thermostatEvent *ev = NULL;
-        m_events.insert(position, ev);
+        thermostatEvent ev;
+        m_events.insert(position, &ev);
     }
 
     endInsertRows();

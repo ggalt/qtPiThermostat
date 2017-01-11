@@ -23,6 +23,8 @@ class thermostatEvent : public QObject
 public:
     thermostatEvent(QObject *parent=0);
     thermostatEvent(const thermostatEvent &ev);
+    thermostatEvent &operator=(const thermostatEvent &other);
+
 
     void setEventTime(QString t);
     void setEventTime(QTime t);
@@ -64,9 +66,10 @@ public:
 
 public:
     virtual int rowCount(const QModelIndex &parent) const;
-    virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    thermostatEvent getData(int row);
 
-    bool setData(const QModelIndex &index, thermostatEvent *value, int role = Qt::EditRole);
+    bool setData(const QModelIndex &index, thermostatEvent &value, int role = Qt::EditRole);
     bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
     bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
 
@@ -75,7 +78,7 @@ signals:
 public slots:
 
 private:
-    QList<thermostatEvent*> m_events;
+    QList<thermostatEvent> m_events;
 
 };
 
