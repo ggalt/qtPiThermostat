@@ -27,5 +27,14 @@
         <file>ColorCheckedButton.qml</file>
         <file>fonts/OpenSans-Regular.ttf</file>
         <file>fonts/LICENSE.txt</file>
+        <file>SimpleButton.qml</file>
+        <file>content/background.svg</file>
+        <file>content/knob.svg</file>
+        <file>content/Spinner.qml</file>
+        <file>content/spinner-bg.png</file>
+        <file>content/spinner-select.png</file>
+        <file>content/Switch.qml</file>
+        <file>content/spinner-select2.png</file>
+        <file>content/ThermoEventListDelegate.qml</file>
     </qresource>
 </RCC>

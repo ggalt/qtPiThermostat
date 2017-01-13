@@ -41,6 +41,9 @@ void qThermoAppViewer::Init(void)
 
 
     m_eventMonitor->ReadThermoEvents();
+    m_eventMonitor->connectEventModel(mainRec);
+
+//    mainRec->setProperty("eventListModel", &m_eventMonitor->m_eventModel);
 
     tick.setInterval(5000);
     tick.start();

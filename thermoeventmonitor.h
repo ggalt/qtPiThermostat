@@ -13,19 +13,22 @@
 class thermoEventMonitor : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(thermostatEventModel* eventModel READ eventModel WRITE setEventModel NOTIFY eventModelChanged)
+//    Q_PROPERTY(thermostatEventModel* eventModel READ eventModel WRITE setEventModel NOTIFY eventModelChanged)
 
 public:
     explicit thermoEventMonitor(QObject *parent = 0);
 
     void setEventModel(thermostatEventModel *t);
+    void connectEventModel(QObject *mainRec);
 
-    thermostatEventModel *eventModel(void) { return m_eventModel; }
+//    thermostatEventModel eventModel(void) const { return m_eventModel; }
 
     void ReadThermoEvents(void);
     void SaveThermoEvents(void);
     void AddThermoEvent(thermostatEvent &ev );
     void AddThermoEvent(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat);
+
+    thermostatEventModel m_eventModel;
 
 signals:
     void eventModelChanged(void);
@@ -36,7 +39,6 @@ public slots:
 private:
     qreal convertToKelvin(int temp, QString scale);
 
-    thermostatEventModel *m_eventModel;
     QTimer tick;
     QString thisDayOfWeek;
 };

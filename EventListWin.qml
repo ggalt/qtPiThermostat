@@ -1,8 +1,11 @@
 import QtQuick 1.1
+import "content"
 
 Rectangle {
     id: eventListWin
     objectName: "eventListWin"
+
+    property int fontSize: 14
 
     opacity: 1
 
@@ -22,7 +25,7 @@ Rectangle {
     gradient: Gradient {
         GradientStop {
             position: 0
-            color: "#0fff6f"
+            color: "#ffffff"
         }
 
         GradientStop {
@@ -30,6 +33,7 @@ Rectangle {
             color: "#62c288"
         }
     }
+
 
     Rectangle {
         id: dayToolBar
@@ -53,191 +57,103 @@ Rectangle {
             }
         }
 
-        Text {
+        SimpleButton {
             id: btnAllDays
             width: 40
             height: dayToolBar.height
-            text: qsTr("All")
+            lblText: "All"
             anchors.left: parent.left
             anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            font.pointSize: 12
-
-            MouseArea {
-                id: maBtnAllDays
-                anchors.fill: parent
-            }
+            fontPointSize: fontSize
         }
 
-        Text {
+        SimpleButton {
             id: btnSunday
             width: 40
             height: dayToolBar.height
-            text: qsTr("SU")
+            lblText: qsTr("SU")
             anchors.left: btnAllDays.right
             anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            font.pointSize: 12
-
-            MouseArea {
-                id: maBtnSunday
-                anchors.fill: parent
-            }
+            fontPointSize: fontSize
         }
 
-        Text {
+        SimpleButton {
             id: btnMonday
             width: 40
             height: dayToolBar.height
-            text: qsTr("MO")
+            lblText: qsTr("MO")
             anchors.left: btnSunday.right
             anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
-            MouseArea {
-                id: maBtnMonday
-                anchors.fill: parent
-            }
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pointSize: 12
+            fontPointSize: fontSize
         }
 
-        Text {
+        SimpleButton {
             id: btnTuesday
             width: 40
             height: dayToolBar.height
-            text: qsTr("TU")
+            lblText: qsTr("TU")
             anchors.left: btnMonday.right
             anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
-            MouseArea {
-                id: maBtnTuesday
-                anchors.fill: parent
-            }
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pointSize: 12
+            fontPointSize: fontSize
         }
 
-        Text {
+        SimpleButton {
             id: btnWednesday
             width: 40
             height: dayToolBar.height
-            text: qsTr("WE")
+            lblText: qsTr("WE")
             anchors.left: btnTuesday.right
             anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
-            MouseArea {
-                id: maBtnWednesday
-                anchors.fill: parent
-            }
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pointSize: 12
+            fontPointSize: fontSize
         }
 
-        Text {
+        SimpleButton {
             id: btnThursday
             width: 40
             height: dayToolBar.height
-            text: qsTr("TH")
+            lblText: qsTr("TH")
             anchors.left: btnWednesday.right
             anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
-            MouseArea {
-                id: maBtnThursday
-                anchors.fill: parent
-            }
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pointSize: 12
+            fontPointSize: fontSize
         }
 
-        Text {
+        SimpleButton {
             id: btnFriday
             width: 40
             height: dayToolBar.height
-            text: qsTr("FR")
+            lblText: qsTr("FR")
             anchors.left: btnThursday.right
             anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
-            MouseArea {
-                id: maBtnFriday
-                anchors.fill: parent
-            }
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pointSize: 12
+            fontPointSize: fontSize
         }
 
-        Text {
+        SimpleButton {
             id: btnSaturday
             width: 40
             height: dayToolBar.height
-            text: qsTr("SA")
+            lblText: qsTr("SA")
             anchors.left: btnFriday.right
             anchors.leftMargin: 0
             anchors.top: parent.top
             anchors.topMargin: 0
-            MouseArea {
-                id: maBtnSaturday
-                anchors.fill: parent
-            }
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pointSize: 12
+            fontPointSize: fontSize
         }
 
-//        Image {
-//            id: backButton
-//            width: 40
-//            height: dayToolBar.height
-//            source: "../icons/backArrow.png"
-//            fillMode: Image.Stretch
-//            anchors.left: parent.left
-//            anchors.top: parent.top
-
-//            MouseArea {
-//                id: maBackButton
-//                anchors.fill: parent
-//                onClicked: mainRectangle.showMainWindow()
-//            }
-//        }
     }
-
-//    ListModel {
-//        id: eventListModel
-//        ListElement {
-//            name: "Grey"
-//            colorCode: "grey"
-//        }
-
-//        ListElement {
-//            name: "Red"
-//            colorCode: "red"
-//        }
-
-//        ListElement {
-//            name: "Blue"
-//            colorCode: "blue"
-//        }
-
-//        ListElement {
-//            name: "Green"
-//            colorCode: "green"
-//        }
-//    }
 
     ListView {
         id: eventListView
@@ -246,31 +162,42 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.top: dayToolBar.bottom
         model: eventListModel
-
+//        delegate: ThermoEventListDelegate {}
         delegate: Item {
-            x: 5
-            width: 80
+            width: eventListWin.width
             height: 40
-            Row {
-                id: row1
-                Rectangle {
-                    width: 40
-                    height: 40
-                    color: colorCode
-                }
-
-                Text {
-                    text: name
-                    font.bold: true
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-                spacing: 10
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: mainRectangle.showThermoEventWindow()
+            Text {
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                width: 60
             }
         }
+
+//        delegate: Item {
+//            x: 5
+//            width: 80
+//            height: 40
+//            Row {
+//                id: row1
+//                Rectangle {
+//                    width: 40
+//                    height: 40
+//                    color: colorCode
+//                }
+
+//                Text {
+//                    text: name
+//                    font.bold: true
+//                    anchors.verticalCenter: parent.verticalCenter
+//                }
+//                spacing: 10
+//            }
+//            MouseArea {
+//                anchors.fill: parent
+//                onClicked: mainRectangle.showThermoEventWindow()
+//            }
+//        }
     }
 
     Rectangle {
@@ -294,60 +221,36 @@ Rectangle {
             }
         }
 
-        Text {
+        SimpleButton {
             id: btnBack
             width: 100
-            color: "#000000"
             anchors.left: parent.left
             anchors.bottom: parent.bottom
             anchors.top: parent.top
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pointSize: 12
-            text: qsTr("BACK")
-
-            MouseArea {
-                id: btnBackMouseArea
-                anchors.fill: parent
-                onClicked: mainRectangle.showMainWindow()
-            }
+            fontPointSize: fontSize
+            lblText: qsTr("BACK")
+            onClicked: mainRectangle.showMainWindow()
         }
 
-        Text {
+        SimpleButton {
             id: btnAddEntry
             width: 100
-            color: "#000000"
             anchors.left: btnBack.right
             anchors.bottom: parent.bottom
             anchors.top: parent.top
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pointSize: 12
-            text: qsTr("ADD")
-
-            MouseArea {
-                id: btnAddEntryMouseArea
-                anchors.fill: parent
-                onClicked: mainRectangle.showThermoEventWindow()
-            }
+            lblText: qsTr("ADD")
+            fontPointSize: fontSize
+            onClicked: mainRectangle.showThermoEventWindow()
         }
 
-        Text {
+        SimpleButton {
             id: btnDeleteEntry
-            color: "#000000"
             anchors.right: parent.right
             anchors.left: btnAddEntry.right
             anchors.bottom: parent.bottom
             anchors.top: parent.top
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.pointSize: 12
-            text: qsTr("DELETE")
-
-            MouseArea {
-                id: btnDeleteEntryMouseArea
-                anchors.fill: parent
-            }
+            lblText: qsTr("DELETE")
+            fontPointSize: fontSize
         }
     }
 }
