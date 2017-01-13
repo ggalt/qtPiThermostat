@@ -21,14 +21,12 @@ public:
     void setEventModel(thermostatEventModel *t);
     void connectEventModel(QObject *mainRec);
 
-//    thermostatEventModel eventModel(void) const { return m_eventModel; }
+    const thermostatEventModel* eventModel(void) { return &m_eventModel; }
 
     void ReadThermoEvents(void);
     void SaveThermoEvents(void);
     void AddThermoEvent(thermostatEvent &ev );
     void AddThermoEvent(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat);
-
-    thermostatEventModel m_eventModel;
 
 signals:
     void eventModelChanged(void);
@@ -41,6 +39,7 @@ private:
 
     QTimer tick;
     QString thisDayOfWeek;
+    thermostatEventModel m_eventModel;
 };
 
 #endif // THERMOEVENTMONITOR_H

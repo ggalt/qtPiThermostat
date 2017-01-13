@@ -13,6 +13,7 @@
 #include <QGraphicsItem>
 #include <QDeclarativeEngine>
 #include <QDeclarativeItem>
+#include <QDeclarativeContext>
 #include <QTimer>
 
 //#include <QtQml/QQmlProperty>
@@ -43,7 +44,7 @@ void qThermoAppViewer::Init(void)
     m_eventMonitor->ReadThermoEvents();
     m_eventMonitor->connectEventModel(mainRec);
 
-//    mainRec->setProperty("eventListModel", &m_eventMonitor->m_eventModel);
+    this->rootContext()->setContextProperty("eventListModel", m_eventMonitor->eventModel());
 
     tick.setInterval(5000);
     tick.start();
