@@ -31,7 +31,7 @@ void qThermoAppViewer::Init(void)
     m_weather = new WeatherNetworkConnection(this);
     m_eventMonitor = new thermoEventMonitor(this);
 
-    connect(&tick, SIGNAL(timeout()),
+    connect(&secondaryTick, SIGNAL(timeout()),
             this, SLOT(CheckTemp()));
 
     connect(mainRec, SIGNAL(mainAppState(QString)),
@@ -40,14 +40,19 @@ void qThermoAppViewer::Init(void)
     connect(mainRec, SIGNAL(captureThermostatEventInfo(QString, QString , int , bool )),
             m_eventMonitor, SLOT(captureThermostatEventInfo(QString,QString,int,bool)));
 
+    connect(&mainTick, SIGNAL(timeout()),
+            this, SLOT(CheckIndoorCondition()));
+
 
     m_eventMonitor->ReadThermoEvents();
     m_eventMonitor->connectEventModel(mainRec);
 
     this->rootContext()->setContextProperty("eventListModel", m_eventMonitor->eventModel());
 
-    tick.setInterval(5000);
-    tick.start();
+    mainTick.setInterval(1000);
+    mainTick.start();
+    secondaryTick.setInterval(5000);
+    secondaryTick.start();
 }
 
 
@@ -74,6 +79,29 @@ void qThermoAppViewer::appStateSignal(const QString& state)
 void qThermoAppViewer::LaunchWeatherWin(void)
 {
     qDebug() << "We're here!";
+}
+
+void qThermoAppViewer::CheckIndoorCondition(void)
+{
+    float hum = 0.0;
+    float temp = 0.0;
+    int success = DHT_SUCCESS;
+
+#ifdef Q_PROCESSOR_ARM_V6   // only run this code on the Raspberry Pi
+
+    success = pi_dht_read(DHT22, 4, &hum, &temp);
+    qDebug() << "return val:" << success;
+
+    qDebug() << "Current indoor condition: Temperature:" << temp << "humidity:" << hum;
+
+#endif
+
+    if(success == DHT_SUCCESS) {
+        currentIndoorTemp = temp + 273.15;      // convert to Kelvin
+        currentIndoorHumidity = hum;
+        qDebug() << "logging conditions" << currentIndoorTemp << currentIndoorHumidity;
+    }
+
 }
 
 void qThermoAppViewer::CheckTemp(void)
