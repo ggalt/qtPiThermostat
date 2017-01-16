@@ -72,7 +72,14 @@ int pi_dht_read(int type, int pin, float* humidity, float* temperature) {
   // Set pin at input.
   pi_mmio_set_input(pin);
   // Need a very short delay before reading pins or else value is sometimes still low.
-  for (volatile int i = 0; i < 50; ++i) {
+
+  ///
+  /// altered because compiler complained about the declaration in the for loop
+  ///
+//  for (volatile int i = 0; i < 50; ++i) {
+//  }
+  volatile int c;
+  for (c = 0; c < 50; ++c) {
   }
 
   // Wait for DHT to pull pin low.
@@ -86,7 +93,13 @@ int pi_dht_read(int type, int pin, float* humidity, float* temperature) {
   }
 
   // Record pulse widths for the expected result bits.
-  for (int i=0; i < DHT_PULSES*2; i+=2) {
+  //
+  ///
+  /// altered because compiler complained about the declaration in the for loop
+  ///
+//  for (int i=0; i < DHT_PULSES*2; i+=2) {
+  int i;
+  for (i=0; i < DHT_PULSES*2; i+=2) {
     // Count how long pin is low and store in pulseCounts[i]
     while (!pi_mmio_input(pin)) {
       if (++pulseCounts[i] >= DHT_MAXCOUNT) {
@@ -113,7 +126,11 @@ int pi_dht_read(int type, int pin, float* humidity, float* temperature) {
   // Compute the average low pulse width to use as a 50 microsecond reference threshold.
   // Ignore the first two readings because they are a constant 80 microsecond pulse.
   uint32_t threshold = 0;
-  for (int i=2; i < DHT_PULSES*2; i+=2) {
+  ///
+  /// altered because compiler complained about the declaration in the for loop
+  ///
+//  for (int i=2; i < DHT_PULSES*2; i+=2) {
+  for (i=2; i < DHT_PULSES*2; i+=2) {
     threshold += pulseCounts[i];
   }
   threshold /= DHT_PULSES-1;
