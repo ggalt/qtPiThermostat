@@ -45,10 +45,11 @@
 import QtQuick 1.0
 
 Image {
+    id: spinnerMain
     property alias model: view.model
     property alias delegate: view.delegate
     property alias currentIndex: view.currentIndex
-    property real itemHeight: 30
+    property real itemHeight: 20
 
     source: "spinner-bg.png"
     clip: true
@@ -66,6 +67,16 @@ Image {
         path: Path {
             startX: view.width/2; startY: -itemHeight/2
             PathLine { x: view.width/2; y: view.pathItemCount*itemHeight + itemHeight }
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onPressed: {
+            if(mouseY < spinnerMain.height/2)
+                view.incrementCurrentIndex()
+            else
+                view.decrementCurrentIndex()
         }
     }
 

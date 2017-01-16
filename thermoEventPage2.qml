@@ -159,10 +159,10 @@ Rectangle {
 
     Spinner {
         id: tmbHour
-        x: 34
         y: 42
         width: 42
-        height: 100
+        height: 141
+        anchors.left: btnAccept.left
         //        focus: true
         model:         ListModel {
             id: hourModel
@@ -291,93 +291,6 @@ Rectangle {
     /// end tmbAP
 
     Rectangle {
-        id: tempSlider
-        x: 45
-        y: 156
-        width: 256
-        height: 38
-        anchors.horizontalCenterOffset: 0
-        anchors.horizontalCenter: parent.horizontalCenter
-        gradient: Gradient {
-            GradientStop {
-                position: 0
-                color: "#ffffff"
-            }
-            GradientStop {
-                position: 0.769
-                color: "#ffffff";
-            }
-        }
-
-        property alias value: thermoEventRect.targetTemp
-        property int maxValue: 99
-        property int minValue: 40
-
-        Rectangle {
-            id: tempPosition
-            property double tempStep: (tempSlider.width)/(tempSlider.maxValue-tempSlider.minValue)
-            property color slideColor: "red"
-
-            width: tempSlider.width - (tempStep*tempSlider.value)
-            states: [
-                State {
-                    name: "CoolingState"
-                    PropertyChanges {
-                        target: tempPosition
-                        slideColor: "blue"
-                    }
-                },
-                State {
-                    name: "HeatingState"
-                    PropertyChanges {
-                        target: tempPosition
-                        slideColor: "red"
-                    }
-                }
-            ]
-
-            gradient: Gradient {
-                GradientStop {
-                    position: 0
-                    color: "white"
-                }
-
-                GradientStop {
-                    position: 1
-                    color: tempPosition.slideColor
-                }
-            }
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            anchors.left: parent.left
-            state: { modeSwitch.mode ? "HeatingState" : "CoolingState" }
-        }
-        MouseArea {
-            id: dragableSlider
-            anchors.fill: parent
-            onReleased: {
-                tempSlider.value = (mouseX * (tempSlider.maxValue - tempSlider.minValue) / tempSlider.width) + tempSlider.minValue
-            }
-            onMousePositionChanged: {
-                if(dragableSlider.containsMouse) {
-                    tempPosition.width = mouseX
-                    tempSlider.value = (mouseX * (tempSlider.maxValue - tempSlider.minValue) / tempSlider.width) + tempSlider.minValue
-                }
-            }
-        }
-    }
-
-    Text {
-        id: targetTempText
-        property string strTargetTemp: tempSlider.value.toLocaleString()
-        x: 230
-        y: 111
-        text: strTargetTemp
-        anchors.bottom: tempSlider.top
-        font.pointSize: 44
-    }
-
-    Rectangle {
         id: btnCancel
         x: 163
         y: 200
@@ -463,47 +376,49 @@ Rectangle {
         font.pointSize: 30
     }
 
-    Rectangle {
-        id: modeSwitch
-        x: 207
-        y: 60
-        width: 81
-        height: 38
-        color: "#00000000"
-        property alias mode: theSwitch.on
-        Switch {
-            id: theSwitch
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.fill: parent
-            on: false
-            onStateChanged: { on ? tempPosition.state = "CoolingState" : tempPosition.state = "HeatingState" }
-        }
-    }
-
     Text {
-        id: textAC
-        x: 195
+        id: textLowTemp
         y: 42
-        text: qsTr("AC")
-        anchors.horizontalCenter: modeSwitch.left
-        anchors.bottom: modeSwitch.top
-        anchors.bottomMargin: 0
-        font.pointSize: 15
-        verticalAlignment: Text.AlignBottom
-        horizontalAlignment: Text.AlignLeft
+        text: qsTr("Low Temp")
+        anchors.left: tmbAP.right
+        anchors.leftMargin: 6
+        font.pointSize: 11
+    }
+
+    Spinner {
+        id: spnLowTemp
+        x: 170
+        width: 40
+        anchors.horizontalCenter: textLowTemp.horizontalCenter
+        anchors.bottom: tmbHour.bottom
+        anchors.top: textLowTemp.bottom
+        anchors.topMargin: 3
+        model: 60
+        itemHeight: 30
+        delegate: Text { font.pointSize: elementpointSize; text: index+40; height: 30 }
     }
 
     Text {
-        id: textHeat
-        x: 278
-        y: 46
-        text: qsTr("HEAT")
-        anchors.horizontalCenter: modeSwitch.right
-        anchors.bottom: modeSwitch.top
-        anchors.bottomMargin: 0
-        font.pointSize: 15
-        verticalAlignment: Text.AlignBottom
-        horizontalAlignment: Text.AlignRight
+        id: txtHighTemp
+        y: 43
+        anchors.bottom: textLowTemp.bottom
+        text: qsTr("High Temp")
+        anchors.left: textLowTemp.right
+        anchors.leftMargin: 9
+        font.pointSize: 11
+    }
+
+    Spinner {
+        id: spnHighTemp
+        x: 270
+        y: 66
+        width: 40
+        anchors.horizontalCenter: txtHighTemp.horizontalCenter
+        model: 60
+        anchors.top: spnLowTemp.top
+        anchors.bottom: spnLowTemp.bottom
+        itemHeight: 30
+        delegate: Text { font.pointSize: elementpointSize; text: index+40; height: 30 }
     }
 
 

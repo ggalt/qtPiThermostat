@@ -69,14 +69,14 @@ Item {
         id: background
         width: toggleswitch.width
         height: toggleswitch.height
-        source: "background.svg"
+        source: "background.png"
         MouseArea { anchors.fill: parent; onClicked: toggle() }
     }
 
     Image {
         id: knob
         x: 1; y: 2
-        source: "knob.svg"
+        source: "knob.png"
         width: toggleswitch.height
         height: toggleswitch.height
 

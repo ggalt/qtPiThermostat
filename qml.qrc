@@ -36,5 +36,7 @@
         <file>content/Switch.qml</file>
         <file>content/spinner-select2.png</file>
         <file>content/ThermoEventListDelegate.qml</file>
+        <file>content/background.png</file>
+        <file>content/knob.png</file>
     </qresource>
 </RCC>

@@ -11,10 +11,14 @@ SOURCES += main.cpp \
     weatherdata.cpp \
     weathernetworkconnection.cpp \
     thermostateventmodel.cpp \
-    thermoeventmonitor.cpp \
-    source/common_dht_read.c \
+    thermoeventmonitor.cpp
+
+#so we can test on windows, if we absolutely have to!!
+unix {
+SOURCES += source/common_dht_read.c \
     source/Raspberry_Pi/pi_dht_read.c \
     source/Raspberry_Pi/pi_mmio.c
+}
 
 RESOURCES += qml.qrc
 
@@ -34,7 +38,10 @@ HEADERS += \
     weatherdata.h \
     weathernetworkconnection.h \
     thermostateventmodel.h \
-    thermoeventmonitor.h \
-    source/common_dht_read.h \
+    thermoeventmonitor.h
+
+unix {
+HEADERS += source/common_dht_read.h \
     source/Raspberry_Pi/pi_dht_read.h \
     source/Raspberry_Pi/pi_mmio.h
+}
