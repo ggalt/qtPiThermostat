@@ -107,10 +107,10 @@ void qThermoAppViewer::CheckIndoorCondition(void)
 void qThermoAppViewer::CheckTemp(void)
 {
     mainRec->setProperty("outsideCurrentTemp",m_weather->niceTemperatureString(m_weather->weather()->temperature()));
-    mainRec->setProperty("curTemp", m_weather->niceTemperatureString(294.261));
+    mainRec->setProperty("curTemp", m_weather->niceTemperatureString(currentIndoorTemp));
 //    mainRec->setProperty("targetTemp", m_weather->niceTemperatureString(294.261,false));
     mainRec->setProperty("currentWeatherIcon", m_weather->weather()->weatherIcon());
-    mainRec->setProperty("curHumidity", m_weather->weather()->humidity());
+    mainRec->setProperty("curHumidity", currentIndoorHumidity);
 
     WeatherData *today = m_weather->forecast()->at(0);
     WeatherData *tomorrow = m_weather->getWeatherForDay(1);
