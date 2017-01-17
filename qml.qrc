@@ -38,5 +38,8 @@
         <file>content/ThermoEventListDelegate.qml</file>
         <file>content/background.png</file>
         <file>content/knob.png</file>
+        <file>content/spinner-select-blue.png</file>
+        <file>content/spinner-select-red.png</file>
+        <file>icons/no-weather-info.png</file>
     </qresource>
 </RCC>

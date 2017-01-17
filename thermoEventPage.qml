@@ -7,7 +7,7 @@ Rectangle {
     width: 320
     height: 240
 
-    opacity: 1
+    opacity: 0
 
     property int elementpointSize: 20
 
@@ -18,13 +18,47 @@ Rectangle {
 
     property string dayOfWeek: ""
     property string targetTime: ""
-    property int targetTemp: 40
-    property bool isHeat: true
+    property double lowTemp: 0.0
+    property double hiTemp: 0.0
+    property int tempOffset: 0
+    property int tempRange: 0
+    property string scale: "F"
 
     property string txthour: ""
     property string txtminute: ""
     property string txtmeridiem: ""
 
+    function setScale() {
+        if(scale === "F") {
+            tempRange = 60
+            tempOffset = 40
+            spnHighTemp.currentIndex = 40
+            spnLowTemp.currentIndex = 20
+        } else {
+            tempRange = 34
+            tempOffset = 4
+        }
+    }
+
+    function convertFromKelvin(temp) {
+        var returnTemp = 0
+        if(scale === "F") {
+            returnTemp = (temp * 9 / 5) - 459.67
+        } else {
+            returnTemp = temp - 273.15
+        }
+        return returnTemp
+    }
+
+    function convert2Kelvin(temp) {
+        var returnTemp = 0.0
+        if(scale === "F") {
+            returnTemp = (temp + 459.67)*5/9
+        } else {
+            returnTemp = temp + 273.15
+        }
+        return returnTemp
+    }
 
     FontLoader {
         id: openSans
@@ -48,6 +82,7 @@ Rectangle {
         duration: 300
         easing.type: Easing.InCubic
         to: 1.0
+        onCompleted: setScale()
     }
 
     function fadeIn() {
@@ -159,10 +194,12 @@ Rectangle {
 
     Spinner {
         id: tmbHour
-        x: 34
         y: 42
         width: 42
-        height: 100
+        height: 141
+        color: "#444444"
+        gradientColor: "#444444"
+        anchors.left: btnAccept.left
         //        focus: true
         model:         ListModel {
             id: hourModel
@@ -205,6 +242,7 @@ Rectangle {
         }
         itemHeight: 30
         delegate: Text { font.pointSize: elementpointSize; text: hourListElement; height: 30 }
+        delegateHighlightSource: "spinner-select.png"
     }
     /// End of tmbHour
 
@@ -225,6 +263,7 @@ Rectangle {
         anchors.left: txtColon.right
         width: 48
         height: tmbHour.height
+        gradientColor: "#444444"
         model:         ListModel {
             id: minuteModel
             ListElement {
@@ -266,6 +305,8 @@ Rectangle {
         }
         itemHeight: 30
         delegate: Text { font.pointSize: elementpointSize; text: minuteListElement; height: 30 }
+        delegateHighlightSource: "spinner-select.png"
+
     }
     /// End of tmbMinute
 
@@ -276,6 +317,7 @@ Rectangle {
         anchors.leftMargin: 2
         width: 50
         height: tmbHour.height
+        gradientColor: "#444444"
         model:         ListModel {
             id: apModel
             ListElement {
@@ -287,95 +329,9 @@ Rectangle {
         }
         itemHeight: 30
         delegate: Text { font.pointSize: elementpointSize; text: lstElement; height: 30 }
+        delegateHighlightSource: "spinner-select.png"
     }
     /// end tmbAP
-
-    Rectangle {
-        id: tempSlider
-        x: 45
-        y: 156
-        width: 256
-        height: 38
-        anchors.horizontalCenterOffset: 0
-        anchors.horizontalCenter: parent.horizontalCenter
-        gradient: Gradient {
-            GradientStop {
-                position: 0
-                color: "#ffffff"
-            }
-            GradientStop {
-                position: 0.769
-                color: "#ffffff";
-            }
-        }
-
-        property alias value: thermoEventRect.targetTemp
-        property int maxValue: 99
-        property int minValue: 40
-
-        Rectangle {
-            id: tempPosition
-            property double tempStep: (tempSlider.width)/(tempSlider.maxValue-tempSlider.minValue)
-            property color slideColor: "red"
-
-            width: tempSlider.width - (tempStep*tempSlider.value)
-            states: [
-                State {
-                    name: "CoolingState"
-                    PropertyChanges {
-                        target: tempPosition
-                        slideColor: "blue"
-                    }
-                },
-                State {
-                    name: "HeatingState"
-                    PropertyChanges {
-                        target: tempPosition
-                        slideColor: "red"
-                    }
-                }
-            ]
-
-            gradient: Gradient {
-                GradientStop {
-                    position: 0
-                    color: "white"
-                }
-
-                GradientStop {
-                    position: 1
-                    color: tempPosition.slideColor
-                }
-            }
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            anchors.left: parent.left
-            state: { modeSwitch.mode ? "HeatingState" : "CoolingState" }
-        }
-        MouseArea {
-            id: dragableSlider
-            anchors.fill: parent
-            onReleased: {
-                tempSlider.value = (mouseX * (tempSlider.maxValue - tempSlider.minValue) / tempSlider.width) + tempSlider.minValue
-            }
-            onMousePositionChanged: {
-                if(dragableSlider.containsMouse) {
-                    tempPosition.width = mouseX
-                    tempSlider.value = (mouseX * (tempSlider.maxValue - tempSlider.minValue) / tempSlider.width) + tempSlider.minValue
-                }
-            }
-        }
-    }
-
-    Text {
-        id: targetTempText
-        property string strTargetTemp: tempSlider.value.toLocaleString()
-        x: 230
-        y: 111
-        text: strTargetTemp
-        anchors.bottom: tempSlider.top
-        font.pointSize: 44
-    }
 
     Rectangle {
         id: btnCancel
@@ -454,56 +410,57 @@ Rectangle {
     }
 
     Text {
-        property string degreeMarkString: String.fromCharCode(176)
-        id: degreeMark
-        y: targetTempText.y
-        text: degreeMarkString
-        anchors.left: targetTempText.right
-        anchors.leftMargin: 0
-        font.pointSize: 30
-    }
-
-    Rectangle {
-        id: modeSwitch
-        x: 207
-        y: 60
-        width: 81
-        height: 38
-        color: "#00000000"
-        property alias mode: theSwitch.on
-        Switch {
-            id: theSwitch
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.fill: parent
-            on: false
-            onStateChanged: { on ? tempPosition.state = "CoolingState" : tempPosition.state = "HeatingState" }
-        }
-    }
-
-    Text {
-        id: textAC
-        x: 195
+        id: textLowTemp
         y: 42
-        text: qsTr("AC")
-        anchors.horizontalCenter: modeSwitch.left
-        anchors.bottom: modeSwitch.top
-        anchors.bottomMargin: 0
-        font.pointSize: 15
-        verticalAlignment: Text.AlignBottom
-        horizontalAlignment: Text.AlignLeft
+        color: "#0066ff"
+        text: qsTr("Low Temp")
+        anchors.left: tmbAP.right
+        anchors.leftMargin: 6
+        font.pointSize: 11
+    }
+
+    Spinner {
+        id: spnLowTemp
+        x: 170
+        width: 40
+        color: "#990000b2"
+        gradientColor: "#0000b2"
+        anchors.horizontalCenter: textLowTemp.horizontalCenter
+        anchors.bottom: tmbHour.bottom
+        anchors.top: textLowTemp.bottom
+        anchors.topMargin: 3
+        model: tempRange
+        itemHeight: 30
+        delegate: Text { id: lowTempDelegate; font.pointSize: elementpointSize; text: index+tempOffset; height: 30 }
+        delegateHighlightSource: "spinner-select-blue.png"
     }
 
     Text {
-        id: textHeat
-        x: 278
-        y: 46
-        text: qsTr("HEAT")
-        anchors.horizontalCenter: modeSwitch.right
-        anchors.bottom: modeSwitch.top
-        anchors.bottomMargin: 0
-        font.pointSize: 15
-        verticalAlignment: Text.AlignBottom
-        horizontalAlignment: Text.AlignRight
+        id: txtHighTemp
+        y: 43
+        color: "#ff0000"
+        anchors.bottom: textLowTemp.bottom
+        text: qsTr("High Temp")
+        anchors.left: textLowTemp.right
+        anchors.leftMargin: 9
+        font.pointSize: 11
+    }
+
+    Spinner {
+        id: spnHighTemp
+        x: 270
+        y: 66
+        width: 40
+        color: "#99ff0909"
+        gradientColor: "#ff0909"
+        anchors.horizontalCenter: txtHighTemp.horizontalCenter
+        model: tempRange
+        anchors.top: spnLowTemp.top
+        anchors.bottom: spnLowTemp.bottom
+        itemHeight: 30
+        delegate: Text { font.pointSize: elementpointSize; text: index+tempOffset; height: 30 }
+        delegateHighlightSource: "spinner-select-red.png"
+
     }
 
 
