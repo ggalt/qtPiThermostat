@@ -17,9 +17,9 @@ class thermostatEvent : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QTime eventTime READ eventTime WRITE setEventTime NOTIFY eventTimeChanged)
-    Q_PROPERTY(qreal eventTemp READ eventTemp WRITE setEventTemp NOTIFY eventTempChanged)
     Q_PROPERTY(QString eventDayOfWeek READ eventDayOfWeek WRITE setEventDayOfWeek NOTIFY eventDayOfWeekChanged)
-    Q_PROPERTY(bool eventMode READ eventMode WRITE setEventMode NOTIFY eventModeChanged)
+    Q_PROPERTY(qreal eventLoTemp READ eventLoTemp WRITE setEventLoTemp NOTIFY eventLoTempChanged)
+    Q_PROPERTY(qreal eventHiTemp READ eventHiTemp WRITE setEventHiTemp NOTIFY eventHiTempChanged)
 
 public:
     thermostatEvent(QObject *parent=0);
@@ -29,20 +29,20 @@ public:
 
     void setEventTime(QString t);
     void setEventTime(QTime t);
-    void setEventTemp(qreal t);
     void setEventDayOfWeek(QString t);
-    void setEventMode(bool t);
+    void setEventLoTemp(qreal t);
+    void setEventHiTemp(qreal t);
 
     QTime eventTime(void) const {return m_eventTime;}
-    qreal eventTemp(void) const {return m_eventTemp;}
     QString eventDayOfWeek(void) const {return m_eventDayOfWeek;}
-    bool eventMode(void) const {return m_eventIsHeat;}
+    qreal eventLoTemp(void) const {return m_eventLoTemp;}
+    qreal eventHiTemp(void) const {return m_eventHiTemp;}
 
 signals:
     void eventTimeChanged(void);
-    void eventTempChanged(void);
     void eventDayOfWeekChanged(void);
-    void eventModeChanged(void);
+    void eventLoTempChanged(void);
+    void eventHiTempChanged(void);
 
 private:
     friend QDataStream& operator << (QDataStream& out, const thermostatEvent& ev);
@@ -50,9 +50,9 @@ private:
 
 private:
     QTime m_eventTime;
-    qreal m_eventTemp;
     QString m_eventDayOfWeek;
-    bool m_eventIsHeat;
+    qreal m_eventLoTemp;
+    qreal m_eventHiTemp;
 };
 
 
@@ -71,8 +71,8 @@ public:
     enum thermostatEventRoles {
         DayRole = Qt::UserRole + 1,
         TimeRole,
-        TempRole,
-        ModeRole
+        LoTempRole,
+        HiTempRole
     };
 
 public:

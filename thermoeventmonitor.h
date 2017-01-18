@@ -26,13 +26,13 @@ public:
     void ReadThermoEvents(void);
     void SaveThermoEvents(void);
     void AddThermoEvent(thermostatEvent &ev );
-    void AddThermoEvent(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat);
+    void AddThermoEvent(QString dayOfWeek, QString targetTime, qreal lowTemp, qreal hiTemp);
 
 signals:
     void eventModelChanged(void);
 
 public slots:
-    void captureThermostatEventInfo(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat);
+    void captureThermostatEventInfo(QString dayOfWeek, QString targetTime, qreal lowTemp, qreal hiTemp);
 
 private:
     qreal convertToKelvin(int temp, QString scale);

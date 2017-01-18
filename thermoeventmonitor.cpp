@@ -30,18 +30,21 @@ void thermoEventMonitor::connectEventModel(QObject *mainRec)
 //    return ev;
 //}
 
-void thermoEventMonitor::captureThermostatEventInfo(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat)
+void thermoEventMonitor::captureThermostatEventInfo( QString dayOfWeek, QString targetTime, qreal lowTemp, qreal hiTemp)
 {
-    qDebug() << "Correctly captured:" << dayOfWeek << targetTime << mytargetTemp << isHeat;
-    AddThermoEvent(dayOfWeek,targetTime, mytargetTemp, isHeat);
+    qDebug() << "Correctly captured:" << dayOfWeek << targetTime <<
+                lowTemp << hiTemp;
+    AddThermoEvent(dayOfWeek,targetTime, lowTemp, hiTemp);
     qDebug() << "We have" << m_eventModel.rowCount(QModelIndex()) << "thermo events";
     for(int i = 0; i < m_eventModel.rowCount(QModelIndex()); i++) {
         thermostatEvent ev = m_eventModel.getData(i);
-        qDebug() << i << ":" << ev.eventDayOfWeek() << ev.eventTime() << ev.eventTemp() << ev.eventMode();
+        qDebug() << i << ":" << ev.eventDayOfWeek() << ev.eventTime() <<
+                    ev.eventLoTemp() << ev.eventHiTemp();
     }
 }
 
-void thermoEventMonitor::AddThermoEvent(QString dayOfWeek, QString targetTime, int mytargetTemp, bool isHeat)
+void thermoEventMonitor::AddThermoEvent(QString dayOfWeek, QString targetTime,
+        qreal lowTemp, qreal hiTemp)
 {
     QStringList weekList;
     if(dayOfWeek == "ALL") {
@@ -59,9 +62,10 @@ void thermoEventMonitor::AddThermoEvent(QString dayOfWeek, QString targetTime, i
         thermostatEvent ev;
         ev.setEventDayOfWeek(i.next());
         ev.setEventTime(targetTime);
-        ev.setEventTemp(convertToKelvin(mytargetTemp, "F"));
-        ev.setEventMode(isHeat);
-        qDebug() << "adding:" << ev.eventDayOfWeek() << ev.eventTime() << ev.eventTemp() << ev.eventMode();
+        ev.setEventLoTemp(lowTemp);
+        ev.setEventHiTemp(hiTemp);
+        qDebug() << "adding:" << ev.eventDayOfWeek() << ev.eventTime()
+                 << ev.eventLoTemp() << ev.eventHiTemp();
         AddThermoEvent(ev);
         qDebug() << "Event count is now:" << m_eventModel.rowCount(QModelIndex());
     }

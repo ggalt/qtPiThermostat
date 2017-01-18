@@ -41,7 +41,7 @@ Item {
     property bool eventIsHeat: true
 
     signal mainAppState(string appState)
-    signal captureThermostatEventInfo(string dayOfWeek, string targetTime, int mytargetTemp, bool isHeat)
+    signal captureThermostatEventInfo(string dayOfWeek, string targetTime, double loTemp, double HiTemp)
 
 
     function showMainWindow() {

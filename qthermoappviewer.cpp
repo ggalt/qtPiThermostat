@@ -37,8 +37,8 @@ void qThermoAppViewer::Init(void)
     connect(mainRec, SIGNAL(mainAppState(QString)),
             this, SLOT(appStateSignal(QString)));
 
-    connect(mainRec, SIGNAL(captureThermostatEventInfo(QString, QString , int , bool )),
-            m_eventMonitor, SLOT(captureThermostatEventInfo(QString,QString,int,bool)));
+    connect(mainRec, SIGNAL(captureThermostatEventInfo(QString, QString, qreal, qreal)),
+            m_eventMonitor, SLOT(captureThermostatEventInfo(QString,QString,qreal,qreal)));
 
     connect(&mainTick, SIGNAL(timeout()),
             this, SLOT(CheckIndoorCondition()));

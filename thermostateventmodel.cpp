@@ -8,18 +8,18 @@ thermostatEvent::thermostatEvent(QObject *parent) : QObject(parent)
 thermostatEvent::thermostatEvent(const thermostatEvent& ev) : QObject(ev.parent())
 {
     m_eventTime = ev.eventTime();
-    m_eventTemp = ev.eventTemp();
     m_eventDayOfWeek = ev.eventDayOfWeek();
-    m_eventIsHeat = ev.eventMode();
+    m_eventLoTemp = ev.eventLoTemp();
+    m_eventHiTemp = ev.eventHiTemp();
 }
 
 thermostatEvent &thermostatEvent::operator=(const thermostatEvent &ev)
 {
     setParent(ev.parent());
     m_eventTime = ev.eventTime();
-    m_eventTemp = ev.eventTemp();
     m_eventDayOfWeek = ev.eventDayOfWeek();
-    m_eventIsHeat = ev.eventMode();
+    m_eventLoTemp = ev.eventLoTemp();
+    m_eventHiTemp = ev.eventHiTemp();
 }
 
 void thermostatEvent::setEventTime(QString t)
@@ -34,46 +34,45 @@ void thermostatEvent::setEventTime(QTime t)
     emit eventTimeChanged();
 }
 
-void thermostatEvent::setEventTemp(qreal t)
-{
-    m_eventTemp = t;
-    emit eventTempChanged();
-}
-
 void thermostatEvent::setEventDayOfWeek(QString t)
 {
     m_eventDayOfWeek = t;
     emit eventDayOfWeekChanged();
 }
 
-void thermostatEvent::setEventMode(bool t)
+void thermostatEvent::setEventLoTemp(qreal t)
 {
-    m_eventIsHeat = t;
-    emit eventModeChanged();
+    m_eventLoTemp = t;
+    emit eventLoTempChanged();
 }
+
+void thermostatEvent::setEventHiTemp(qreal t)
+{
+    m_eventHiTemp = t;
+    emit eventHiTempChanged();
+}
+
 
 QDataStream& operator << (QDataStream& out, const thermostatEvent& ev)
 {
-    out << ev.eventDayOfWeek() << ev.eventTime() << ev.eventTemp() << ev.eventMode();
+    out << ev.eventDayOfWeek() << ev.eventTime() << ev.eventLoTemp() << ev.eventHiTemp();
     return out;
 }
 
 QDataStream& operator >> (QDataStream& in, thermostatEvent& ev)
 {
     QTime mv_eventTime;
-    qreal mv_eventTemp;
     QString mv_eventDayOfWeek;
-    bool mv_eventMode;
+    qreal mv_eventLoTemp;
+    qreal mv_eventHiTemp;
 
-    in >> mv_eventDayOfWeek >> mv_eventTime >> mv_eventTemp >> mv_eventMode;
+    in >> mv_eventDayOfWeek >> mv_eventTime >> mv_eventLoTemp >> mv_eventHiTemp;
 
     ev.setEventDayOfWeek(mv_eventDayOfWeek);
     ev.setEventTime(mv_eventTime);
-    ev.setEventTemp(mv_eventTemp);
-    ev.setEventMode(mv_eventMode);
-
+    ev.setEventLoTemp(mv_eventLoTemp);
+    ev.setEventHiTemp(mv_eventHiTemp);
     return in;
-
 }
 
 
@@ -125,10 +124,10 @@ QVariant thermostatEventModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(ev.eventDayOfWeek());
     } else if( role == TimeRole ) {
         return QVariant::fromValue(ev.eventTime());
-    } else if( role == TempRole ) {
-        return QVariant::fromValue(ev.eventTemp());
-    } else if( role == ModeRole ) {
-        return QVariant::fromValue(ev.eventMode());
+    } else if( role == LoTempRole ) {
+        return QVariant::fromValue(ev.eventLoTemp());
+    } else if( role == HiTempRole ) {
+        return QVariant::fromValue(ev.eventHiTemp());
     } else {
         return QVariant();
     }
@@ -151,8 +150,8 @@ QHash<int, QByteArray> thermostatEventModel::roleNames() const {
 
     roles[DayRole] = "eventDayOfWeek";
     roles[TimeRole] = "eventTime";
-    roles[TempRole] = "eventTemp";
-    roles[ModeRole] = "eventMode";
+    roles[LoTempRole] = "eventLoTemp";
+    roles[HiTempRole] = "eventHiTemp";
     return roles;
 }
 

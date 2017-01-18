@@ -91,14 +91,13 @@ Rectangle {
 
     function collectData() {
         dayOfWeek = dowModel.get(lstDayOfTheWeek.currentIndex).dayListElement
-        // no need to get targetTemp because slider sets it directly
-        // targetTemp = targetTemp
+        lowTemp = convert2Kelvin(spnLowTemp.currentIndex+tempOffset)
+        hiTemp = convert2Kelvin(spnHighTemp.currentIndex+tempOffset)
         txthour = hourModel.get(tmbHour.currentIndex).hourListElement
         txtminute = minuteModel.get(tmbMinute.currentIndex).minuteListElement
         txtmeridiem = apModel.get(tmbAP.currentIndex).lstElement
         targetTime = txthour + ":" + txtminute + " " + txtmeridiem
-        isHeat = modeSwitch.mode
-        console.log("collectData() :", dayOfWeek, targetTime, targetTemp, "Heat =", isHeat)
+        console.log("collectData() :", dayOfWeek, targetTime, lowTemp, hiTemp)
     }
 
     Rectangle {
@@ -403,7 +402,8 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 collectData()
-                captureThermostatEventInfo(dayOfWeek, targetTime, targetTemp, isHeat)
+                console.log("sending data:", dayOfWeek, targetTime, lowTemp, hiTemp)
+                captureThermostatEventInfo(dayOfWeek, targetTime, lowTemp, hiTemp)
                 mainRectangle.showEventListWindow()
             }
         }
