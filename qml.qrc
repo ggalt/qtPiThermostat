@@ -41,5 +41,6 @@
         <file>content/spinner-select-blue.png</file>
         <file>content/spinner-select-red.png</file>
         <file>icons/no-weather-info.png</file>
+        <file>content/listview-select.png</file>
     </qresource>
 </RCC>

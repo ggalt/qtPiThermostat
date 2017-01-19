@@ -161,17 +161,41 @@ Rectangle {
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.top: dayToolBar.bottom
-        model: eventListModel
+        highlight: Image {
+            source: "content/listview-select.png"
+        }
+        snapMode: ListView.SnapToItem
+        highlightFollowsCurrentItem: true
+        highlightRangeMode: ListView.StrictlyEnforceRange
+        preferredHighlightBegin: 0
+        preferredHighlightEnd: eventListView.height
+        clip: true
+//        model: eventListModel
+        model: 20
+
 //        delegate: ThermoEventListDelegate {}
         delegate: Item {
             width: eventListWin.width
             height: 40
             Text {
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                width: 60
+                text:   index
             }
+            MouseArea{
+                anchors.fill: parent
+                onPressAndHold: {
+                    console.log(index, "pressed")
+                }
+                onClicked: {
+                    eventListView.currentIndex=index
+                }
+            }
+
+//            Text {
+//                anchors.top: parent.top
+//                anchors.bottom: parent.bottom
+//                anchors.left: parent.left
+//                width: 60
+//            }
         }
 
 //        delegate: Item {

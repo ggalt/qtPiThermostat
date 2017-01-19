@@ -16,7 +16,7 @@ Item {
     property string curTime: ""
     property bool showColon: true
     property string outsideCurrentTemp: ""
-    property string weatherIcon: ""
+    property string currentWeatherIcon: ""
     property int fanState: 0
     property int coolingState: 0
 
@@ -47,6 +47,7 @@ Item {
     function showMainWindow() {
         mainRectangle.state = "MainWindowState";
         mainAppState(mainRectangle.state)
+        console.log(currentWeatherIcon)
     }
 
     function showEventListWindow() {
@@ -167,11 +168,11 @@ Item {
 //                weatherIconTimer.interval=60*1000*5
 //        }
 
-    function setWeatherIcon(weatherIcon) {
+    function setWeatherIcon(myWeatherIcon) {
         if(weatherIconTimer.interval===6000)
             weatherIconTimer.interval=60*1000*5
 
-        switch(weatherIcon) {
+        switch(myWeatherIcon) {
         case "01d":
         case "01n":
             return "icons/weather-sunny.png"

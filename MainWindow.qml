@@ -36,6 +36,7 @@ Rectangle {
     }
 
     function setCurrentWeatherIcon() {
+//        imgCurrentWeather.source = setWeatherIcon(mainRectangle.currentWeatherIcon)
         imgCurrentWeather.source = setWeatherIcon(mainRectangle.currentWeatherIcon)
     }
 
@@ -166,7 +167,7 @@ Rectangle {
         anchors.leftMargin: 2
         anchors.top: parent.top
         anchors.topMargin: 2
-        source: mainRectangle.weatherIcon
+        source: mainRectangle.setWeatherIcon(mainRectangle.currentWeatherIcon)
 
         MouseArea {
             id: maWeather
