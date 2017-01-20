@@ -99,7 +99,7 @@ void qThermoAppViewer::CheckIndoorCondition(void)
     if(success == DHT_SUCCESS) {
         currentIndoorTemp = temp + 273.15;      // convert to Kelvin
         currentIndoorHumidity = hum;
-        qDebug() << "logging conditions" << currentIndoorTemp << currentIndoorHumidity;
+//        qDebug() << "logging conditions" << currentIndoorTemp << currentIndoorHumidity;
     }
 
 }

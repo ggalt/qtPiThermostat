@@ -1,4 +1,5 @@
 #include "thermostateventmodel.h"
+#include <QDebug>
 
 thermostatEvent::thermostatEvent(QObject *parent) : QObject(parent)
 {
@@ -117,6 +118,8 @@ QVariant thermostatEventModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     const thermostatEvent &ev = m_events.at(index.row());
+
+    qDebug() << "data called";
 
     if( role == Qt::DisplayRole ) {
         return QVariant::fromValue(ev);

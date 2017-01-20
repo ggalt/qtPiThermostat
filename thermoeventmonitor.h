@@ -17,6 +17,7 @@ class thermoEventMonitor : public QObject
 
 public:
     explicit thermoEventMonitor(QObject *parent = 0);
+    ~thermoEventMonitor();
 
     void setEventModel(thermostatEventModel *t);
     void connectEventModel(QObject *mainRec);

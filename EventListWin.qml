@@ -170,16 +170,21 @@ Rectangle {
         preferredHighlightBegin: 0
         preferredHighlightEnd: eventListView.height
         clip: true
+        model: mainRectangle.eventListModel
 //        model: eventListModel
-        model: 20
+//        model: 20
 
 //        delegate: ThermoEventListDelegate {}
         delegate: Item {
             width: eventListWin.width
             height: 40
             Text {
-                text:   index
+                text:   eventDayOfWeek
             }
+            Text {
+                text:   eventTime
+            }
+
             MouseArea{
                 anchors.fill: parent
                 onPressAndHold: {

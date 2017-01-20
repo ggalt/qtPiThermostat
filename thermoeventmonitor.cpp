@@ -2,13 +2,21 @@
 #include <QDebug>
 #include <QStringList>
 #include <QStringListIterator>
+#include <QFile>
+#include <QFileInfo>
+#include <QDataStream>
 
 #define THERMO_GROUPNAME "ThermostatEvents"
 
 thermoEventMonitor::thermoEventMonitor(QObject *parent) :
     QObject(parent)
 {
-//    m_eventModel = new thermostatEventModel(this);
+}
+
+thermoEventMonitor::~thermoEventMonitor()
+{
+    qDebug() << "Saving thermoEvents";
+    SaveThermoEvents();
 }
 
 void thermoEventMonitor::setEventModel(thermostatEventModel *t)
@@ -82,17 +90,46 @@ void thermoEventMonitor::AddThermoEvent( thermostatEvent &ev )
 
 void thermoEventMonitor::ReadThermoEvents(void)
 {
-    QSettings settings;
-    settings.beginGroup(THERMO_GROUPNAME);
+//    QSettings settings;
+//    settings.beginGroup(THERMO_GROUPNAME);
 
-    settings.endGroup();
+//    settings.endGroup();
+    QString filename = "thermoEvents.txt";
+    QFile file(filename);
+    if(file.exists()) {
+        qDebug() << "file exists";
+        file.open(QIODevice::ReadOnly);
+        QDataStream in(&file);
+        qDebug() << "file size is:" << file.size();
+        qDebug() << "is file at end?" << in.atEnd();
+        while(!in.atEnd()) {
+            thermostatEvent e;
+            in >> e;
+            m_eventModel.addThermostatEvent(e);
+            qDebug() << "Event reads:" << e.eventDayOfWeek() << e.eventTime() << e.eventLoTemp() << e.eventHiTemp();
+            qDebug() << "is file at end?" << in.atEnd();
+        }
+        file.close();
+    } else {
+        qDebug() << "file does not exist";
+    }
 }
 
 void thermoEventMonitor::SaveThermoEvents(void)
 {
-    QSettings settings;
-    settings.beginGroup(THERMO_GROUPNAME);
-    settings.endGroup();
+//    QSettings settings;
+//    settings.beginGroup(THERMO_GROUPNAME);
+//    settings.endGroup();
+    QString filename = "thermoEvents.txt";
+    QFile file(filename);
+    if(file.exists())
+        file.remove();
+    file.open(QIODevice::ReadWrite);
+    QDataStream out(&file);
+    for( int i = 0; i < m_eventModel.rowCount(QModelIndex()); i++) {
+        out << m_eventModel.getData(i);
+    }
+    file.close();
 }
 
 qreal thermoEventMonitor::convertToKelvin(int temp, QString scale)
