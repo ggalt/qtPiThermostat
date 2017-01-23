@@ -7,7 +7,7 @@ Rectangle {
 
     property int fontSize: 14
 
-    opacity: 1
+    opacity: 0
 
     NumberAnimation on opacity {
         id: fadeInAnimation
@@ -170,19 +170,19 @@ Rectangle {
         preferredHighlightBegin: 0
         preferredHighlightEnd: eventListView.height
         clip: true
-        model: mainRectangle.eventListModel
-//        model: eventListModel
+        model: eventListModel
 //        model: 20
 
-//        delegate: ThermoEventListDelegate {}
         delegate: Item {
             width: eventListWin.width
             height: 40
             Text {
-                text:   eventDayOfWeek
+               text:   eventDayOfWeek
+//                text: index
             }
             Text {
                 text:   eventTime
+//                text: index
             }
 
             MouseArea{

@@ -153,7 +153,7 @@ void WeatherNetworkConnection::processWeather(QNetworkReply *networkReply)
 
 //            qDebug() << getWeatherForDay(2)->dayOfWeek() << getWeatherForDay(2)->tempMax() << getWeatherForDay(2)->tempMin();
 //        }
-
+        networkReply->deleteLater();
     }   // end if network
 }
 
