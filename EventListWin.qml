@@ -258,7 +258,7 @@ Rectangle {
             anchors.top: parent.top
             fontPointSize: fontSize
             lblText: qsTr("BACK")
-            onClicked: mainRectangle.showMainWindow()
+            onClicked: mainRectangle.changeAppState("MainWindowState")
         }
 
         SimpleButton {
@@ -269,7 +269,7 @@ Rectangle {
             anchors.top: parent.top
             lblText: qsTr("ADD")
             fontPointSize: fontSize
-            onClicked: mainRectangle.showThermoEventWindow()
+            onClicked: mainRectangle.changeAppState("AddEventState")
         }
 
         SimpleButton {

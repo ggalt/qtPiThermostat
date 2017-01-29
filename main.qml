@@ -1,13 +1,13 @@
 import QtQuick 1.1
-//import com.georgegalt 1.0
-//import Qt.labs.gestures 1.0
 
-Item {
+
+Rectangle {
     id: mainRectangle
     width: 320
     height: 240
     objectName: "mainRectangle"
 
+    //////////////////////////////////////////////////////////
     // properties for main screen
     property string curTemp: ""
     property int targetTemp: 69
@@ -20,6 +20,7 @@ Item {
     property int fanState: 0
     property int coolingState: 0
 
+    //////////////////////////////////////////////////////////
     // properties for weather screen
     property string todayHiTemp: ""
     property string todayLoTemp: ""
@@ -34,42 +35,39 @@ Item {
     property string tomorrowIcon: ""
     property string nextDayIcon: ""
 
+    //////////////////////////////////////////////////////////
     // properties for thermostat event
     property string eventDayOfWeek: ""
     property string eventTime: ""
     property int eventTemp: 0
     property bool eventIsHeat: true
 
-
+    //////////////////////////////////////////////////////////
+    // signals
     signal mainAppState(string appState)
     signal captureThermostatEventInfo(string dayOfWeek, string targetTime, double loTemp, double HiTemp)
 
-
-    function showMainWindow() {
-        mainRectangle.state = "MainWindowState";
-        mainAppState(mainRectangle.state)
-        console.log(currentWeatherIcon)
+    //////////////////////////////////////////////////////////
+    // functions
+    function changeAppState(appState) {
+        mainRectangle.state = appState
+        mainAppState(appState)
     }
 
-    function showEventListWindow() {
-        mainRectangle.state ="EventWindowState";
-        mainAppState(mainRectangle.state)
+    function getTime() {
+        curDate = Qt.formatDate(new Date(),"MMM dd, yyyy");
+        if(showColon) {
+            curTime = Qt.formatTime(new Date(), "hh:mm AP")
+        } else {
+            curTime = Qt.formatTime(new Date(), "hh mm AP")
+        }
+        showColon = !showColon;
     }
-
-    function showWeatherWindow() {
-        mainRectangle.state = "WeatherWindowState"
-        mainAppState(mainRectangle.state)
-    }
-
-    function showThermoEventWindow() {
-        mainRectangle.state = "AddEventState"
-        mainAppState(mainRectangle.state)
-    }
-
 
     function setWeatherIcon(myWeatherIcon) {
         if(weatherIconTimer.interval===6000)
             weatherIconTimer.interval=60*1000*5
+//        console.log("setWeatherIcon called in main.qml")
 
         switch(myWeatherIcon) {
         case "01d":
@@ -104,13 +102,15 @@ Item {
         }
     }
 
+    //////////////////////////////////////////////////////////
+    // timers
     Timer {
-            id: weatherIconTimer
-            interval: 6000
-            repeat: true
-            running: true
-            triggeredOnStart: true
-        }
+        id: weatherIconTimer
+        interval: 6000
+        repeat: true
+        running: true
+        triggeredOnStart: true
+    }
 
     Timer {
         id: textTimer
@@ -121,136 +121,39 @@ Item {
         onTriggered: getTime()
     }
 
+    //////////////////////////////////////////////////////////
+    // page loader
     Loader {
-        id: spashScreenLoader
+        id: loader
         onLoaded: item.fadeIn()
     }
-
-    Loader {
-        id: mainWindowLoader
-        onLoaded: {
-            item.fadeIn()
-            weatherIconTimer.triggered.connect(item.setCurrentWeatherIcon)
-        }
-    }
-
-    Loader {
-        id: eventListWindowLoader
-        onLoaded: {
-            item.fadeIn()
-        }
-    }
-
-    Loader {
-        id: weatherWindowLoader
-        onLoaded: {
-            item.fadeIn()
-            item.setCurrentWeatherIcon()
-            weatherIconTimer.triggered.connect(item.setCurrentWeatherIcon)
-        }
-    }
-
-    Loader {
-        id: thermoEventPageLoader
-        onLoaded: {
-            item.fadeIn()
-        }
-    }
-
 
     states: [
         State {
             name: "MainWindowState"
             PropertyChanges {
-                target: mainWindowLoader;
+                target: loader;
                 source: "MainWindow.qml"
-            }
-            PropertyChanges {
-                target: eventListWindowLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: weatherWindowLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: spashScreenLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: thermoEventPageLoader
-                source: ""
-
             }
         },
         State {
             name: "EventWindowState"
             PropertyChanges {
-                target: mainWindowLoader;
-                source: ""
-            }
-            PropertyChanges {
-                target: eventListWindowLoader
+                target: loader
                 source: "EventListWin.qml"
-            }
-            PropertyChanges {
-                target: weatherWindowLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: spashScreenLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: thermoEventPageLoader
-                source: ""
-
             }
         },
         State {
             name: "WeatherWindowState"
             PropertyChanges {
-                target: mainWindowLoader;
-                source: ""
-            }
-            PropertyChanges {
-                target: eventListWindowLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: weatherWindowLoader
+                target: loader
                 source: "WeatherWindow.qml"
-            }
-            PropertyChanges {
-                target: spashScreenLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: thermoEventPageLoader
-                source: ""
-
             }
         },
         State {
             name: "AddEventState"
             PropertyChanges {
-                target: mainWindowLoader;
-                source: ""
-            }
-            PropertyChanges {
-                target: eventListWindowLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: weatherWindowLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: spashScreenLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: thermoEventPageLoader
+                target: loader
                 source: "thermoEventPage.qml"
 
             }
@@ -258,41 +161,13 @@ Item {
         State {
             name: "SpashScreenState"
             PropertyChanges {
-                target: mainWindowLoader;
-                source: ""
-            }
-            PropertyChanges {
-                target: eventListWindowLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: weatherWindowLoader
-                source: ""
-            }
-            PropertyChanges {
-                target: spashScreenLoader
+                target: loader
                 source: "SplashScreen.qml"
-            }
-            PropertyChanges {
-                target: thermoEventPageLoader
-                source: ""
-
             }
         }
     ]
 
-    function getTime() {
-        curDate = Qt.formatDate(new Date(),"MMM dd, yyyy");
-        if(showColon) {
-            curTime = Qt.formatTime(new Date(), "hh:mm AP")
-        } else {
-            curTime = Qt.formatTime(new Date(), "hh mm AP")
-        }
-        showColon = !showColon;
-    }
-
     state: "SpashScreenState"
-
 }       /// end mainRectangle
 
 

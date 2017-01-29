@@ -58,7 +58,7 @@ Rectangle {
         MouseArea {
             id: maCurrentTemp
             anchors.fill: parent
-            onClicked: mainRectangle.showEventListWindow()
+            onClicked: mainRectangle.changeAppState("EventWindowState")
         }
     }
 
@@ -76,7 +76,7 @@ Rectangle {
         MouseArea {
             id: maTargetTemp
             anchors.fill: parent
-            onClicked: mainRectangle.showEventListWindow()
+            onClicked: mainRectangle.changeAppState("EventWindowState")
         }
     }
 
@@ -173,7 +173,7 @@ Rectangle {
             id: maWeather
             z: 1
             anchors.fill: parent
-            onClicked: mainRectangle.showWeatherWindow()
+            onClicked: mainRectangle.changeAppState("WeatherWindowState")
         }
 
         Text {

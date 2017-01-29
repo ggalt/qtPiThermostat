@@ -147,7 +147,7 @@ Rectangle {
             id: maBackButton
             x: 0
             anchors.fill: parent
-            onClicked: mainRectangle.showMainWindow()
+            onClicked: mainRectangle.changeAppState("MainWindowState")
         }
     }
 

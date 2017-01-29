@@ -364,7 +364,7 @@ Rectangle {
         MouseArea {
             id: cancelMouseArea
             anchors.fill: parent
-            onClicked: mainRectangle.showEventListWindow()
+            onClicked: mainRectangle.changeAppState("EventWindowState")
         }
     }
 
@@ -404,7 +404,7 @@ Rectangle {
                 collectData()
                 console.log("sending data:", dayOfWeek, targetTime, lowTemp, hiTemp)
                 captureThermostatEventInfo(dayOfWeek, targetTime, lowTemp, hiTemp)
-                mainRectangle.showEventListWindow()
+                mainRectangle.changeAppState("EventWindowState")
             }
         }
     }
@@ -462,6 +462,8 @@ Rectangle {
         delegateHighlightSource: "spinner-select-red.png"
 
     }
+
+}
 
 
 
@@ -599,8 +601,6 @@ Rectangle {
 //        }
 //        state: "Checked"
 //    }
-
-}
 
 
 //        Rectangle {
