@@ -27,9 +27,9 @@ void thermoEventMonitor::setEventModel(thermostatEventModel *t)
 //    m_eventModel = *t;
 }
 
-void thermoEventMonitor::connectEventModel(QObject *mainRec)
+void thermoEventMonitor::connectEventModel(QDeclarativeContext *mainContext)
 {
-//    mainRec->setProperty("eventListModel", &m_eventModel);
+    mainContext->setContextProperty("eventListModel", &m_eventModel);
 }
 
 //thermostatEvent thermoEventMonitor::thermoEvent(int row)

@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QSettings>
 #include <QModelIndex>
+#include <QDeclarativeContext>
 
 #include "thermostateventmodel.h"
 
@@ -20,7 +21,7 @@ public:
     ~thermoEventMonitor();
 
     void setEventModel(thermostatEventModel *t);
-    void connectEventModel(QObject *mainRec);
+    void connectEventModel(QDeclarativeContext *mainContext);
 
     const thermostatEventModel* eventModel(void) { return &m_eventModel; }
 

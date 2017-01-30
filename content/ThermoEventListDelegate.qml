@@ -1,65 +1,114 @@
 import QtQuick 1.1
 
-Item {
+Rectangle {
     id: thermoEventListDelegate
     width: 320
     height: 40
+    border.color: "#ccffffff"
+    gradient: Gradient {
+        GradientStop {
+            position: 0
+            color: "#66ffffff"
+        }
 
-    Text {
-        id: txtDay
-        text: eventDayOfWeek
-        width: 60
-        font.pointSize: 12
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignHCenter
+        GradientStop {
+            position: 1
+            color: "#66000000"
+        }
+    }
+
+    MouseArea {
+        id: mouseArea1
+        anchors.fill: parent
+        onPressAndHold: {
+            console.log("pressed", index)
+            mainRectangle.changeAppState("MainWindowState")
+        }
+    }
+
+    Rectangle {
+        id: rectangle1
+        width: 80
+        color: "#00000000"
+        border.color: "#b3ffffff"
         anchors.left: parent.left
-        anchors.leftMargin: 0
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
         anchors.top: parent.top
         anchors.topMargin: 0
+
+        Text {
+            id: txtDayOfWeek
+            text: eventDayOfWeek
+            anchors.fill: parent
+            font.pointSize: 12
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+        }
     }
 
-    Text {
-        id: txtTime
-        text: eventTime
+    Rectangle {
+        id: rectangle2
+        y: 4
+        width: 100
+        color: "#00000000"
+        anchors.leftMargin: 2
+        anchors.left: rectangle1.right
+        anchors.bottom: parent.bottom
+        anchors.top: parent.top
+        anchors.topMargin: 0
+        clip: true
+        Text {
+            id: txtEventTime
+            text: Qt.formatTime(eventTime, "hh:mm AP")
+            anchors.fill: parent
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 12
+            verticalAlignment: Text.AlignVCenter
+        }
+        border.color: "#b3ffffff"
+    }
+
+    Rectangle {
+        id: rectangle3
         width: 60
-        font.pointSize: 12
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignHCenter
-        anchors.left: txtDay.right
-        anchors.leftMargin: 5
+        color: "#330211ff"
+        anchors.leftMargin: 2
+        anchors.left: rectangle2.right
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
         anchors.top: parent.top
         anchors.topMargin: 0
+        clip: true
+        Text {
+            id: txtEventTempLo
+            text: mainRectangle.convertFromKelvin(eventLoTemp).toFixed(0)
+            anchors.fill: parent
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 12
+            verticalAlignment: Text.AlignVCenter
+        }
+        border.color: "#b3ffffff"
     }
 
-    Text {
-        id: txtTemp
-        text: eventTemp
-        width: 50
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignHCenter
-        font.pointSize: 12
-        anchors.left: txtTime.right
-        anchors.leftMargin: 5
+    Rectangle {
+        id: rectangle4
+        x: 0
+        y: 0
+        width: 60
+        color: "#33ff0202"
+        anchors.leftMargin: 2
+        anchors.left: rectangle3.right
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
         anchors.top: parent.top
         anchors.topMargin: 0
-    }
-
-    Image {
-        id: imageHeat
-        x: 237
-        width: 40
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
-        anchors.top: parent.top
-        anchors.topMargin: 0
-        anchors.right: parent.right
-        anchors.rightMargin: 0
-        source: "../icons/heating.png"
+        clip: true
+        Text {
+            id: txtEventTempHi
+            text: mainRectangle.convertFromKelvin(eventHiTemp).toFixed(0)
+            anchors.fill: parent
+            horizontalAlignment: Text.AlignHCenter
+            font.pointSize: 12
+            verticalAlignment: Text.AlignVCenter
+        }
+        border.color: "#b3ffffff"
     }
 }

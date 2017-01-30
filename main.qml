@@ -19,6 +19,7 @@ Rectangle {
     property string currentWeatherIcon: ""
     property int fanState: 0
     property int coolingState: 0
+    property string tempScale: "F"
 
     //////////////////////////////////////////////////////////
     // properties for weather screen
@@ -62,6 +63,14 @@ Rectangle {
             curTime = Qt.formatTime(new Date(), "hh mm AP")
         }
         showColon = !showColon;
+    }
+
+    function convertFromKelvin(temp) {
+        if(tempScale === "F") {
+            return (temp * 9)/5 - 459.67
+        } else {
+            return temp - 273.15
+        }
     }
 
     function setWeatherIcon(myWeatherIcon) {

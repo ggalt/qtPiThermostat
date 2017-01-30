@@ -173,27 +173,31 @@ Rectangle {
         model: eventListModel
 //        model: 20
 
-        delegate: Item {
-            width: eventListWin.width
-            height: 40
-            Text {
-               text:   eventDayOfWeek
+        delegate: ThermoEventListDelegate {}
+//        delegate: Item {
+//            width: eventListWin.width
+//            height: 40
+//            Text {
 //                text: index
-            }
-            Text {
-                text:   eventTime
-//                text: index
-            }
+//                anchors.left: parent.left
+//                width: 15
+//            }
+//            Text {
+//               text:   eventDayOfWeek
+//            }
+//            Text {
+//                text:   eventTime
+//            }
 
-            MouseArea{
-                anchors.fill: parent
-                onPressAndHold: {
-                    console.log(index, "pressed")
-                }
-                onClicked: {
-                    eventListView.currentIndex=index
-                }
-            }
+//            MouseArea{
+//                anchors.fill: parent
+//                onPressAndHold: {
+//                    console.log(index, "pressed")
+//                }
+//                onClicked: {
+//                    eventListView.currentIndex=index
+//                }
+//            }
 
 //            Text {
 //                anchors.top: parent.top
@@ -201,32 +205,8 @@ Rectangle {
 //                anchors.left: parent.left
 //                width: 60
 //            }
-        }
-
-//        delegate: Item {
-//            x: 5
-//            width: 80
-//            height: 40
-//            Row {
-//                id: row1
-//                Rectangle {
-//                    width: 40
-//                    height: 40
-//                    color: colorCode
-//                }
-
-//                Text {
-//                    text: name
-//                    font.bold: true
-//                    anchors.verticalCenter: parent.verticalCenter
-//                }
-//                spacing: 10
-//            }
-//            MouseArea {
-//                anchors.fill: parent
-//                onClicked: mainRectangle.showThermoEventWindow()
-//            }
 //        }
+
     }
 
     Rectangle {

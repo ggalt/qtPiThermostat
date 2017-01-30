@@ -3,6 +3,7 @@
 
 #include "qtquick1applicationviewer.h"
 #include "weathernetworkconnection.h"
+#include "thermostateventmodel.h"
 #include "thermoeventmonitor.h"
 #include "source/Raspberry_Pi/pi_dht_read.h"
 
@@ -40,6 +41,7 @@ private:
 
     WeatherNetworkConnection *m_weather;
     thermoEventMonitor *m_eventMonitor;
+    thermostatEventModel m_eventModel;
     static QDeclarativeItem* FindItemByName(QList<QObject*> nodes, const QString& name);
 
     float currentIndoorTemp;

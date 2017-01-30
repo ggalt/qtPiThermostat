@@ -45,7 +45,6 @@ void qThermoAppViewer::Init(void)
 
 
     m_eventMonitor->ReadThermoEvents();
-    m_eventMonitor->connectEventModel(mainRec);
 
     mainTick.setInterval(1000);
     mainTick.start();
@@ -71,7 +70,9 @@ void qThermoAppViewer::appStateSignal(const QString& state)
     } else if(state == "EventWindowState") {
         qDebug() << "Correctly got to EventWindowState";
         qDebug() << "root context name is:" << rootContext()->objectName();
-        rootContext()->setContextProperty("eventListModel", m_eventMonitor->eventModel());
+        m_eventMonitor->connectEventModel(rootContext());
+
+//        rootContext()->setContextProperty("eventListModel", m_eventMonitor->eventModel());
 //        this->rootContext()->setContextProperty("eventListModel", m_eventMonitor->eventModel());
     } else if(state == "WeatherWindowState") {
         qDebug() << "Correctly got to WeatherWindowState";

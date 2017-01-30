@@ -119,8 +119,6 @@ QVariant thermostatEventModel::data(const QModelIndex &index, int role) const
 
     const thermostatEvent &ev = m_events.at(index.row());
 
-    qDebug() << "data called";
-
     if( role == Qt::DisplayRole ) {
         return QVariant::fromValue(ev);
     } else if( role == DayRole ) {
