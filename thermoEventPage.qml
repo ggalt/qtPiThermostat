@@ -28,6 +28,8 @@ Rectangle {
     property string txtminute: ""
     property string txtmeridiem: ""
 
+    function setCurrentWeatherIcon() {} // blank, but here so console doesn't complain
+
     function setScale() {
         if(scale === "F") {
             tempRange = 60

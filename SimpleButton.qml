@@ -8,6 +8,7 @@ Rectangle {
     property color darkBorder: "#80333333"
     property color pressedColor: "#66808080"
     property color unpressedColor: "#00000000"
+    property color selectedColor: "#4c000000"
     property int fontPointSize: 10
     color: unpressedColor
 
@@ -69,13 +70,24 @@ Rectangle {
                 target: rightBoarder
                 color: darkBorder
             }
+        },
+        State {
+            name: "Selected"
+            PropertyChanges {
+                target: simpleButton
+                color: selectedColor
+            }
         }
     ]
+
     MouseArea {
         id: btnMouseArea
         anchors.fill: parent
         onPressed: simpleButton.state = "Pressed"
         onReleased: simpleButton.state = "UnPressed"
-        onClicked:  simpleButton.clicked()
+        onClicked:  {
+            simpleButton.state = "Selected"
+            simpleButton.clicked()
+        }
     }
 }

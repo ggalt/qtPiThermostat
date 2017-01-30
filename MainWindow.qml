@@ -7,6 +7,8 @@ Rectangle {
 
     opacity: 0
 
+//    Component.onCompleted: mainRectangle.weatherIconTimer.triggered.connect(setCurrentWeatherIcon)
+
     FontLoader {
         id: openSans
         source: "qrc:/fonts/OpenSans-Regular.ttf"

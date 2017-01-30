@@ -12,7 +12,7 @@ Rectangle {
     property int day3High: 70
     property int day3Low: 50
 
-    opacity: 1
+    opacity: 0
 
     FontLoader {
         id: openSans
@@ -112,23 +112,31 @@ Rectangle {
         id: backButton
         y: 192
         height: 40
-        gradient: Gradient {
-            GradientStop {
-                position: 0
-                color: "#ffffff"
-            }
-
-            GradientStop {
-                position: 1
-                color: "#50c68b"
-            }
-        }
+        border.color: "#80ffffff"
         anchors.rightMargin: 4
         anchors.right: parent.right
         anchors.left: parent.left
         anchors.leftMargin: 4
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 8
+        state: "Unpressed"
+
+        states: [
+            State {
+                name: "Pressed"
+                PropertyChanges {
+                    target: backButton
+                    color: "#4c000000"
+                }
+            },
+            State {
+                name: "Unpressed"
+                PropertyChanges {
+                    target: backButton
+                    color: "#19000000"
+                }
+            }
+        ]
 
         Text {
             id: text1
@@ -148,6 +156,8 @@ Rectangle {
             x: 0
             anchors.fill: parent
             onClicked: mainRectangle.changeAppState("MainWindowState")
+            onPressed: backButton.state = "Pressed"
+            onReleased: backButton.state = "Unpressed"
         }
     }
 

@@ -65,18 +65,15 @@ void qThermoAppViewer::appStateSignal(const QString& state)
     qDebug() << "Current App State:" << state;
     if(state == "MainWindowState") {
         qDebug() << "Correctly got to MainWindowState";
-        qDebug() << "root context name is:" << rootContext()->objectName();
 
     } else if(state == "EventWindowState") {
         qDebug() << "Correctly got to EventWindowState";
-        qDebug() << "root context name is:" << rootContext()->objectName();
         m_eventMonitor->connectEventModel(rootContext());
 
 //        rootContext()->setContextProperty("eventListModel", m_eventMonitor->eventModel());
 //        this->rootContext()->setContextProperty("eventListModel", m_eventMonitor->eventModel());
     } else if(state == "WeatherWindowState") {
         qDebug() << "Correctly got to WeatherWindowState";
-        qDebug() << "root context name is:" << rootContext()->objectName();
     }
 }
 
@@ -125,6 +122,7 @@ void qThermoAppViewer::CheckTemp(void)
         mainRec->setProperty("todayLoTemp", m_weather->niceTemperatureString(today->tempMin()) );
         mainRec->setProperty("todayName", QDateTime::fromString(today->dayOfWeek(),"yyyy-MM-dd hh:mm:ss").toString("ddd"));
         mainRec->setProperty("todayIcon", today->weatherIcon());
+        qDebug() << "Today's weather Icon is:" << today->weatherIcon();
     }
 
     if(tomorrow != NULL) {
@@ -132,6 +130,7 @@ void qThermoAppViewer::CheckTemp(void)
         mainRec->setProperty("tomorrowLoTemp", m_weather->niceTemperatureString(tomorrow->tempMin()) );
         mainRec->setProperty("tomorrowIcon", tomorrow->weatherIcon() );
         mainRec->setProperty("tomorrowName", QDateTime::fromString(tomorrow->dayOfWeek(),"yyyy-MM-dd hh:mm:ss").toString("ddd"));
+        qDebug() << "tomorrow's weather Icon is:" << tomorrow->weatherIcon();
     }
 
     if(nextDay != NULL) {
@@ -139,6 +138,7 @@ void qThermoAppViewer::CheckTemp(void)
         mainRec->setProperty("nextDayLoTemp", m_weather->niceTemperatureString(nextDay->tempMin()) );
         mainRec->setProperty("nextDayName", QDateTime::fromString(nextDay->dayOfWeek(),"yyyy-MM-dd hh:mm:ss").toString("ddd"));
         mainRec->setProperty("nextDayIcon", nextDay->weatherIcon() );
+        qDebug() << "nextDay's weather Icon is:" << nextDay->weatherIcon();
     }
 
     if(initializingApp) {

@@ -134,7 +134,11 @@ Rectangle {
     // page loader
     Loader {
         id: loader
-        onLoaded: item.fadeIn()
+        onLoaded: {
+            item.fadeIn()
+            item.setCurrentWeatherIcon()
+            weatherIconTimer.triggered.connect(item.setCurrentWeatherIcon)
+        }
     }
 
     states: [

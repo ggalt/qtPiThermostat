@@ -20,6 +20,8 @@ Rectangle {
         fadeInAnimation.start()
     }
 
+    function setCurrentWeatherIcon() {} // blank, but here so console doesn't complain
+
     width: 320
     height: 240
     gradient: Gradient {
