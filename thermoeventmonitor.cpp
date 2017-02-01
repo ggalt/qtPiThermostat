@@ -44,11 +44,12 @@ void thermoEventMonitor::captureThermostatEventInfo( QString dayOfWeek, QString 
                 lowTemp << hiTemp;
     AddThermoEvent(dayOfWeek,targetTime, lowTemp, hiTemp);
     qDebug() << "We have" << m_eventModel.rowCount(QModelIndex()) << "thermo events";
-    for(int i = 0; i < m_eventModel.rowCount(QModelIndex()); i++) {
-        thermostatEvent ev = m_eventModel.getData(i);
-        qDebug() << i << ":" << ev.eventDayOfWeek() << ev.eventTime() <<
-                    ev.eventLoTemp() << ev.eventHiTemp();
-    }
+    SaveThermoEvents(); // write the thermoEvents to disk so that we preserve them in case of power failure
+//    for(int i = 0; i < m_eventModel.rowCount(QModelIndex()); i++) {
+//        thermostatEvent ev = m_eventModel.getData(i);
+//        qDebug() << i << ":" << ev.eventDayOfWeek() << ev.eventTime() <<
+//                    ev.eventLoTemp() << ev.eventHiTemp();
+//    }
 }
 
 void thermoEventMonitor::AddThermoEvent(QString dayOfWeek, QString targetTime,

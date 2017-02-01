@@ -5,23 +5,6 @@ Rectangle {
     id: eventListWin
     objectName: "eventListWin"
 
-    property int fontSize: 14
-
-    opacity: 0
-
-    NumberAnimation on opacity {
-        id: fadeInAnimation
-        duration: 300
-        easing.type: Easing.InCubic
-        to: 1.0
-    }
-
-    function fadeIn() {
-        fadeInAnimation.start()
-    }
-
-    function setCurrentWeatherIcon() {} // blank, but here so console doesn't complain
-
     width: 320
     height: 240
     gradient: Gradient {
@@ -36,6 +19,55 @@ Rectangle {
         }
     }
 
+    opacity: 0
+
+    NumberAnimation on opacity {
+        id: fadeInAnimation
+        duration: 300
+        easing.type: Easing.InCubic
+        to: 1.0
+    }
+
+    property int fontSize: 14
+
+    function fadeIn() {
+        fadeInAnimation.start()
+    }
+
+    function setCurrentWeatherIcon() {} // blank, but here so console doesn't complain
+
+    function daySelected(dayText) {
+        console.log(dayText)
+        btnAllDays.state="UnPressed"
+        btnSunday.state="UnPressed"
+        btnMonday.state="UnPressed"
+        btnTuesday.state="UnPressed"
+        btnWednesday.state="UnPressed"
+        btnThursday.state="UnPressed"
+        btnFriday.state="UnPressed"
+        btnSaturday.state="UnPressed"
+        if(dayText===btnAllDays.lblText)
+            btnAllDays.state="Selected"
+        if(dayText===btnSunday.lblText)
+            btnSunday.state="Selected"
+        if(dayText===btnMonday.lblText)
+            btnMonday.state="Selected"
+        if(dayText===btnTuesday.lblText)
+            btnTuesday.state="Selected"
+        if(dayText===btnWednesday.lblText)
+            btnWednesday.state="Selected"
+        if(dayText===btnThursday.lblText)
+            btnThursday.state="Selected"
+        if(dayText===btnFriday.lblText)
+            btnFriday.state="Selected"
+        if(dayText===btnSaturday.lblText)
+            btnSaturday.state="Selected"
+
+        sortByDay(dayText)
+    }
+
+    signal sortByDay(string dayText)
+    signal deleteItem(int row)
 
     Rectangle {
         id: dayToolBar
@@ -69,6 +101,7 @@ Rectangle {
             anchors.top: parent.top
             anchors.topMargin: 0
             fontPointSize: fontSize
+            onClicked: daySelected(lblText)
         }
 
         SimpleButton {
@@ -81,6 +114,7 @@ Rectangle {
             anchors.top: parent.top
             anchors.topMargin: 0
             fontPointSize: fontSize
+            onClicked: daySelected(lblText)
         }
 
         SimpleButton {
@@ -93,6 +127,7 @@ Rectangle {
             anchors.top: parent.top
             anchors.topMargin: 0
             fontPointSize: fontSize
+            onClicked: daySelected(lblText)
         }
 
         SimpleButton {
@@ -105,6 +140,7 @@ Rectangle {
             anchors.top: parent.top
             anchors.topMargin: 0
             fontPointSize: fontSize
+            onClicked: daySelected(lblText)
         }
 
         SimpleButton {
@@ -117,6 +153,7 @@ Rectangle {
             anchors.top: parent.top
             anchors.topMargin: 0
             fontPointSize: fontSize
+            onClicked: daySelected(lblText)
         }
 
         SimpleButton {
@@ -129,6 +166,7 @@ Rectangle {
             anchors.top: parent.top
             anchors.topMargin: 0
             fontPointSize: fontSize
+            onClicked: daySelected(lblText)
         }
 
         SimpleButton {
@@ -141,6 +179,7 @@ Rectangle {
             anchors.top: parent.top
             anchors.topMargin: 0
             fontPointSize: fontSize
+            onClicked: daySelected(lblText)
         }
 
         SimpleButton {
@@ -153,6 +192,7 @@ Rectangle {
             anchors.top: parent.top
             anchors.topMargin: 0
             fontPointSize: fontSize
+            onClicked: daySelected(lblText)
         }
 
     }
@@ -262,6 +302,9 @@ Rectangle {
             anchors.top: parent.top
             lblText: qsTr("DELETE")
             fontPointSize: fontSize
+            onClicked: {
+                deleteItem(eventListView.currentIndex)
+            }
         }
     }
 }

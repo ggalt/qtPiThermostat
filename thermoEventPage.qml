@@ -113,7 +113,7 @@ Rectangle {
 
         ListView {
             id: lstDayOfTheWeek
-            highlightFollowsCurrentItem: true
+            highlightFollowsCurrentItem: false
             preferredHighlightEnd: lstDayOfTheWeek.width/2 + 50
             orientation: ListView.Horizontal
             keyNavigationWraps: false

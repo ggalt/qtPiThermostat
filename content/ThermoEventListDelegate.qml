@@ -4,7 +4,6 @@ Rectangle {
     id: thermoEventListDelegate
     width: 320
     height: 40
-    border.color: "#ccffffff"
     gradient: Gradient {
         GradientStop {
             position: 0
@@ -12,6 +11,7 @@ Rectangle {
         }
 
         GradientStop {
+            id: gradientStop1
             position: 1
             color: "#66000000"
         }
@@ -22,10 +22,45 @@ Rectangle {
         anchors.fill: parent
         onPressAndHold: {
             console.log("pressed", index)
+            thermoEventListDelegate.ListView.view.currentIndex=index
             mainRectangle.changeAppState("MainWindowState")
+        }
+        onClicked: {
+            console.log(index, "clicked")
+            thermoEventListDelegate.ListView.view.currentIndex=index
+        }
+        onPressed: {
+            thermoEventListDelegate.ListView.view.currentIndex=index
         }
     }
 
+    states: [
+        State {
+            name: "normal"
+            when: !thermoEventListDelegate.ListView.isCurrentItem
+            PropertyChanges {
+                target: thermoEventListDelegate
+                border.width: 1
+                border.color: "#ccffffff"
+            }
+        },
+        State {
+            name: "selected"
+            when: thermoEventListDelegate.ListView.isCurrentItem
+            PropertyChanges {
+                target: thermoEventListDelegate
+                border.width: 4
+                border.color: "yellow"
+            }
+
+            PropertyChanges {
+                target: gradientStop1
+                color: "#4cccff00"
+            }
+        }
+    ]
+
+    state: "normal"
     Rectangle {
         id: rectangle1
         width: 80
