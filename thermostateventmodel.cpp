@@ -9,7 +9,7 @@ thermostatEvent::thermostatEvent(QObject *parent) : QObject(parent)
 thermostatEvent::thermostatEvent(const thermostatEvent& ev) : QObject(ev.parent())
 {
     m_eventTime = ev.eventTime();
-    m_eventDayOfWeek = ev.eventDayOfWeek();
+    setEventDayOfWeek(ev.eventDayOfWeek());
     m_eventLoTemp = ev.eventLoTemp();
     m_eventHiTemp = ev.eventHiTemp();
 }
@@ -18,7 +18,7 @@ thermostatEvent &thermostatEvent::operator=(const thermostatEvent &ev)
 {
     setParent(ev.parent());
     m_eventTime = ev.eventTime();
-    m_eventDayOfWeek = ev.eventDayOfWeek();
+    setEventDayOfWeek(ev.eventDayOfWeek());
     m_eventLoTemp = ev.eventLoTemp();
     m_eventHiTemp = ev.eventHiTemp();
 }
@@ -37,7 +37,21 @@ void thermostatEvent::setEventTime(QTime t)
 
 void thermostatEvent::setEventDayOfWeek(QString t)
 {
-    m_eventDayOfWeek = t;
+    if(t == "SUN")
+        m_eventDayOfWeek = Sunday;
+    else if(t == "MON")
+        m_eventDayOfWeek = Monday;
+    else if(t == "TUE")
+        m_eventDayOfWeek = Tuesday;
+    else if(t == "WED")
+        m_eventDayOfWeek = Wednesday;
+    else if(t == "THU")
+        m_eventDayOfWeek = Thursday;
+    else if(t == "FRI")
+        m_eventDayOfWeek = Friday;
+    else if(t == "SAT")
+        m_eventDayOfWeek = Saturday;
+
     emit eventDayOfWeekChanged();
 }
 
@@ -51,6 +65,26 @@ void thermostatEvent::setEventHiTemp(qreal t)
 {
     m_eventHiTemp = t;
     emit eventHiTempChanged();
+}
+
+QString thermostatEvent::eventDayOfWeek() const
+{
+    if(m_eventDayOfWeek==Sunday)
+        return QString("SUN");
+    else    if(m_eventDayOfWeek==Monday)
+        return QString("MON");
+    else    if(m_eventDayOfWeek==Tuesday)
+        return QString("TUE");
+    else    if(m_eventDayOfWeek==Wednesday)
+        return QString("WED");
+    else    if(m_eventDayOfWeek==Thursday)
+        return QString("THU");
+    else    if(m_eventDayOfWeek==Friday)
+        return QString("FRI");
+    else    if(m_eventDayOfWeek==Saturday)
+        return QString("SAT");
+    else
+        return NULL;
 }
 
 
@@ -137,6 +171,10 @@ QVariant thermostatEventModel::data(const QModelIndex &index, int role) const
 thermostatEvent thermostatEventModel::getData(int row) const
 {
     return m_events.at(row);
+}
+
+void thermostatEventModel::sort(int columnNumber, Qt::SortOrder)
+{
 }
 
 void thermostatEventModel::addThermostatEvent(const thermostatEvent &ev)

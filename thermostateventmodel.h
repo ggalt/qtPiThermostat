@@ -17,6 +17,7 @@ class thermostatEvent : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QTime eventTime READ eventTime WRITE setEventTime NOTIFY eventTimeChanged)
+//    Q_PROPERTY(DayOfTheWeek eventDayOfWeek READ eventDayOfWeek WRITE setEventDayOfWeek NOTIFY eventDayOfWeekChanged)
     Q_PROPERTY(QString eventDayOfWeek READ eventDayOfWeek WRITE setEventDayOfWeek NOTIFY eventDayOfWeekChanged)
     Q_PROPERTY(qreal eventLoTemp READ eventLoTemp WRITE setEventLoTemp NOTIFY eventLoTempChanged)
     Q_PROPERTY(qreal eventHiTemp READ eventHiTemp WRITE setEventHiTemp NOTIFY eventHiTempChanged)
@@ -34,9 +35,13 @@ public:
     void setEventHiTemp(qreal t);
 
     QTime eventTime(void) const {return m_eventTime;}
-    QString eventDayOfWeek(void) const {return m_eventDayOfWeek;}
+    QString eventDayOfWeek(void) const;
     qreal eventLoTemp(void) const {return m_eventLoTemp;}
     qreal eventHiTemp(void) const {return m_eventHiTemp;}
+
+public:
+    enum DayOfTheWeek { Sunday=0, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, AllWeek, Weekend, WeekDays };
+    Q_ENUMS(DayOfTheWeek)
 
 signals:
     void eventTimeChanged(void);
@@ -50,7 +55,7 @@ private:
 
 private:
     QTime m_eventTime;
-    QString m_eventDayOfWeek;
+    DayOfTheWeek m_eventDayOfWeek;
     qreal m_eventLoTemp;
     qreal m_eventHiTemp;
 };
@@ -79,6 +84,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     thermostatEvent getData(int row) const;
+    void sort(int columnNumber, Qt::SortOrder=Qt::AscendingOrder);
 
     void addThermostatEvent(const thermostatEvent &ev);
 
