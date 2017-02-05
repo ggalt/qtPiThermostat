@@ -96,6 +96,58 @@ thermostatEvent::DayOfTheWeek thermostatEvent::rawEventDayOfWeek() const
     return m_eventDayOfWeek;
 }
 
+thermostatEvent::DayOfTheWeek thermostatEvent::getDOWEnum(QString day)
+{
+    if(day == "SUN")
+        return Sunday;
+    else if(day == "MON")
+        return Monday;
+    else if(day == "TUE")
+        return Tuesday;
+    else if(day == "WED")
+        return Wednesday;
+    else if(day == "THU")
+        return Thursday;
+    else if(day == "FRI")
+        return Friday;
+    else if(day == "SAT")
+        return Saturday;
+    else if(day == "WKDY")
+        return WeekDays;
+    else if(day == "WKND")
+        return Weekend;
+    else if(day == "ALL")
+        return AllWeek;
+
+    return AllWeek;     // default
+}
+
+QString thermostatEvent::getDOWString(thermostatEvent::DayOfTheWeek day)
+{
+    if(day==Sunday)
+        return QString("SUN");
+    else    if(day==Monday)
+        return QString("MON");
+    else    if(day==Tuesday)
+        return QString("TUE");
+    else    if(day==Wednesday)
+        return QString("WED");
+    else    if(day==Thursday)
+        return QString("THU");
+    else    if(day==Friday)
+        return QString("FRI");
+    else    if(day==Saturday)
+        return QString("SAT");
+    else    if(day==AllWeek)
+        return QString("ALL");
+    else    if(day==WeekDays)
+        return QString("WKDY");
+    else    if(day==Weekend)
+        return QString("WKND");
+
+    return NULL;
+}
+
 
 QDataStream& operator << (QDataStream& out, const thermostatEvent& ev)
 {
@@ -229,6 +281,16 @@ bool thermostatEventModel::addThermostatEvent(const thermostatEvent &ev)
     qDebug() << ev.eventDayOfWeek() << ev.eventTime() << "has been appended";
 
     return true;
+}
+
+thermostatEvent thermostatEventModel::getCurrentSettings(thermostatEvent::DayOfTheWeek day, QTime t) const
+{
+    QListIterator<thermostatEvent> i(m_events);
+    while(i.hasNext()) {
+        thermostatEvent e = i.next();
+        if(e.rawEventDayOfWeek() == day) {
+        }
+    }
 }
 
 QHash<int, QByteArray> thermostatEventModel::roleNames() const {

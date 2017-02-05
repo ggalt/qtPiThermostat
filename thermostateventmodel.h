@@ -46,6 +46,9 @@ public:
     qreal eventLoTemp(void) const {return m_eventLoTemp;}
     qreal eventHiTemp(void) const {return m_eventHiTemp;}
 
+    static DayOfTheWeek getDOWEnum( QString day );
+    static QString getDOWString( DayOfTheWeek day);
+
 signals:
     void eventTimeChanged(void);
     void eventDayOfWeekChanged(void);
@@ -89,13 +92,10 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     thermostatEvent getData(int row) const;
-//    void sort(int columnNumber, Qt::SortOrder=Qt::AscendingOrder);
 
     bool addThermostatEvent(const thermostatEvent &ev);
 
-//    bool setData(const QModelIndex &index, thermostatEvent &value, int role = Qt::EditRole);
-//    bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
-//    bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
+    thermostatEvent getCurrentSettings(thermostatEvent::DayOfTheWeek day, QTime t) const;
 
 signals:
 

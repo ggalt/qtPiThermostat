@@ -7,7 +7,7 @@ Rectangle {
     width: 320
     height: 240
 
-    opacity: 0
+    opacity: 1
 
     property int elementpointSize: 20
 
@@ -104,20 +104,27 @@ Rectangle {
 
     Rectangle {
         id: dayOfWeekRect
-        x: 8
-        y: 9
-        width: 302
         height: 27
         color: "#ffffff"
+        anchors.right: parent.right
+        anchors.rightMargin: 5
+        anchors.left: parent.left
+        anchors.leftMargin: 5
+        anchors.top: parent.top
+        anchors.topMargin: 5
         clip: true
 
         ListView {
             id: lstDayOfTheWeek
-            highlightFollowsCurrentItem: false
+            width: 200
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            highlightFollowsCurrentItem: true
+            clip: true
             preferredHighlightEnd: lstDayOfTheWeek.width/2 + 50
             orientation: ListView.Horizontal
             keyNavigationWraps: false
-            anchors.fill: parent
             highlightRangeMode: ListView.StrictlyEnforceRange
             flickableDirection: Flickable.HorizontalFlick
             model: ListModel {
@@ -188,6 +195,81 @@ Rectangle {
                     }
                 }
                 border.color: "#ffbe31"
+            }
+        }
+
+        Rectangle {
+            id: btnLeft
+            anchors.rightMargin: 5
+            border.width: 3
+            gradient: Gradient {
+                GradientStop {
+                    position: 0
+                    color: "#ffffff"
+                }
+
+                GradientStop {
+                    position: 1
+                    color: "#000000"
+                }
+            }
+            anchors.right: lstDayOfTheWeek.left
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+
+            MouseArea {
+                id: mouseArea1
+                anchors.fill: parent
+                onClicked: {
+                    console.log("left click")
+                    lstDayOfTheWeek.incrementCurrentIndex()
+                }
+            }
+
+            Image {
+                id: image1
+                fillMode: Image.PreserveAspectFit
+                anchors.fill: parent
+                source: "content/1486350283_ic_keyboard_arrow_left_48px.png"
+            }
+
+        }
+
+        Rectangle {
+            id: btnRight
+            radius: 3
+            anchors.leftMargin: 5
+            gradient: Gradient {
+                GradientStop {
+                    position: 0
+                    color: "#ffffff"
+                }
+
+                GradientStop {
+                    position: 1
+                    color: "#000000"
+                }
+            }
+            anchors.left: lstDayOfTheWeek.right
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+
+            Image {
+                id: image2
+                fillMode: Image.PreserveAspectFit
+                anchors.fill: parent
+                source: "content/1486350258_ic_keyboard_arrow_right_48px.png"
+            }
+
+            MouseArea {
+                id: mouseArea2
+                anchors.fill: parent
+                onClicked: {
+                    console.log("right click")
+                    lstDayOfTheWeek.decrementCurrentIndex()
+                }
             }
         }
     }
