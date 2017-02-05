@@ -191,22 +191,44 @@ thermostatEvent thermostatEventModel::getData(int row) const
 //{
 //}
 
-void thermostatEventModel::addThermostatEvent(const thermostatEvent &ev)
+bool thermostatEventModel::addThermostatEvent(const thermostatEvent &ev)
 {
     // insert rows in day and time sort order
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
 
     for( int i = 0; i < m_events.size(); i++) {
+
         if( (int)ev.rawEventDayOfWeek() < (int)m_events.at(i).rawEventDayOfWeek() ) {
             m_events.insert(i,ev);
-        } else if( (int)ev.rawEventDayOfWeek() == (int)m_events.at(i).rawEventDayOfWeek() ) {
-            if( ev.eventTime() < m_events.at(i).eventTime() ) {
-                m_events.insert(i,ev);
-            }
+            endInsertRows();
+            qDebug() << ev.eventDayOfWeek() << "is before" << m_events.at(i).eventDayOfWeek();
+            return true;
         }
 
+        else if( (int)ev.rawEventDayOfWeek() == (int)m_events.at(i).rawEventDayOfWeek() ) {
+            qDebug() << ev.eventDayOfWeek() << "is the same as" << m_events.at(i).eventDayOfWeek();
+
+            if( ev.eventTime() < m_events.at(i).eventTime() ) {
+                m_events.insert(i,ev);
+                endInsertRows();
+                qDebug() <<  ev.eventTime() << "is earlier than" << m_events.at(i).eventTime();
+                return true;
+            }
+
+            else if( ev.eventTime() == m_events.at(i).eventTime() ) {        // oops!!  we seem to have a duplicate day and time,  Replace current.
+                qDebug() << ev.eventDayOfWeek() << "and" << ev.eventTime() << "==" << m_events.at(i).eventDayOfWeek() << "and" << m_events.at(i).eventTime();
+                m_events.replace(i,ev);
+                endInsertRows();
+                return true;
+            }
+        }
     }
+
+    m_events.append(ev);
     endInsertRows();
+    qDebug() << ev.eventDayOfWeek() << ev.eventTime() << "has been appended";
+
+    return true;
 }
 
 QHash<int, QByteArray> thermostatEventModel::roleNames() const {

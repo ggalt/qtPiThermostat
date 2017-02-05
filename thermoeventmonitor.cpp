@@ -30,14 +30,14 @@ void thermoEventMonitor::setEventModel(thermostatEventModel *t)
 
 void thermoEventMonitor::connectEventModel(QDeclarativeContext *mainContext)
 {
-    thermoSortFilterProxyModel proxy;
-    proxy.setSourceModel(&m_eventModel);
+//    thermoSortFilterProxyModel proxy;
+//    proxy.setSourceModel(&m_eventModel);
 //    proxy.setFilterDay("ALL");
 //    proxy.setDynamicSortFilter(true);
-    proxy.sort(0);
-    mainContext->setContextProperty("eventListModel", &proxy);
+//    proxy.sort(0);
+//    mainContext->setContextProperty("eventListModel", &proxy);
 
-//    mainContext->setContextProperty("eventListModel", &m_eventModel);
+    mainContext->setContextProperty("eventListModel", &m_eventModel);
 }
 
 //thermostatEvent thermoEventMonitor::thermoEvent(int row)
@@ -129,6 +129,7 @@ void thermoEventMonitor::SaveThermoEvents(void)
 //    QSettings settings;
 //    settings.beginGroup(THERMO_GROUPNAME);
 //    settings.endGroup();
+    qDebug() << "SAVEING THERMOSTAT EVENTS";
     QString filename = "thermoEvents.txt";
     QFile file(filename);
     if(file.exists())
@@ -136,6 +137,7 @@ void thermoEventMonitor::SaveThermoEvents(void)
     file.open(QIODevice::ReadWrite);
     QDataStream out(&file);
     for( int i = 0; i < m_eventModel.rowCount(QModelIndex()); i++) {
+        qDebug() << "writing" << m_eventModel.getData(i).eventDayOfWeek();
         out << m_eventModel.getData(i);
     }
     file.close();

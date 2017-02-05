@@ -91,7 +91,7 @@ public:
     thermostatEvent getData(int row) const;
 //    void sort(int columnNumber, Qt::SortOrder=Qt::AscendingOrder);
 
-    void addThermostatEvent(const thermostatEvent &ev);
+    bool addThermostatEvent(const thermostatEvent &ev);
 
 //    bool setData(const QModelIndex &index, thermostatEvent &value, int role = Qt::EditRole);
 //    bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
