@@ -1,6 +1,10 @@
 #include "thermostateventmodel.h"
 #include <QDebug>
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// \brief thermostatEvent::thermostatEvent
+/// \param parent
+///
 thermostatEvent::thermostatEvent(QObject *parent) : QObject(parent)
 {
 
@@ -87,6 +91,11 @@ QString thermostatEvent::eventDayOfWeek() const
         return NULL;
 }
 
+thermostatEvent::DayOfTheWeek thermostatEvent::rawEventDayOfWeek() const
+{
+    return m_eventDayOfWeek;
+}
+
 
 QDataStream& operator << (QDataStream& out, const thermostatEvent& ev)
 {
@@ -110,7 +119,10 @@ QDataStream& operator >> (QDataStream& in, thermostatEvent& ev)
     return in;
 }
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// \brief thermostatEventModel::thermostatEventModel
+/// \param parent
+///
 thermostatEventModel::thermostatEventModel(QObject *parent) :
     QAbstractListModel(parent)
 {
@@ -157,6 +169,8 @@ QVariant thermostatEventModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(ev);
     } else if( role == DayRole ) {
         return QVariant::fromValue(ev.eventDayOfWeek());
+    } else if( role == RawDayRole ) {
+        return QVariant::fromValue(ev.rawEventDayOfWeek());
     } else if( role == TimeRole ) {
         return QVariant::fromValue(ev.eventTime());
     } else if( role == LoTempRole ) {
@@ -173,14 +187,25 @@ thermostatEvent thermostatEventModel::getData(int row) const
     return m_events.at(row);
 }
 
-void thermostatEventModel::sort(int columnNumber, Qt::SortOrder)
-{
-}
+//void thermostatEventModel::sort(int columnNumber, Qt::SortOrder)
+//{
+//}
 
 void thermostatEventModel::addThermostatEvent(const thermostatEvent &ev)
 {
+    // insert rows in day and time sort order
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    m_events.append(ev);
+
+    for( int i = 0; i < m_events.size(); i++) {
+        if( (int)ev.rawEventDayOfWeek() < (int)m_events.at(i).rawEventDayOfWeek() ) {
+            m_events.insert(i,ev);
+        } else if( (int)ev.rawEventDayOfWeek() == (int)m_events.at(i).rawEventDayOfWeek() ) {
+            if( ev.eventTime() < m_events.at(i).eventTime() ) {
+                m_events.insert(i,ev);
+            }
+        }
+
+    }
     endInsertRows();
 }
 
@@ -188,50 +213,94 @@ QHash<int, QByteArray> thermostatEventModel::roleNames() const {
     QHash<int, QByteArray> roles;
 
     roles[DayRole] = "eventDayOfWeek";
+    roles[RawDayRole] = "rawEventDayOfWeek";
     roles[TimeRole] = "eventTime";
     roles[LoTempRole] = "eventLoTemp";
     roles[HiTempRole] = "eventHiTemp";
     return roles;
 }
 
-//bool thermostatEventModel::setData(const QModelIndex &index, thermostatEvent &value, int role)
-//{
-//    if (index.isValid() && role == Qt::EditRole) {
-//        int row = index.row();
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// \brief thermoSortFilterProxyModel::thermoSortFilterProxyModel
+/// \param parent
+///
+thermoSortFilterProxyModel::thermoSortFilterProxyModel(QObject *parent)
+    : QSortFilterProxyModel(parent)
+{
 
-//        m_events.replace(row, value);
-////        emit(dataChanged(index, index));
+}
 
-//        return true;
-//    }
+void thermoSortFilterProxyModel::setFilterDay(QString day)
+{
+    if(day == "SUN")
+        setFilterDay(thermostatEvent::Sunday);
+    else if(day == "MON")
+        setFilterDay(thermostatEvent::Monday);
+    else if(day == "TUE")
+        setFilterDay(thermostatEvent::Tuesday);
+    else if(day == "WED")
+        setFilterDay(thermostatEvent::Wednesday);
+    else if(day == "THU")
+        setFilterDay(thermostatEvent::Thursday);
+    else if(day == "FRI")
+        setFilterDay(thermostatEvent::Friday);
+    else if(day == "SAT")
+        setFilterDay(thermostatEvent::Saturday);
+    else
+        setFilterDay(thermostatEvent::AllWeek);
+}
 
-//    return false;
-//}
+void thermoSortFilterProxyModel::setFilterDay(thermostatEvent::DayOfTheWeek day)
+{
+    filterDay = day;
+    invalidateFilter();
+}
 
-//bool thermostatEventModel::insertRows(int position, int rows, const QModelIndex &index)
-//{
-//    Q_UNUSED(index);
-//    beginInsertRows(QModelIndex(), position, position + rows - 1);
+bool thermoSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+{
+    if(filterDay == thermostatEvent::AllWeek) {
+        qDebug() << "give all days";
+        return true;
+    }
+    QModelIndex index0 = sourceModel()->index(sourceRow, 0, sourceParent);
+    qDebug() << "data returns:" << sourceModel()->data(index0,thermostatEventModel::RawDayRole).toInt() << "filter is:" << filterDay;
+    bool retVal = sourceModel()->data(index0,thermostatEventModel::RawDayRole).toInt() == (int)filterDay;
 
-//    for (int row = 0; row < rows; ++row) {
-//        thermostatEvent ev;
-//        m_events.insert(position, ev);
-//    }
+    qDebug() << "resolves to:" << retVal;
+    return retVal;
 
-//    endInsertRows();
-//    return true;
-//}
+//    return sourceModel()->data(index0,thermostatEventModel::RawDayRole) == filterDay;
+}
 
-//bool thermostatEventModel::removeRows(int position, int rows, const QModelIndex &index)
-//{
-//    Q_UNUSED(index);
-//    beginRemoveRows(QModelIndex(), position, position + rows - 1);
+bool thermoSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    int leftDay = sourceModel()->data(left,thermostatEventModel::RawDayRole).toInt();
+    int rightDay = sourceModel()->data(right,thermostatEventModel::RawDayRole).toInt();
 
-//    for (int row = 0; row < rows; ++row) {
-//        m_events.removeAt(position);
-//    }
 
-//    endRemoveRows();
-//    return true;
-//}
 
+    if( leftDay < rightDay ) {
+        qDebug() << leftDay << "is less than" << rightDay;
+        return true;
+    }
+    else if( leftDay > rightDay ) {
+        qDebug() << leftDay << "is greater than" << rightDay;
+        return false;
+    }
+    else {
+        qDebug() << leftDay << "is the same as" << rightDay;
+        QTime leftTime = sourceModel()->data(left,thermostatEventModel::TimeRole).toTime();
+        QTime rightTime = sourceModel()->data(right,thermostatEventModel::TimeRole).toTime();
+        if(leftTime < rightTime) {
+            qDebug() << leftTime << "is less than" << rightTime;
+            return true;
+        }
+        else {
+            qDebug() << leftTime << "is greater than" << rightTime;
+            return false;
+        }
+    }
+
+    qDebug() << "**** not sure what we are doing here!! ****";
+    return false;
+}

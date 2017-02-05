@@ -30,15 +30,14 @@ void thermoEventMonitor::setEventModel(thermostatEventModel *t)
 
 void thermoEventMonitor::connectEventModel(QDeclarativeContext *mainContext)
 {
-//    QSortFilterProxyModel proxy;
-//    proxy.setSourceModel(&m_eventModel);
-//    proxy.sort()
-//    proxy.setSortRole(thermostatEventModel::TimeRole);
-//    proxy.setFilterRole(thermostatEventModel::DayRole);
+    thermoSortFilterProxyModel proxy;
+    proxy.setSourceModel(&m_eventModel);
+//    proxy.setFilterDay("ALL");
 //    proxy.setDynamicSortFilter(true);
-//    proxy.sort(0);
-//    mainContext->setContextProperty("eventListModel", &proxy);
-    mainContext->setContextProperty("eventListModel", &m_eventModel);
+    proxy.sort(0);
+    mainContext->setContextProperty("eventListModel", &proxy);
+
+//    mainContext->setContextProperty("eventListModel", &m_eventModel);
 }
 
 //thermostatEvent thermoEventMonitor::thermoEvent(int row)

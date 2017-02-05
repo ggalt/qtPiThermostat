@@ -3,13 +3,16 @@
 
 #include <QObject>
 #include <QAbstractListModel>
+#include <QSortFilterProxyModel>
 #include <QTime>
 #include <QList>
+#include <QListIterator>
 #include <QString>
 #include <QVariant>
 #include <QDataStream>
 #include <QHash>
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
 /// \brief The thermostatEvent class
 ///
@@ -17,7 +20,7 @@ class thermostatEvent : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QTime eventTime READ eventTime WRITE setEventTime NOTIFY eventTimeChanged)
-//    Q_PROPERTY(DayOfTheWeek eventDayOfWeek READ eventDayOfWeek WRITE setEventDayOfWeek NOTIFY eventDayOfWeekChanged)
+    Q_PROPERTY(DayOfTheWeek rawEventDayOfWeek READ rawEventDayOfWeek)
     Q_PROPERTY(QString eventDayOfWeek READ eventDayOfWeek WRITE setEventDayOfWeek NOTIFY eventDayOfWeekChanged)
     Q_PROPERTY(qreal eventLoTemp READ eventLoTemp WRITE setEventLoTemp NOTIFY eventLoTempChanged)
     Q_PROPERTY(qreal eventHiTemp READ eventHiTemp WRITE setEventHiTemp NOTIFY eventHiTempChanged)
@@ -26,6 +29,9 @@ public:
     thermostatEvent(QObject *parent=0);
     thermostatEvent(const thermostatEvent &ev);
     thermostatEvent &operator=(const thermostatEvent &other);
+
+    enum DayOfTheWeek { Sunday=0, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, AllWeek, Weekend, WeekDays };
+    Q_ENUMS(DayOfTheWeek)
 
 
     void setEventTime(QString t);
@@ -36,12 +42,9 @@ public:
 
     QTime eventTime(void) const {return m_eventTime;}
     QString eventDayOfWeek(void) const;
+    thermostatEvent::DayOfTheWeek rawEventDayOfWeek(void) const;
     qreal eventLoTemp(void) const {return m_eventLoTemp;}
     qreal eventHiTemp(void) const {return m_eventHiTemp;}
-
-public:
-    enum DayOfTheWeek { Sunday=0, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, AllWeek, Weekend, WeekDays };
-    Q_ENUMS(DayOfTheWeek)
 
 signals:
     void eventTimeChanged(void);
@@ -61,6 +64,7 @@ private:
 };
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
 /// \brief The thermostatEventModel class
 ///
@@ -75,6 +79,7 @@ public:
 
     enum thermostatEventRoles {
         DayRole = Qt::UserRole + 1,
+        RawDayRole,
         TimeRole,
         LoTempRole,
         HiTempRole
@@ -84,7 +89,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     thermostatEvent getData(int row) const;
-    void sort(int columnNumber, Qt::SortOrder=Qt::AscendingOrder);
+//    void sort(int columnNumber, Qt::SortOrder=Qt::AscendingOrder);
 
     void addThermostatEvent(const thermostatEvent &ev);
 
@@ -103,6 +108,31 @@ private:
     QList<thermostatEvent> m_events;
 
 };
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+/// \brief The thermoSortFilterProxyModel class
+///
+class thermoSortFilterProxyModel : public QSortFilterProxyModel
+{
+    Q_OBJECT
+
+public:
+    thermoSortFilterProxyModel(QObject *parent = 0);
+
+    void setFilterDay(QString day);
+    void setFilterDay(thermostatEvent::DayOfTheWeek day);
+
+protected:
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+
+private:
+    thermostatEvent::DayOfTheWeek filterDay;
+};
+
+Q_DECLARE_METATYPE(thermostatEvent::DayOfTheWeek)
+Q_DECLARE_METATYPE(thermostatEventModel::thermostatEventRoles)
 Q_DECLARE_METATYPE(thermostatEventModel)
 Q_DECLARE_METATYPE(thermostatEvent)
 #endif // THERMOSTATEVENTMODEL_H
