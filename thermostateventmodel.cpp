@@ -283,6 +283,22 @@ bool thermostatEventModel::addThermostatEvent(const thermostatEvent &ev)
     return true;
 }
 
+void thermostatEventModel::deleteThermostatEvent(int row)
+{
+    if(row >= 0 && row < m_events.size()) {
+        beginRemoveRows(QModelIndex(),row,row);
+        m_events.removeAt(row);
+        endRemoveRows();
+    }
+}
+
+void thermostatEventModel::clearEventList()
+{
+    beginResetModel();
+    m_events.clear();
+    endResetModel();
+}
+
 thermostatEvent thermostatEventModel::getCurrentSettings(thermostatEvent::DayOfTheWeek day, QTime t) const
 {
     QListIterator<thermostatEvent> i(m_events);
@@ -353,7 +369,7 @@ bool thermoSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelInd
     qDebug() << "resolves to:" << retVal;
     return retVal;
 
-//    return sourceModel()->data(index0,thermostatEventModel::RawDayRole) == filterDay;
+    //    return sourceModel()->data(index0,thermostatEventModel::RawDayRole) == filterDay;
 }
 
 bool thermoSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const

@@ -6,6 +6,7 @@
 #include <QFileInfo>
 #include <QDataStream>
 #include <QSortFilterProxyModel>
+#include <QDeclarativeEngine>
 
 #define THERMO_GROUPNAME "ThermostatEvents"
 
@@ -53,11 +54,20 @@ void thermoEventMonitor::captureThermostatEventInfo( QString dayOfWeek, QString 
     AddThermoEvent(dayOfWeek,targetTime, lowTemp, hiTemp);
     qDebug() << "We have" << m_eventModel.rowCount(QModelIndex()) << "thermo events";
     SaveThermoEvents(); // write the thermoEvents to disk so that we preserve them in case of power failure
-//    for(int i = 0; i < m_eventModel.rowCount(QModelIndex()); i++) {
-//        thermostatEvent ev = m_eventModel.getData(i);
-//        qDebug() << i << ":" << ev.eventDayOfWeek() << ev.eventTime() <<
-//                    ev.eventLoTemp() << ev.eventHiTemp();
-//    }
+}
+
+void thermoEventMonitor::deleteListItem(int i)
+{
+    qDebug() << "delete item:" << i;
+    m_eventModel.deleteThermostatEvent(i);
+    SaveThermoEvents();
+}
+
+void thermoEventMonitor::clearList()
+{
+    qDebug() << "CLEAR THE LIST";
+    m_eventModel.clearEventList();
+    SaveThermoEvents();
 }
 
 void thermoEventMonitor::AddThermoEvent(QString dayOfWeek, QString targetTime,
@@ -106,17 +116,12 @@ void thermoEventMonitor::ReadThermoEvents(void)
     QString filename = "thermoEvents.txt";
     QFile file(filename);
     if(file.exists()) {
-        qDebug() << "file exists";
         file.open(QIODevice::ReadOnly);
         QDataStream in(&file);
-        qDebug() << "file size is:" << file.size();
-        qDebug() << "is file at end?" << in.atEnd();
         while(!in.atEnd()) {
             thermostatEvent e;
             in >> e;
             m_eventModel.addThermostatEvent(e);
-            qDebug() << "Event reads:" << e.eventDayOfWeek() << e.eventTime() << e.eventLoTemp() << e.eventHiTemp();
-            qDebug() << "is file at end?" << in.atEnd();
         }
         file.close();
     } else {
@@ -129,7 +134,6 @@ void thermoEventMonitor::SaveThermoEvents(void)
 //    QSettings settings;
 //    settings.beginGroup(THERMO_GROUPNAME);
 //    settings.endGroup();
-    qDebug() << "SAVEING THERMOSTAT EVENTS";
     QString filename = "thermoEvents.txt";
     QFile file(filename);
     if(file.exists())
@@ -137,7 +141,6 @@ void thermoEventMonitor::SaveThermoEvents(void)
     file.open(QIODevice::ReadWrite);
     QDataStream out(&file);
     for( int i = 0; i < m_eventModel.rowCount(QModelIndex()); i++) {
-        qDebug() << "writing" << m_eventModel.getData(i).eventDayOfWeek();
         out << m_eventModel.getData(i);
     }
     file.close();

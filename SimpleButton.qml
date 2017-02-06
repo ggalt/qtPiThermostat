@@ -10,9 +10,11 @@ Rectangle {
     property color unpressedColor: "#00000000"
     property color selectedColor: "#4c000000"
     property int fontPointSize: 10
+    property bool isCheckable: false
     color: unpressedColor
 
     signal clicked
+    signal pressAndHold
 
     Text {
         id: myText
@@ -86,8 +88,14 @@ Rectangle {
         onPressed: simpleButton.state = "Pressed"
         onReleased: simpleButton.state = "UnPressed"
         onClicked:  {
-            simpleButton.state = "Selected"
+            if(simpleButton.isCheckable) {
+                simpleButton.state = "Selected"
+            }
             simpleButton.clicked()
+        }
+        onPressAndHold: {
+            simpleButton.state = "Pressed"
+            simpleButton.pressAndHold()
         }
     }
 }

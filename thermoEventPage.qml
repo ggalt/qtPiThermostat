@@ -4,6 +4,7 @@ import "content"
 
 Rectangle {
     id: thermoEventRect
+    objectName: "thermoEventRect"
     width: 320
     height: 240
 

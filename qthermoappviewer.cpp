@@ -69,9 +69,12 @@ void qThermoAppViewer::appStateSignal(const QString& state)
     } else if(state == "EventWindowState") {
         qDebug() << "Correctly got to EventWindowState";
         m_eventMonitor->connectEventModel(rootContext());
+        QObject *eventWinChild = rootObject()->findChild<QObject*>("eventListWin");
+        connect(eventWinChild, SIGNAL(clearList()),
+                m_eventMonitor, SLOT(clearList()));
+        connect(eventWinChild, SIGNAL(deleteItem(int)),
+                m_eventMonitor, SLOT(deleteListItem(int)));
 
-//        rootContext()->setContextProperty("eventListModel", m_eventMonitor->eventModel());
-//        this->rootContext()->setContextProperty("eventListModel", m_eventMonitor->eventModel());
     } else if(state == "WeatherWindowState") {
         qDebug() << "Correctly got to WeatherWindowState";
     }

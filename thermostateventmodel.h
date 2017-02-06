@@ -94,6 +94,8 @@ public:
     thermostatEvent getData(int row) const;
 
     bool addThermostatEvent(const thermostatEvent &ev);
+    void deleteThermostatEvent( int row );
+    void clearEventList(void);
 
     thermostatEvent getCurrentSettings(thermostatEvent::DayOfTheWeek day, QTime t) const;
 

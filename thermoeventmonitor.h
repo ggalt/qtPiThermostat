@@ -35,7 +35,8 @@ signals:
 
 public slots:
     void captureThermostatEventInfo(QString dayOfWeek, QString targetTime, qreal lowTemp, qreal hiTemp);
-
+    void deleteListItem(int i);
+    void clearList(void);
 private:
     qreal convertToKelvin(int temp, QString scale);
 

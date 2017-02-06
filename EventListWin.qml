@@ -68,6 +68,7 @@ Rectangle {
 
     signal sortByDay(string dayText)
     signal deleteItem(int row)
+    signal clearList
 
     Rectangle {
         id: dayToolBar
@@ -304,6 +305,10 @@ Rectangle {
             fontPointSize: fontSize
             onClicked: {
                 deleteItem(eventListView.currentIndex)
+            }
+            onPressAndHold: {
+                console.log("Delete Press and Hold")
+                clearList()
             }
         }
     }
