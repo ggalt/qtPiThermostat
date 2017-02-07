@@ -11,6 +11,10 @@
 #include <QVariant>
 #include <QDataStream>
 #include <QHash>
+#include <QPair>
+
+#define DEFAULT_LO 288.706  // equivalent to 60F or 16C
+#define DEFAULT_HI 299.817  // equivalent to 80F or 27C
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
@@ -97,7 +101,7 @@ public:
     void deleteThermostatEvent( int row );
     void clearEventList(void);
 
-    thermostatEvent getCurrentSettings(thermostatEvent::DayOfTheWeek day, QTime t) const;
+    QPair<qreal, qreal> getCurrentSettings(QString day, QTime time) const;
 
 signals:
 

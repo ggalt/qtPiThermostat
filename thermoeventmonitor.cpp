@@ -98,6 +98,11 @@ void thermoEventMonitor::AddThermoEvent(QString dayOfWeek, QString targetTime,
     }
 }
 
+QPair<qreal, qreal> thermoEventMonitor::getTempRange(QString day, QTime time)
+{
+    return m_eventModel.getCurrentSettings(day, time);
+}
+
 void thermoEventMonitor::AddThermoEvent( thermostatEvent &ev )
 {
 //    m_eventModel.insertRows(0, 1, QModelIndex());

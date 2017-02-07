@@ -8,6 +8,7 @@
 #include <QSettings>
 #include <QModelIndex>
 #include <QDeclarativeContext>
+#include <QPair>
 
 #include "thermostateventmodel.h"
 
@@ -29,6 +30,7 @@ public:
     void SaveThermoEvents(void);
     void AddThermoEvent(thermostatEvent &ev );
     void AddThermoEvent(QString dayOfWeek, QString targetTime, qreal lowTemp, qreal hiTemp);
+    QPair<qreal, qreal> getTempRange(QString day, QTime time);
 
 signals:
     void eventModelChanged(void);

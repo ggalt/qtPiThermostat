@@ -299,14 +299,19 @@ void thermostatEventModel::clearEventList()
     endResetModel();
 }
 
-thermostatEvent thermostatEventModel::getCurrentSettings(thermostatEvent::DayOfTheWeek day, QTime t) const
+QPair<qreal,qreal> thermostatEventModel::getCurrentSettings(QString day, QTime time) const
 {
+    QPair<qreal, qreal>retVal;
+    retVal = QPair<qreal,qreal>(DEFAULT_LO,DEFAULT_HI);   // set default values in case we find nothing
     QListIterator<thermostatEvent> i(m_events);
     while(i.hasNext()) {
-        thermostatEvent e = i.next();
-        if(e.rawEventDayOfWeek() == day) {
-        }
+        thermostatEvent ev = i.next();
+        if(ev.eventDayOfWeek() == day &&
+                ev.eventTime() <= time &&
+                i.peekNext().eventTime() > time )
+            retVal = QPair<qreal,qreal>(ev.eventLoTemp(), ev.eventHiTemp());
     }
+    return retVal;
 }
 
 QHash<int, QByteArray> thermostatEventModel::roleNames() const {
