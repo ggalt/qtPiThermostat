@@ -10,6 +10,7 @@
 #include <QDeclarativeItem>
 #include <QList>
 #include <QTimer>
+#include <QDateTime>
 
 ///
 /// \brief The qThermoAppViewer class
@@ -30,13 +31,13 @@ signals:
 public slots:
     void LaunchEventListWin(void);
     void LaunchWeatherWin(void);
-    void CheckTemp(void);
+    void CheckOutsideTemp(void);
     void CheckIndoorCondition(void);
+    void CheckIndoorTempRange(void);
     void appStateSignal(const QString& state);
 
 private:
     QObject *mainRec;
-    QTimer secondaryTick;
     bool initializingApp;
 
     WeatherNetworkConnection *m_weather;
@@ -46,7 +47,10 @@ private:
 
     float currentIndoorTemp;
     float currentIndoorHumidity;
+    QPair<qreal,qreal> currentTempRange;
     QTimer mainTick;
+    QTimer secondaryTick;
+    QTimer tempMonitorTick;
 };
 
 #endif // QTHERMOAPPVIEWER_H

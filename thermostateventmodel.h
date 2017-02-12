@@ -101,7 +101,7 @@ public:
     void deleteThermostatEvent( int row );
     void clearEventList(void);
 
-    QPair<qreal, qreal> getCurrentSettings(QString day, QTime time) const;
+    QPair<qreal, qreal> getCurrentSettings(QString day, QTime time);
 
 signals:
 
@@ -112,7 +112,7 @@ protected:
 
 private:
     QList<thermostatEvent> m_events;
-
+    QPair<qreal,qreal> m_tempRange;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

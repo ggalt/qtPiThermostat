@@ -15,6 +15,7 @@
 #include <QDeclarativeItem>
 #include <QDeclarativeContext>
 #include <QTimer>
+#include <QLocale>
 
 //#include <QtQml/QQmlProperty>
 
@@ -32,7 +33,7 @@ void qThermoAppViewer::Init(void)
     m_eventMonitor = new thermoEventMonitor(this);
 
     connect(&secondaryTick, SIGNAL(timeout()),
-            this, SLOT(CheckTemp()));
+            this, SLOT(CheckOutsideTemp()));
 
     connect(mainRec, SIGNAL(mainAppState(QString)),
             this, SLOT(appStateSignal(QString)));
@@ -43,6 +44,9 @@ void qThermoAppViewer::Init(void)
     connect(&mainTick, SIGNAL(timeout()),
             this, SLOT(CheckIndoorCondition()));
 
+    connect(&tempMonitorTick, SIGNAL(timeout()),
+            this,SLOT(CheckIndoorTempRange()));
+
 
     m_eventMonitor->ReadThermoEvents();
 
@@ -50,6 +54,8 @@ void qThermoAppViewer::Init(void)
     mainTick.start();
     secondaryTick.setInterval(5000);
     secondaryTick.start();
+    tempMonitorTick.setInterval(5*1000);   // every minute
+    tempMonitorTick.start();
 }
 
 
@@ -108,7 +114,20 @@ void qThermoAppViewer::CheckIndoorCondition(void)
 
 }
 
-void qThermoAppViewer::CheckTemp(void)
+void qThermoAppViewer::CheckIndoorTempRange()
+{
+    QDateTime current = QDateTime::currentDateTime();
+    QString day = current.toString("ddd").toUpper();
+    QTime t = current.time();
+    currentTempRange = m_eventMonitor->getTempRange(day,t);
+    qDebug() << "for" << day << "at" << t;
+    qDebug() << "current temp range is:" << currentTempRange;
+    if(currentIndoorTemp < currentTempRange.first || currentIndoorTemp > currentTempRange.second){
+        qDebug() << "*********************" << currentIndoorTemp << "is outside of current temp range";
+    }
+}
+
+void qThermoAppViewer::CheckOutsideTemp(void)
 {
     mainRec->setProperty("outsideCurrentTemp",m_weather->niceTemperatureString(m_weather->weather()->temperature()));
     mainRec->setProperty("curTemp", m_weather->niceTemperatureString(currentIndoorTemp));

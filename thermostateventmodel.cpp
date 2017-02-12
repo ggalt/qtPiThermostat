@@ -178,6 +178,7 @@ QDataStream& operator >> (QDataStream& in, thermostatEvent& ev)
 thermostatEventModel::thermostatEventModel(QObject *parent) :
     QAbstractListModel(parent)
 {
+    m_tempRange = QPair<qreal,qreal>(DEFAULT_LO,DEFAULT_HI);   // set default values in case we find nothing
 }
 
 thermostatEventModel::thermostatEventModel(const thermostatEventModel &ev)
@@ -299,18 +300,21 @@ void thermostatEventModel::clearEventList()
     endResetModel();
 }
 
-QPair<qreal,qreal> thermostatEventModel::getCurrentSettings(QString day, QTime time) const
+QPair<qreal,qreal> thermostatEventModel::getCurrentSettings(QString day, QTime time)
 {
     QPair<qreal, qreal>retVal;
-    retVal = QPair<qreal,qreal>(DEFAULT_LO,DEFAULT_HI);   // set default values in case we find nothing
+    retVal = m_tempRange;       // set to current range so if we don't find anything, we stay at the same setting
     QListIterator<thermostatEvent> i(m_events);
+    qDebug() << "day" << day << "and time" << time;
     while(i.hasNext()) {
         thermostatEvent ev = i.next();
-        if(ev.eventDayOfWeek() == day &&
-                ev.eventTime() <= time &&
-                i.peekNext().eventTime() > time )
+        // the next statement will capture every time earlier than the requested time
+        if(ev.eventDayOfWeek() == day && ev.eventTime() <= time ) {
+            qDebug() << "success, we got" << ev.eventLoTemp() << ev.eventHiTemp();
             retVal = QPair<qreal,qreal>(ev.eventLoTemp(), ev.eventHiTemp());
+        }
     }
+    m_tempRange = retVal;   // m_tempRange will only change if we've found something
     return retVal;
 }
 
