@@ -1,9 +1,13 @@
 import QtQuick 1.1
 
 Rectangle {
-    id: rectangle1
+    id: mainWindowRectangle
+    objectName: "mainWindowRectangle"
     width: 320
     height: 240
+
+//    property alias loTargetTemp: targetLoTemp.text
+//    property alias hiTargetTemp: targetHiTemp.text
 
     opacity: 0
 
@@ -62,79 +66,6 @@ Rectangle {
             anchors.fill: parent
             onClicked: mainRectangle.changeAppState("EventWindowState")
         }
-    }
-
-    Text {
-        id: txtTargetTemp
-        x: 294
-        text: targetTemp.toString()
-        anchors.verticalCenter: parent.verticalCenter
-        verticalAlignment: Text.AlignTop
-        horizontalAlignment: Text.AlignRight
-        anchors.right: parent.right
-        anchors.rightMargin: 2
-        font.pointSize: 28
-
-        MouseArea {
-            id: maTargetTemp
-            anchors.fill: parent
-            onClicked: mainRectangle.changeAppState("EventWindowState")
-        }
-    }
-
-    Image {
-        id: upButton
-        x: 140
-        y: 32
-        width: 40
-        height: 40
-        anchors.bottomMargin: 5
-        anchors.bottom: txtTargetTemp.top
-        anchors.horizontalCenter: txtTargetTemp.horizontalCenter
-        source: "icons/uparrow.png"
-
-        MouseArea {
-            id: maUpButton
-            anchors.fill: parent
-            onClicked: {
-                mainRectangle.targetTemp += 1
-                if(mainRectangle.targetTemp > 99)
-                    mainRectangle.targetTemp = 99
-            }
-        }
-    }
-
-    Image {
-        id: downButton
-        x: 140
-        width: 40
-        height: 40
-        anchors.top: txtTargetTemp.bottom
-        anchors.topMargin: 5
-        anchors.horizontalCenter: txtTargetTemp.horizontalCenter
-        source: "icons/downarrow.png"
-
-        MouseArea {
-            id: maDownButton
-            anchors.fill: parent
-            onClicked: {
-                mainRectangle.targetTemp -= 1
-                if(mainRectangle.targetTemp < 40)
-                    mainRectangle.targetTemp = 40
-            }
-        }
-    }
-
-    Text {
-        id: tempLabel
-        x: 236
-        y: 18
-        text: qsTr("Target:")
-        anchors.verticalCenter: txtTargetTemp.verticalCenter
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignRight
-        anchors.right: txtTargetTemp.left
-        font.pointSize: 10
     }
 
     Text {
@@ -207,12 +138,11 @@ Rectangle {
         y: 138
         width: 60
         height: 60
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.rightMargin: 2
+        anchors.right: parent.right
         fillMode: Image.PreserveAspectFit
         opacity: 1
-        anchors.leftMargin: 2
-        anchors.left: parent.left
-        anchors.bottom: txtTime.top
-        anchors.bottomMargin: 6
         source: "icons/heating.png"
     }
 
@@ -226,5 +156,30 @@ Rectangle {
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         font.pointSize: 16
+    }
+
+    Text {
+        id: targetHiTemp
+        x: 298
+        y: 49
+        color: "#ff0101"
+        text: mainRectangle.targetHiTemp
+        font.pointSize: 18
+        anchors.bottom: imgCoolingState.top
+        anchors.bottomMargin: 5
+        anchors.right: parent.right
+        anchors.rightMargin: 2
+    }
+
+    Text {
+        id: targetLoTemp
+        x: 285
+        color: "#2e02ff"
+        text: mainRectangle.targetLoTemp
+        anchors.topMargin: 5
+        font.pointSize: 18
+        anchors.right: parent.right
+        anchors.rightMargin: 2
+        anchors.top: imgCoolingState.bottom
     }
 }

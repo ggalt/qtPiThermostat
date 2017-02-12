@@ -10,7 +10,8 @@ Rectangle {
     //////////////////////////////////////////////////////////
     // properties for main screen
     property string curTemp: ""
-    property int targetTemp: 69
+    property int targetHiTemp: 80
+    property int targetLoTemp: 60
     property string curHumidity: ""
     property string curDate: ""
     property string curTime: ""

@@ -71,6 +71,9 @@ void qThermoAppViewer::appStateSignal(const QString& state)
     qDebug() << "Current App State:" << state;
     if(state == "MainWindowState") {
         qDebug() << "Correctly got to MainWindowState";
+        QObject *mainWindowRectangle = rootObject()->findChild<QObject*>("mainWindowRectangle");
+        mainWindowRectangle->setProperty("loTargetTemp", QVariant("65"));
+        mainWindowRectangle->setProperty("hiTargetTemp", QVariant("87"));
 
     } else if(state == "EventWindowState") {
         qDebug() << "Correctly got to EventWindowState";

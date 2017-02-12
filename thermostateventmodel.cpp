@@ -254,22 +254,22 @@ bool thermostatEventModel::addThermostatEvent(const thermostatEvent &ev)
         if( (int)ev.rawEventDayOfWeek() < (int)m_events.at(i).rawEventDayOfWeek() ) {
             m_events.insert(i,ev);
             endInsertRows();
-            qDebug() << ev.eventDayOfWeek() << "is before" << m_events.at(i).eventDayOfWeek();
+//            qDebug() << ev.eventDayOfWeek() << "is before" << m_events.at(i).eventDayOfWeek();
             return true;
         }
 
         else if( (int)ev.rawEventDayOfWeek() == (int)m_events.at(i).rawEventDayOfWeek() ) {
-            qDebug() << ev.eventDayOfWeek() << "is the same as" << m_events.at(i).eventDayOfWeek();
+//            qDebug() << ev.eventDayOfWeek() << "is the same as" << m_events.at(i).eventDayOfWeek();
 
             if( ev.eventTime() < m_events.at(i).eventTime() ) {
                 m_events.insert(i,ev);
                 endInsertRows();
-                qDebug() <<  ev.eventTime() << "is earlier than" << m_events.at(i).eventTime();
+//                qDebug() <<  ev.eventTime() << "is earlier than" << m_events.at(i).eventTime();
                 return true;
             }
 
             else if( ev.eventTime() == m_events.at(i).eventTime() ) {        // oops!!  we seem to have a duplicate day and time,  Replace current.
-                qDebug() << ev.eventDayOfWeek() << "and" << ev.eventTime() << "==" << m_events.at(i).eventDayOfWeek() << "and" << m_events.at(i).eventTime();
+//                qDebug() << ev.eventDayOfWeek() << "and" << ev.eventTime() << "==" << m_events.at(i).eventDayOfWeek() << "and" << m_events.at(i).eventTime();
                 m_events.replace(i,ev);
                 endInsertRows();
                 return true;
@@ -279,7 +279,7 @@ bool thermostatEventModel::addThermostatEvent(const thermostatEvent &ev)
 
     m_events.append(ev);
     endInsertRows();
-    qDebug() << ev.eventDayOfWeek() << ev.eventTime() << "has been appended";
+//    qDebug() << ev.eventDayOfWeek() << ev.eventTime() << "has been appended";
 
     return true;
 }
