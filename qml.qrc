@@ -44,6 +44,7 @@
         <file>content/listview-select.png</file>
         <file>content/1486350258_ic_keyboard_arrow_right_48px.png</file>
         <file>content/1486350283_ic_keyboard_arrow_left_48px.png</file>
-        <file>content/threePositionSwitch.qml</file>
+        <file>content/ThreePositionSwitch.qml</file>
+        <file>icons/ACandHeatOff.png</file>
     </qresource>
 </RCC>

@@ -16,6 +16,7 @@
 #include <QDeclarativeContext>
 #include <QTimer>
 #include <QLocale>
+#include <QMetaObject>
 
 //#include <QtQml/QQmlProperty>
 
@@ -127,6 +128,28 @@ void qThermoAppViewer::CheckIndoorTempRange()
     qDebug() << "current temp range is:" << currentTempRange;
     if(currentIndoorTemp < currentTempRange.first || currentIndoorTemp > currentTempRange.second){
         qDebug() << "*********************" << currentIndoorTemp << "is outside of current temp range";
+    }
+
+    QVariant returnedValue;
+    QVariant heatState;
+    if(currentIndoorTemp < currentTempRange.first){
+        // too cold, turn on the heat
+        heatState = "heat";
+        QMetaObject::invokeMethod(mainRec, "setHeatingState",
+                Q_RETURN_ARG(QVariant, returnedValue),
+                Q_ARG(QVariant, heatState));
+
+    } else if(currentIndoorTemp > currentTempRange.second) {
+        // too hot, turn on the AC
+        heatState = "cool";
+        QMetaObject::invokeMethod(mainRec, "setHeatingState",
+                Q_RETURN_ARG(QVariant, returnedValue),
+                Q_ARG(QVariant, heatState));
+    } else {
+        heatState = "nothing";
+        QMetaObject::invokeMethod(mainRec, "setHeatingState",
+                Q_RETURN_ARG(QVariant, returnedValue),
+                Q_ARG(QVariant, heatState));
     }
 }
 

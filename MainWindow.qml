@@ -1,4 +1,5 @@
 import QtQuick 1.1
+import "content"
 
 Rectangle {
     id: mainWindowRectangle
@@ -120,6 +121,24 @@ Rectangle {
         }
     }
 
+    ThreePositionSwitch {
+        id: fanSwitch
+        width: 60
+        height: 60
+        color: "#99808080"
+        radius: 5
+        pressedTopColor: "#808080"
+        pressedBottomColor: "#808080"
+        thirdStateText: "OFF"
+        secondStateText: "AUTO"
+        firstStateText: "ON"
+        border.color: "#808080"
+        border.width: 2
+        anchors.left: parent.left
+        anchors.leftMargin: 5
+        anchors.verticalCenter: parent.verticalCenter
+    }
+
     Text {
         id: txtRelHum
         x: 292
@@ -142,8 +161,7 @@ Rectangle {
         anchors.rightMargin: 2
         anchors.right: parent.right
         fillMode: Image.PreserveAspectFit
-        opacity: 1
-        source: "icons/heating.png"
+        source: mainRectangle.sourceHeatingImage
     }
 
     Text {

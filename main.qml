@@ -21,6 +21,7 @@ Rectangle {
     property int fanState: 0
     property int coolingState: 0
     property string tempScale: "F"
+    property string sourceHeatingImage: "icons/heating.png"
 
     //////////////////////////////////////////////////////////
     // properties for weather screen
@@ -51,6 +52,19 @@ Rectangle {
 
     //////////////////////////////////////////////////////////
     // functions
+    function setHeatingState(heatingState) {
+        if(heatingState === "heat") {
+            sourceHeatingImage = "icons/heating.png"
+            console.log("heating and using", sourceHeatingImage)
+        } else if(heatingState === "cool"){
+            sourceHeatingImage = "icons/cooling.png"
+            console.log("cooling and using", sourceHeatingImage)
+        } else {
+            sourceHeatingImage = "icons/ACandHeatOff.png"
+            console.log("doing nothing and using", sourceHeatingImage)
+        }
+    }
+
     function changeAppState(appState) {
         mainRectangle.state = appState
         mainAppState(appState)
