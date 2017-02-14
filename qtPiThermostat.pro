@@ -38,7 +38,8 @@ HEADERS += \
     weatherdata.h \
     weathernetworkconnection.h \
     thermostateventmodel.h \
-    thermoeventmonitor.h
+    thermoeventmonitor.h \
+    wiringPi/wiringPi.h
 
 unix {
 HEADERS += source/common_dht_read.h \

@@ -1,5 +1,4 @@
 #include "qthermoappviewer.h"
-//#include "qeventlistwindow.h"
 #include <QDebug>
 #include <QVariant>
 #include <QMetaObject>
@@ -17,8 +16,6 @@
 #include <QTimer>
 #include <QLocale>
 #include <QMetaObject>
-
-//#include <QtQml/QQmlProperty>
 
 qThermoAppViewer::qThermoAppViewer(QtQuick1ApplicationViewer *parent) :
     QtQuick1ApplicationViewer(parent)
@@ -59,14 +56,6 @@ void qThermoAppViewer::Init(void)
     tempMonitorTick.start();
 }
 
-
-void qThermoAppViewer::LaunchEventListWin(void)
-{
-//    qDebug() << "We're here!";
-//    qEventListWindow *evWin = new qEventListWindow();
-//    evWin->Init();
-}
-
 void qThermoAppViewer::appStateSignal(const QString& state)
 {
     qDebug() << "Current App State:" << state;
@@ -88,11 +77,6 @@ void qThermoAppViewer::appStateSignal(const QString& state)
     } else if(state == "WeatherWindowState") {
         qDebug() << "Correctly got to WeatherWindowState";
     }
-}
-
-void qThermoAppViewer::LaunchWeatherWin(void)
-{
-    qDebug() << "We're here!";
 }
 
 void qThermoAppViewer::CheckIndoorCondition(void)
@@ -124,11 +108,6 @@ void qThermoAppViewer::CheckIndoorTempRange()
     QString day = current.toString("ddd").toUpper();
     QTime t = current.time();
     currentTempRange = m_eventMonitor->getTempRange(day,t);
-    qDebug() << "for" << day << "at" << t;
-    qDebug() << "current temp range is:" << currentTempRange;
-    if(currentIndoorTemp < currentTempRange.first || currentIndoorTemp > currentTempRange.second){
-        qDebug() << "*********************" << currentIndoorTemp << "is outside of current temp range";
-    }
 
     QVariant returnedValue;
     QVariant heatState;
@@ -146,6 +125,7 @@ void qThermoAppViewer::CheckIndoorTempRange()
                 Q_RETURN_ARG(QVariant, returnedValue),
                 Q_ARG(QVariant, heatState));
     } else {
+        // all is good, do nothing
         heatState = "nothing";
         QMetaObject::invokeMethod(mainRec, "setHeatingState",
                 Q_RETURN_ARG(QVariant, returnedValue),
@@ -157,7 +137,6 @@ void qThermoAppViewer::CheckOutsideTemp(void)
 {
     mainRec->setProperty("outsideCurrentTemp",m_weather->niceTemperatureString(m_weather->weather()->temperature()));
     mainRec->setProperty("curTemp", m_weather->niceTemperatureString(currentIndoorTemp));
-//    mainRec->setProperty("targetTemp", m_weather->niceTemperatureString(294.261,false));
     mainRec->setProperty("currentWeatherIcon", m_weather->weather()->weatherIcon());
     mainRec->setProperty("curHumidity", currentIndoorHumidity);
 

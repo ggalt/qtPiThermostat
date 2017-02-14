@@ -29,8 +29,6 @@ public:
 signals:
 
 public slots:
-    void LaunchEventListWin(void);
-    void LaunchWeatherWin(void);
     void CheckOutsideTemp(void);
     void CheckIndoorCondition(void);
     void CheckIndoorTempRange(void);
