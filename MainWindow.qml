@@ -124,7 +124,7 @@ Rectangle {
     ThreePositionSwitch {
         id: fanSwitch
         width: 60
-        height: 60
+        height: 50
         color: "#99808080"
         radius: 5
         pressedTopColor: "#808080"
@@ -136,7 +136,7 @@ Rectangle {
         border.width: 2
         anchors.left: parent.left
         anchors.leftMargin: 5
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.top: parent.verticalCenter
     }
 
     Text {

@@ -55,13 +55,13 @@ Rectangle {
     function setHeatingState(heatingState) {
         if(heatingState === "heat") {
             sourceHeatingImage = "icons/heating.png"
-            console.log("heating and using", sourceHeatingImage)
+//            console.log("heating and using", sourceHeatingImage)
         } else if(heatingState === "cool"){
             sourceHeatingImage = "icons/cooling.png"
-            console.log("cooling and using", sourceHeatingImage)
+//            console.log("cooling and using", sourceHeatingImage)
         } else {
             sourceHeatingImage = "icons/ACandHeatOff.png"
-            console.log("doing nothing and using", sourceHeatingImage)
+//            console.log("doing nothing and using", sourceHeatingImage)
         }
     }
 

@@ -305,12 +305,12 @@ QPair<qreal,qreal> thermostatEventModel::getCurrentSettings(QString day, QTime t
     QPair<qreal, qreal>retVal;
     retVal = m_tempRange;       // set to current range so if we don't find anything, we stay at the same setting
     QListIterator<thermostatEvent> i(m_events);
-    qDebug() << "day" << day << "and time" << time;
+//    qDebug() << "day" << day << "and time" << time;
     while(i.hasNext()) {
         thermostatEvent ev = i.next();
         // the next statement will capture every time earlier than the requested time
         if(ev.eventDayOfWeek() == day && ev.eventTime() <= time ) {
-            qDebug() << "success, we got" << ev.eventLoTemp() << ev.eventHiTemp();
+//            qDebug() << "success, we got" << ev.eventLoTemp() << ev.eventHiTemp();
             retVal = QPair<qreal,qreal>(ev.eventLoTemp(), ev.eventHiTemp());
         }
     }
