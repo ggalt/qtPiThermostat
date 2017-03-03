@@ -65,7 +65,8 @@ Rectangle {
         MouseArea {
             id: maCurrentTemp
             anchors.fill: parent
-            onClicked: mainRectangle.changeAppState("EventWindowState")
+            onPressAndHold: mainRectangle.changeAppState("EventWindowState")
+//            onClicked: mainRectangle.changeAppState("EventWindowState")
         }
     }
 
