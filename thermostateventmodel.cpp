@@ -413,3 +413,80 @@ bool thermoSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelI
     qDebug() << "**** not sure what we are doing here!! ****";
     return false;
 }
+
+thermostatData::thermostatData(QObject *parent) : QObject(parent)
+{
+
+}
+
+QPair<qreal, qreal> thermostatData::thermostatRange() const
+{
+    return m_thermostatRange;
+}
+
+void thermostatData::setThermostatRange(const QPair<qreal, qreal> &thermostatRange)
+{
+    m_thermostatRange = thermostatRange;
+}
+QDateTime thermostatData::timestamp() const
+{
+    return m_timestamp;
+}
+
+void thermostatData::setTimestamp(const QDateTime &timestamp)
+{
+    m_timestamp = timestamp;
+}
+qreal thermostatData::indoorTemp() const
+{
+    return m_indoorTemp;
+}
+
+void thermostatData::setIndoorTemp(const qreal &indoorTemp)
+{
+    m_indoorTemp = indoorTemp;
+}
+qreal thermostatData::outdoorTemp() const
+{
+    return m_outdoorTemp;
+}
+
+void thermostatData::setOutdoorTemp(const qreal &outdoorTemp)
+{
+    m_outdoorTemp = outdoorTemp;
+}
+qreal thermostatData::indoorHumidity() const
+{
+    return m_indoorHumidity;
+}
+
+void thermostatData::setIndoorHumidity(const qreal &indoorHumidity)
+{
+    m_indoorHumidity = indoorHumidity;
+}
+
+
+QDataStream &operator <<(QDataStream &out, const thermostatData &ev)
+{
+    out << ev.thermostatRange() << ev.timestamp() << ev.indoorTemp() << ev.indoorHumidity() << ev.outdoorTemp();
+    return out;
+}
+
+QDataStream &operator >>(QDataStream &in, thermostatData &ev)
+{
+    QPair<qreal, qreal> mv_thermostatRange;
+    QDateTime mv_timestamp;
+    qreal mv_indoorTemp;
+    qreal mv_indoorHumidity;
+    qreal mv_outdoorTemp;
+
+    in >> mv_thermostatRange >> mv_timestamp >> mv_indoorTemp >> mv_indoorHumidity >> mv_outdoorTemp;
+
+    ev.setThermostatRange(mv_thermostatRange);
+    ev.setTimestamp(mv_timestamp);
+    ev.setIndoorTemp(mv_indoorTemp);
+    ev.setOutdoorTemp(mv_outdoorTemp);
+
+    return in;
+}
+

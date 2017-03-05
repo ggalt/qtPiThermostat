@@ -115,6 +115,46 @@ private:
     QPair<qreal,qreal> m_tempRange;
 };
 
+
+class thermostatData : public QObject
+{
+    Q_OBJECT
+public:
+    thermostatData(QObject *parent = 0);
+
+    QPair<qreal, qreal> thermostatRange() const;
+    void setThermostatRange(const QPair<qreal, qreal> &thermostatRange);
+
+    QDateTime timestamp() const;
+    void setTimestamp(const QDateTime &timestamp);
+
+    qreal indoorTemp() const;
+    void setIndoorTemp(const qreal &indoorTemp);
+
+    qreal outdoorTemp() const;
+    void setOutdoorTemp(const qreal &outdoorTemp);
+
+    qreal indoorHumidity() const;
+    void setIndoorHumidity(const qreal &indoorHumidity);
+
+    qint64 dataPayloadSize(void) { return sizeof(m_thermostatRange) +
+                                          sizeof(m_timestamp) +
+                                          sizeof(m_indoorTemp) +
+                                          sizeof(m_indoorHumidity) +
+                                          sizeof(m_outdoorTemp); }
+
+private:
+    friend QDataStream& operator << (QDataStream& out, const thermostatData& ev);
+    friend QDataStream& operator >> (QDataStream& in, thermostatData& ev);
+
+private:
+    QPair<qreal, qreal> m_thermostatRange;
+    QDateTime m_timestamp;
+    qreal m_indoorTemp;
+    qreal m_indoorHumidity;
+    qreal m_outdoorTemp;
+};
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///
 /// \brief The thermoSortFilterProxyModel class

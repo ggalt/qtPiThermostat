@@ -6,12 +6,12 @@ QML_IMPORT_PATH =
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
     forecastlistmodel.cpp \
-    qeventlistwindow.cpp \
     qthermoappviewer.cpp \
     weatherdata.cpp \
     weathernetworkconnection.cpp \
     thermostateventmodel.cpp \
-    thermoeventmonitor.cpp
+    thermoeventmonitor.cpp \
+    serverconnection.cpp
 
 #so we can test on windows, if we absolutely have to!!
 unix {
@@ -33,13 +33,13 @@ include(deployment.pri)
 
 HEADERS += \
     forecastlistmodel.h \
-    qeventlistwindow.h \
     qthermoappviewer.h \
     weatherdata.h \
     weathernetworkconnection.h \
     thermostateventmodel.h \
     thermoeventmonitor.h \
-    wiringPi/wiringPi.h
+    wiringPi/wiringPi.h \
+    serverconnection.h
 
 unix {
 HEADERS += source/common_dht_read.h \

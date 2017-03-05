@@ -6,6 +6,7 @@
 #include "thermostateventmodel.h"
 #include "thermoeventmonitor.h"
 #include "source/Raspberry_Pi/pi_dht_read.h"
+#include "serverconnection.h"
 
 #include <QDeclarativeItem>
 #include <QList>
@@ -33,6 +34,8 @@ public slots:
     void CheckIndoorCondition(void);
     void CheckIndoorTempRange(void);
     void appStateSignal(const QString& state);
+    void logCurrentStatus(void);
+    void checkWriteStatus(qint64 bytes);
 
 private:
     QObject *mainRec;
@@ -41,14 +44,18 @@ private:
     WeatherNetworkConnection *m_weather;
     thermoEventMonitor *m_eventMonitor;
     thermostatEventModel m_eventModel;
+
     static QDeclarativeItem* FindItemByName(QList<QObject*> nodes, const QString& name);
 
     float currentIndoorTemp;
     float currentIndoorHumidity;
     QPair<qreal,qreal> currentTempRange;
-    QTimer mainTick;
-    QTimer secondaryTick;
-    QTimer tempMonitorTick;
+    QTimer oneSecondTick;
+    QTimer fiveSecondTick;
+    QTimer oneMinuteTick;
+
+    ServerConnection *m_connection;
+    qint64 bytesToBeWritten;
 };
 
 #endif // QTHERMOAPPVIEWER_H

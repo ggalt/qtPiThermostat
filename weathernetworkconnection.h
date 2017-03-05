@@ -47,6 +47,7 @@ public:
     bool weatherReady() const { return m_weatherReady; }
     QString city() const { return m_city; }
     forecastListModel *forecast() const { return m_forecast; }
+    WeatherData currentWeather() const { return m_now; }
 
     WeatherData *getWeatherForDay(int daysFromToday );
     QString niceTemperatureString(double t, bool displayDegree = true);

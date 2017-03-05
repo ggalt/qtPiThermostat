@@ -17,6 +17,9 @@
 #include <QLocale>
 #include <QMetaObject>
 
+#define SERVER_ADDRESS "127.0.0.1"
+#define SERVER_PORT 4567
+
 qThermoAppViewer::qThermoAppViewer(QtQuick1ApplicationViewer *parent) :
     QtQuick1ApplicationViewer(parent)
 {
@@ -27,11 +30,10 @@ void qThermoAppViewer::Init(void)
 {
     mainRec = this->rootObject();
 
+    m_connection = new ServerConnection(this);
+
     m_weather = new WeatherNetworkConnection(this);
     m_eventMonitor = new thermoEventMonitor(this);
-
-    connect(&secondaryTick, SIGNAL(timeout()),
-            this, SLOT(CheckOutsideTemp()));
 
     connect(mainRec, SIGNAL(mainAppState(QString)),
             this, SLOT(appStateSignal(QString)));
@@ -39,21 +41,30 @@ void qThermoAppViewer::Init(void)
     connect(mainRec, SIGNAL(captureThermostatEventInfo(QString, QString, qreal, qreal)),
             m_eventMonitor, SLOT(captureThermostatEventInfo(QString,QString,qreal,qreal)));
 
-    connect(&mainTick, SIGNAL(timeout()),
+    connect(&oneSecondTick, SIGNAL(timeout()),
             this, SLOT(CheckIndoorCondition()));
 
-    connect(&tempMonitorTick, SIGNAL(timeout()),
+    connect(&fiveSecondTick, SIGNAL(timeout()),
+            this, SLOT(CheckOutsideTemp()));
+
+    connect(&fiveSecondTick, SIGNAL(timeout()),
             this,SLOT(CheckIndoorTempRange()));
+
+    connect(&oneMinuteTick, SIGNAL(timeout()),
+            this, SLOT(logCurrentStatus()));
+
+    connect(m_connection, SIGNAL(bytesWritten(qint64)),
+            this,SLOT(checkWriteStatus(qint64)));
 
 
     m_eventMonitor->ReadThermoEvents();
 
-    mainTick.setInterval(1000);
-    mainTick.start();
-    secondaryTick.setInterval(5000);
-    secondaryTick.start();
-    tempMonitorTick.setInterval(5*1000);   // every minute
-    tempMonitorTick.start();
+    oneSecondTick.setInterval(1000);        // every second
+    oneSecondTick.start();
+    fiveSecondTick.setInterval(5000);       //  every 5 seconds
+    fiveSecondTick.start();
+    oneMinuteTick.setInterval(60*1000);     // every minute
+    oneMinuteTick.start();
 }
 
 void qThermoAppViewer::appStateSignal(const QString& state)
@@ -76,6 +87,33 @@ void qThermoAppViewer::appStateSignal(const QString& state)
 
     } else if(state == "WeatherWindowState") {
         qDebug() << "Correctly got to WeatherWindowState";
+    }
+}
+
+void qThermoAppViewer::logCurrentStatus()
+{
+    m_connection->connectToHost(SERVER_ADDRESS, SERVER_PORT);
+    QDataStream out(m_connection);
+
+    thermostatData m_thermostatData;
+
+    m_thermostatData.setIndoorTemp(currentIndoorTemp);
+    m_thermostatData.setIndoorHumidity(currentIndoorHumidity);
+    m_thermostatData.setThermostatRange(currentTempRange);
+    m_thermostatData.setOutdoorTemp(m_weather->currentWeather().temperature());
+    m_thermostatData.setTimestamp(QDateTime::currentDateTime());
+
+    bytesToBeWritten = 0;
+    bytesToBeWritten = m_thermostatData.dataPayloadSize();
+
+    out << m_thermostatData;
+}
+
+void qThermoAppViewer::checkWriteStatus(qint64 bytes)
+{
+    bytesToBeWritten -= bytes;
+    if(bytesToBeWritten <= 0) {
+        m_connection->close();
     }
 }
 
