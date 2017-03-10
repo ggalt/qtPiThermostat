@@ -33,6 +33,7 @@ WeatherNetworkConnection::WeatherNetworkConnection(QObject *parent) :
     constructURLs();
 
     m_netManager = new QNetworkAccessManager(this);
+    qDebug() << "made netmanager";
     connect(m_netManager,SIGNAL(finished(QNetworkReply*)),
             this,SLOT(processWeather(QNetworkReply*)));
 
@@ -91,6 +92,7 @@ WeatherData *WeatherNetworkConnection::weather()
 
 void WeatherNetworkConnection::refreshWeather(void)
 {
+    qDebug() << "refreshWeather";
     if(qState == WeatherNetworkConnection::Weather)
         m_netManager->get(QNetworkRequest(m_weatherURL));
     else
@@ -99,6 +101,7 @@ void WeatherNetworkConnection::refreshWeather(void)
 
 void WeatherNetworkConnection::processWeather(QNetworkReply *networkReply)
 {
+    qDebug() << "processWeather";
     m_weatherReady = false;
 
     if (!networkReply->error()) {

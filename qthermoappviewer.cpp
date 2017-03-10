@@ -16,9 +16,7 @@
 #include <QTimer>
 #include <QLocale>
 #include <QMetaObject>
-
-#define SERVER_ADDRESS "127.0.0.1"
-#define SERVER_PORT 4567
+#include <QThread>
 
 qThermoAppViewer::qThermoAppViewer(QtQuick1ApplicationViewer *parent) :
     QtQuick1ApplicationViewer(parent)
@@ -29,8 +27,6 @@ qThermoAppViewer::qThermoAppViewer(QtQuick1ApplicationViewer *parent) :
 void qThermoAppViewer::Init(void)
 {
     mainRec = this->rootObject();
-
-    m_connection = new ServerConnection(this);
 
     m_weather = new WeatherNetworkConnection(this);
     m_eventMonitor = new thermoEventMonitor(this);
@@ -92,9 +88,6 @@ void qThermoAppViewer::appStateSignal(const QString& state)
 
 void qThermoAppViewer::logCurrentStatus()
 {
-    m_connection->connectToHost(SERVER_ADDRESS, SERVER_PORT);
-    QDataStream out(m_connection);
-
     thermostatData m_thermostatData;
 
     m_thermostatData.setIndoorTemp(currentIndoorTemp);
@@ -106,7 +99,18 @@ void qThermoAppViewer::logCurrentStatus()
     bytesToBeWritten = 0;
     bytesToBeWritten = m_thermostatData.dataPayloadSize();
 
-    out << m_thermostatData;
+//    ServerConnection *worker = new ServerConnection(this);
+//    QThread *thread = new QThread(this);
+
+//    worker->moveToThread(thread);
+
+////    connect(worker, SIGNAL (error(QString)), this, SLOT (errorString(QString)));
+////    connect(thread, SIGNAL (started()), worker, SLOT (process()));
+//    connect(worker, SIGNAL (finished()), thread, SLOT (quit()));
+//    connect(worker, SIGNAL (finished()), worker, SLOT (deleteLater()));
+//    connect(thread, SIGNAL (finished()), thread, SLOT (deleteLater()));
+//    thread->start();
+//    worker->sendThermoData(m_thermostatData);
 }
 
 void qThermoAppViewer::checkWriteStatus(qint64 bytes)

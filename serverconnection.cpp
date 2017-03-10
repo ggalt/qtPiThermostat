@@ -7,19 +7,15 @@ ServerConnection::ServerConnection(QObject *parent) :
 
 void ServerConnection::sendThermoData(thermostatData &m_thermostatData)
 {
-    m_thermostatData.setIndoorTemp(currentIndoorTemp);
-    m_thermostatData.setIndoorHumidity(currentIndoorHumidity);
-    m_thermostatData.setThermostatRange(currentTempRange);
-    m_thermostatData.setOutdoorTemp(m_weather->currentWeather().temperature());
-    m_thermostatData.setTimestamp(QDateTime::currentDateTime());
+    QMutexLocker m(&mutex);
+    connectToHost(SERVER_ADDRESS, SERVER_PORT);
+    waitForConnected();
 
-    qint64 bytesToBeWritten = 0;
-    bytesToBeWritten = m_thermostatData.dataPayloadSize();
+    QDataStream out(this);
 
     out << m_thermostatData;
+    disconnectFromHost();
+    waitForDisconnected();
+    emit finished();
 }
 
-void ServerConnection::Init()
-{
-
-}
