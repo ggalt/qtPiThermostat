@@ -49,8 +49,8 @@ void qThermoAppViewer::Init(void)
     connect(&oneMinuteTick, SIGNAL(timeout()),
             this, SLOT(logCurrentStatus()));
 
-    connect(m_connection, SIGNAL(bytesWritten(qint64)),
-            this,SLOT(checkWriteStatus(qint64)));
+//    connect(m_connection, SIGNAL(bytesWritten(qint64)),
+//            this,SLOT(checkWriteStatus(qint64)));
 
 
     m_eventMonitor->ReadThermoEvents();
@@ -115,10 +115,10 @@ void qThermoAppViewer::logCurrentStatus()
 
 void qThermoAppViewer::checkWriteStatus(qint64 bytes)
 {
-    bytesToBeWritten -= bytes;
-    if(bytesToBeWritten <= 0) {
-        m_connection->close();
-    }
+//    bytesToBeWritten -= bytes;
+//    if(bytesToBeWritten <= 0) {
+//        m_connection->close();
+//    }
 }
 
 void qThermoAppViewer::CheckIndoorCondition(void)

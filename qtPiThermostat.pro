@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     weathernetworkconnection.cpp \
     thermostateventmodel.cpp \
     thermoeventmonitor.cpp \
-    serverconnection.cpp
+    serverconnection.cpp \
+    logtempdata.cpp
 
 #so we can test on windows, if we absolutely have to!!
 unix {
@@ -39,7 +40,8 @@ HEADERS += \
     thermostateventmodel.h \
     thermoeventmonitor.h \
     wiringPi/wiringPi.h \
-    serverconnection.h
+    serverconnection.h \
+    logtempdata.h
 
 unix {
 HEADERS += source/common_dht_read.h \
