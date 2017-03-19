@@ -1,14 +1,16 @@
 #include "logtempdata.h"
 
 logTempData::logTempData(QString host, quint16 port, QObject *parent) :
-    m_host(host), m_port(port), QTcpSocket(parent)
+    QTcpSocket(parent)
 {
+    m_host = host;
+    m_port = port;
     dataLoaded = false;
 }
 
 void logTempData::setThermoData(thermostatData &m_thermoData)
 {
-    QMutexLocker(&mutex);
+    QMutexLocker m(&mutex);
     m_thermostatData.setIndoorHumidity(m_thermoData.indoorHumidity());
     m_thermostatData.setIndoorTemp(m_thermoData.indoorTemp());
     m_thermostatData.setOutdoorTemp(m_thermoData.outdoorTemp());
